@@ -6,8 +6,8 @@
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fdocs.khalti.com)](https://khalti.com)
 [![Follow Khalti in Facebook](https://img.shields.io/badge/follow--000?style=social&logo=facebook)](https://www.facebook.com/khalti.official)
 [![Follow Khalti in Instagram](https://img.shields.io/badge/follow--000?style=social&logo=instagram)](https://www.instagram.com/khaltiofficial)
-![Follow Khalti in Twitter](https://img.shields.io/twitter/follow/khaltiofficial?style=social)
-![Subscribe Youtube Channel](https://img.shields.io/youtube/channel/subscribers/UCrXM4HqK9th3E2a04Z9Lh-Q?label=Subscribe&style=social)
+[![Follow Khalti in Twitter](https://img.shields.io/twitter/follow/khaltiofficial?style=social)](https://twitter.com/intent/follow?screen_name=khaltiofficial)
+[![Subscribe Youtube Channel](https://img.shields.io/youtube/channel/subscribers/UCrXM4HqK9th3E2a04Z9Lh-Q?label=Subscribe&style=social)](https://www.youtube.com/channel/UCrXM4HqK9th3E2a04Z9Lh-Q)
 
 
 Khalti is a payment gateway, digital wallet and API provider system for
