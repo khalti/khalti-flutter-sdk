@@ -1,5 +1,15 @@
 # Khalti Payment Gateway
 
+[![Khalti Docs](https://img.shields.io/badge/Khalti-Docs-blueviolet)](https://docs.khalti.com/)
+[![BSD License](https://img.shields.io/badge/License-BSD--3-informational)](https://github.com/khalti/khalti-flutter-sdk/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/khalti/khalti-flutter-sdk)](https://github.com/khalti/khalti-flutter-sdk/issues)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fdocs.khalti.com)](https://khalti.com)
+[![Follow Khalti in Facebook](https://img.shields.io/badge/follow--000?style=social&logo=facebook)](https://www.facebook.com/khalti.official)
+[![Follow Khalti in Instagram](https://img.shields.io/badge/follow--000?style=social&logo=instagram)](https://www.instagram.com/khaltiofficial)
+![Follow Khalti in Twitter](https://img.shields.io/twitter/follow/khaltiofficial?style=social)
+![Subscribe Youtube Channel](https://img.shields.io/youtube/channel/subscribers/UCrXM4HqK9th3E2a04Z9Lh-Q?label=Subscribe&style=social)
+
+
 Khalti is a payment gateway, digital wallet and API provider system for
 various online services for Nepal.
 
@@ -39,7 +49,7 @@ khalti_flutter  | [![khalti_flutter](https://img.shields.io/pub/v/khalti_flutter
 * Amount collected in Merchant Dashboard can we deposited/transferred to bank accounts anytime
 
 ## Support
-** For Queries, feel free to call us at: **
+**For Queries, feel free to call us at:**
 
 * Mobile (Viber / Whatsapp / Skype): 9801165565, 9801052293
 
