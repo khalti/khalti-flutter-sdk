@@ -1,0 +1,9 @@
+name: khalti_core
+description: Khalti Payment Gateway Core
+version: 0.0.2
+homepage: https://khalti.com
+repository: https://github.com/khalti
+documentation: https://docs.khalti.com/
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
