@@ -2,8 +2,9 @@ name: khalti
 description: Khalti Payment Gateway
 version: 0.0.2
 homepage: https://khalti.com
-repository: https://github.com/khalti
 documentation: https://docs.khalti.com/
+issue_tracker: https://github.com/khalti/khalti-flutter-sdk/issues
+repository: https://github.com/khalti/khalti-flutter-sdk/tree/master/packages/khalti
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
@@ -11,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  device_info_plus: ^2.2.0
-  http: ^0.13.3
+  device_info_plus: ^3.1.0
+  http: ^0.13.4
   khalti_core: ^0.0.2
   package_info_plus: ^1.2.1
