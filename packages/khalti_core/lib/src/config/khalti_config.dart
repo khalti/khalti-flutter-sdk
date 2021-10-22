@@ -5,7 +5,7 @@ const bool _kIsWeb = identical(0, 0.0);
 class KhaltiConfig {
   final String version = '0.0.1';
 
-  final String source;
+  final String platform;
   final String osVersion;
   final String deviceModel;
   final String deviceManufacturer;
@@ -13,7 +13,7 @@ class KhaltiConfig {
   final String packageVersion;
 
   KhaltiConfig({
-    required this.source,
+    required this.platform,
     required this.osVersion,
     required this.deviceModel,
     required this.deviceManufacturer,
@@ -23,7 +23,7 @@ class KhaltiConfig {
 
   factory KhaltiConfig.sourceOnly() {
     return KhaltiConfig(
-      source: _kIsWeb ? 'web' : Platform.operatingSystem,
+      platform: _kIsWeb ? 'web' : Platform.operatingSystem,
       osVersion: '',
       deviceModel: '',
       deviceManufacturer: '',
@@ -35,7 +35,7 @@ class KhaltiConfig {
   Map<String, String> get raw {
     return {
       'checkout-version': version,
-      'source': source,
+      'checkout-platform': platform,
       'checkout-os-version': osVersion,
       'checkout-device-model': deviceModel,
       'checkout-device-manufacturer': deviceManufacturer,

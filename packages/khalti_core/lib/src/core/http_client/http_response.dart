@@ -20,6 +20,7 @@ class HttpResponse {
     required int code,
     required StackTrace stackTrace,
     Object? detail,
+    bool isSocketException,
   }) = ExceptionHttpResponse;
 }
 
@@ -54,16 +55,18 @@ class ExceptionHttpResponse extends HttpResponse {
   final int code;
   final StackTrace stackTrace;
   final Object? detail;
+  final bool isSocketException;
 
   const ExceptionHttpResponse({
     required this.message,
     required this.code,
     required this.stackTrace,
     this.detail,
+    this.isSocketException = false,
   }) : super._(message: message, statusCode: code);
 
   @override
   String toString() {
-    return 'ExceptionHttpResponse{message: $message, code: $code, stackTrace: $stackTrace, detail: $detail}';
+    return 'ExceptionHttpResponse{message: $message, code: $code, stackTrace: $stackTrace, detail: $detail, isSocketException: $isSocketException}';
   }
 }
