@@ -69,6 +69,7 @@ class KhaltiHttpClient extends KhaltiClient {
         code: e.osError?.errorCode ?? 0,
         stackTrace: s,
         detail: e.osError?.message,
+        isSocketException: true,
       );
     } on FormatException catch (e, s) {
       return HttpResponse.exception(

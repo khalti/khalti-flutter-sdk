@@ -25,7 +25,7 @@ class Khalti {
       await packageUtil.init();
 
       KhaltiService.config = KhaltiConfig(
-        source: kIsWeb ? 'web' : Platform.operatingSystem,
+        platform: kIsWeb ? 'web' : Platform.operatingSystem,
         osVersion: deviceUtil.osVersion,
         deviceModel: deviceUtil.deviceModel,
         deviceManufacturer: deviceUtil.deviceManufacturer,

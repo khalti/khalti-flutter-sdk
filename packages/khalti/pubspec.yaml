@@ -14,5 +14,6 @@ dependencies:
     sdk: flutter
   device_info_plus: ^3.1.0
   http: ^0.13.4
-  khalti_core: ^0.0.2
+  khalti_core:
+    path: ../khalti_core
   package_info_plus: ^1.2.1
