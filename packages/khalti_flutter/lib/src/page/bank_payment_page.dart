@@ -23,11 +23,19 @@ class BankPaymentPage extends StatefulWidget {
 class _BankPaymentPageState extends State<BankPaymentPage>
     with AutomaticKeepAliveClientMixin {
   late final Future<BankListModel> banksFuture;
+  late final TextEditingController searchController;
 
   @override
   void initState() {
     super.initState();
     banksFuture = Khalti.service.getBanks(paymentType: widget.paymentType);
+    searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,62 +54,81 @@ class _BankPaymentPageState extends State<BankPaymentPage>
         if (snapshot.hasData) {
           final banks = snapshot.data!.banks;
 
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                child: Text(
-                  'Please select your Bank',
-                  style: Theme.of(context).textTheme.caption,
+          return Scaffold(
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                  child: Text(
+                    'Please select your Bank',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
                 ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: banks.length,
-                  itemBuilder: (context, index) {
-                    final bank = banks[index];
+                Expanded(
+                  child: ValueListenableBuilder<TextEditingValue>(
+                    valueListenable: searchController,
+                    builder: (context, query, _) {
+                      final filteredBanks = banks.where(
+                        (bank) => _contains(bank, query),
+                      );
 
-                    return KhaltiBankTile(
-                      name: bank.name,
-                      logoUrl: bank.logo,
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => _BankBottomSheet(
-                            logo: bank.logo,
+                      return ListView.builder(
+                        itemCount: filteredBanks.length,
+                        itemBuilder: (context, index) {
+                          final bank = filteredBanks.elementAt(index);
+
+                          return KhaltiBankTile(
                             name: bank.name,
-                            amount: config.amount,
-                            onTap: (mobile) async {
-                              final url = Khalti.service.buildBankUrl(
-                                bankId: bank.idx,
-                                mobile: mobile,
-                                amount: config.amount,
-                                productIdentity: config.productIdentity,
-                                productName: config.productName,
-                                paymentType: widget.paymentType,
-                                productUrl: config.productUrl,
-                                additionalData: config.additionalData,
+                            logoUrl: bank.logo,
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => _BankBottomSheet(
+                                  logo: bank.logo,
+                                  name: bank.name,
+                                  amount: config.amount,
+                                  onTap: (mobile) async {
+                                    final url = Khalti.service.buildBankUrl(
+                                      bankId: bank.idx,
+                                      mobile: mobile,
+                                      amount: config.amount,
+                                      productIdentity: config.productIdentity,
+                                      productName: config.productName,
+                                      paymentType: widget.paymentType,
+                                      productUrl: config.productUrl,
+                                      additionalData: config.additionalData,
+                                    );
+                                    await launcher.launch(url);
+                                    Navigator.pop(context);
+                                  },
+                                ),
                               );
-                              await launcher.launch(url);
-                              Navigator.pop(context);
                             },
-                          ),
-                        );
-                      },
-                    );
-                  },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            bottomSheet: SearchField(controller: searchController),
           );
         }
 
         return SizedBox.shrink();
       },
     );
+  }
+
+  bool _contains(BankModel bank, TextEditingValue query) {
+    final queryText = query.text.toLowerCase();
+
+    return bank.name.toLowerCase().contains(queryText) ||
+        bank.shortName.toLowerCase().contains(queryText);
   }
 
   @override
