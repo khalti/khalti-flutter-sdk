@@ -2,10 +2,9 @@ import 'package:khalti_core/khalti_core.dart';
 import 'package:khalti_core/src/config/url.dart';
 import 'package:khalti_core/src/core/http_client/http_response.dart';
 import 'package:khalti_core/src/core/http_client/khalti_client.dart';
-import 'package:khalti_core/src/helper/bank_payment_type.dart';
+import 'package:khalti_core/src/helper/payment_type.dart';
 import 'package:khalti_core/src/model/bank_model.dart';
-import 'package:khalti_core/src/model/payment_confirmation_model.dart';
-import 'package:khalti_core/src/model/payment_initiation_model.dart';
+import 'package:khalti_core/src/model/payload_model.dart';
 
 class KhaltiService {
   final String _baseUrl = 'https://khalti.com';
@@ -30,7 +29,7 @@ class KhaltiService {
 
   KhaltiService({required KhaltiClient client}) : _client = client;
 
-  Future<BankListModel> getBanks({required BankPaymentType paymentType}) async {
+  Future<BankListModel> getBanks({required PaymentType paymentType}) async {
     final params = {
       'page': '1',
       'page_size': '200',
@@ -44,13 +43,10 @@ class KhaltiService {
     final response = await _client.get(url, params);
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return BankListModel.fromMap(response.data as Map<String, dynamic>);
-    }
+    return _handleError(
+      response,
+      converter: (data) => BankListModel.fromMap(data),
+    );
   }
 
   Future<PaymentInitiationResponseModel> initiatePayment({
@@ -63,18 +59,13 @@ class KhaltiService {
     final response = await _client.post(url, request.toMap());
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return PaymentInitiationResponseModel.fromMap(
-        response.data as Map<String, dynamic>,
-      );
-    }
+    return _handleError(
+      response,
+      converter: (data) => PaymentInitiationResponseModel.fromMap(data),
+    );
   }
 
-  Future<PaymentConfirmationResponseModel> confirmPayment({
+  Future<PaymentSuccessModel> confirmPayment({
     required PaymentConfirmationRequestModel request,
   }) async {
     final url = _buildUrl(confirmTransaction);
@@ -84,15 +75,10 @@ class KhaltiService {
     final response = await _client.post(url, request.toMap());
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return PaymentConfirmationResponseModel.fromMap(
-        response.data as Map<String, dynamic>,
-      );
-    }
+    return _handleError(
+      response,
+      converter: (data) => PaymentSuccessModel.fromMap(data),
+    );
   }
 
   String buildBankUrl({
@@ -101,7 +87,10 @@ class KhaltiService {
     required int amount,
     required String productIdentity,
     required String productName,
-    required BankPaymentType paymentType,
+    required PaymentType paymentType,
+    String? productUrl,
+    Map<String, Object>? additionalData,
+    String returnUrl = 'khalti://pay/kpg',
   }) {
     final params = {
       'bank': bankId,
@@ -110,16 +99,34 @@ class KhaltiService {
       'mobile': mobile,
       'product_identity': productIdentity,
       'product_name': productName,
+      'source': 'custom',
       ...config.raw,
-      'return_url': config.packageName,
+      if (productUrl != null) 'product_url': productUrl,
+      if (additionalData != null) ...additionalData.map(_stringifyValue),
+      'return_url': returnUrl,
       'payment_type': paymentType.value,
     };
     final uri = Uri.https('khalti.com', 'ebanking/initiate/', params);
     return uri.toString();
   }
 
+  T _handleError<T>(
+    HttpResponse response, {
+    required T Function(Map<String, dynamic>) converter,
+  }) {
+    if (response is ExceptionHttpResponse || response is FailureHttpResponse) {
+      throw response;
+    }
+
+    return converter(response.data as Map<String, dynamic>);
+  }
+
   String _buildUrl(String path) {
     return '${_baseUrl}/api/v$_apiVersion/$path';
+  }
+
+  MapEntry<String, String> _stringifyValue(String key, Object value) {
+    return MapEntry('merchant_$key', value.toString());
   }
 }
 
