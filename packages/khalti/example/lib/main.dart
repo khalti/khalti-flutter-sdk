@@ -38,8 +38,8 @@ class KhaltiExampleApp extends StatelessWidget {
         body: TabBarView(
           children: [
             WalletPayment(),
-            Banking(paymentType: BankPaymentType.eBanking),
-            Banking(paymentType: BankPaymentType.mobileCheckout),
+            Banking(paymentType: PaymentType.eBanking),
+            Banking(paymentType: PaymentType.mobileCheckout),
           ],
         ),
       ),
@@ -165,7 +165,7 @@ class _WalletPaymentState extends State<WalletPayment> {
 class Banking extends StatefulWidget {
   const Banking({Key? key, required this.paymentType}) : super(key: key);
 
-  final BankPaymentType paymentType;
+  final PaymentType paymentType;
 
   @override
   State<Banking> createState() => _BankingState();

@@ -72,14 +72,14 @@ Future<void> _walletPayment() async {
 }
 
 Future<void> _printEBankingBanks() async {
-  final model = await service.getBanks(paymentType: BankPaymentType.eBanking);
+  final model = await service.getBanks(paymentType: PaymentType.eBanking);
   print('EBanking Banks');
   print(model.banks.join('\n'));
 }
 
 Future<void> _printMBankingBanks() async {
   final model = await service.getBanks(
-    paymentType: BankPaymentType.mobileCheckout,
+    paymentType: PaymentType.mobileCheckout,
   );
   print('MBanking Banks');
   print(model.banks.join('\n'));
@@ -95,7 +95,7 @@ void _buildBankPaymentUrl() {
     mobile: mobile,
     productIdentity: 'macbook-pro-21',
     productName: 'Macbook Pro 2021',
-    paymentType: BankPaymentType.eBanking,
+    paymentType: PaymentType.eBanking,
   );
   print(url);
 }
