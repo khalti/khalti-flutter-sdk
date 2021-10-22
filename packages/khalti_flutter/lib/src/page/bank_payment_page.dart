@@ -5,6 +5,7 @@ import 'package:khalti_flutter/src/widget/bank_tile.dart';
 import 'package:khalti_flutter/src/widget/error_widget.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
+import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
@@ -47,6 +48,10 @@ class _BankPaymentPageState extends State<BankPaymentPage>
     return FutureBuilder<BankListModel>(
       future: banksFuture,
       builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: KhaltiProgressIndicator(size: 60));
+        }
+
         if (snapshot.hasError) {
           return KhaltiErrorWidget(error: snapshot.error!);
         }

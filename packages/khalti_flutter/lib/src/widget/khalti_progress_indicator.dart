@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'image.dart';
 
 class KhaltiProgressIndicator extends StatefulWidget {
-  const KhaltiProgressIndicator({Key? key}) : super(key: key);
+  const KhaltiProgressIndicator({Key? key, this.size = 80}) : super(key: key);
+
+  final double size;
 
   @override
   _KhaltiProgressIndicatorState createState() {
@@ -35,6 +37,12 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animation,
@@ -42,9 +50,9 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
         return CustomPaint(
           painter: ProgressPainter(fraction: _animation.value),
           child: SizedBox.square(
-            dimension: 160,
+            dimension: widget.size,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(10),
               child: Center(
                 child: Opacity(
                   opacity: sin(_animation.value * pi),
@@ -70,10 +78,11 @@ class ProgressPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final width = size.width;
     final height = size.height;
+    final activeLength = width + height;
 
     final paint = Paint()
       ..color = Color(0xFF5C2D91)
-      ..strokeWidth = 12
+      ..strokeWidth = width / 14
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
@@ -91,7 +100,7 @@ class ProgressPainter extends CustomPainter {
       final total = metric.length;
       final offset = fraction * total;
       var start = 0 + offset;
-      var end = start + 160;
+      var end = start + activeLength;
 
       if (end > total) {
         activePath
