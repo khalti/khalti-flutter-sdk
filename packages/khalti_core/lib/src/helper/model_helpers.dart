@@ -4,7 +4,7 @@ extension ModelHelperExtension on Map<String, Object?> {
   }
 
   int getInt(String key, {int defaultValue = 0}) {
-    return this[key] as int? ?? defaultValue;
+    return int.tryParse(this[key].toString()) ?? defaultValue;
   }
 
   bool getBool(String key, {bool defaultValue = false}) {
