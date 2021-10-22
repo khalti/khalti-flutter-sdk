@@ -5,3 +5,4 @@ export 'src/widget/button.dart';
 export 'src/widget/khalti_scope.dart';
 export 'package:khalti/khalti.dart'
     show PaymentSuccessModel, PaymentFailureModel;
+export 'src/widget/image.dart';
