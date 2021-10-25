@@ -87,22 +87,44 @@ Future<void> showSuccessDialog(
   );
 }
 
+Future<void> showInfoDialog(
+  BuildContext context, {
+  required String title,
+  required Widget body,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return _Dialog(
+        assetName: 'dialog/info.svg',
+        titleText: title,
+        subtitle: body,
+      );
+    },
+  );
+}
+
 class _Dialog extends StatelessWidget {
   const _Dialog({
     Key? key,
     required this.assetName,
     required this.titleText,
     required this.subtitle,
-    required this.onPressed,
+    this.onPressed,
   }) : super(key: key);
 
   final String assetName;
   final String titleText;
   final Widget? subtitle;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context)
+        .textTheme
+        .bodyText2!
+        .copyWith(color: Color(0xFF474747), height: 1.5);
+
     return Dialog(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -125,34 +147,40 @@ class _Dialog extends StatelessWidget {
                     KhaltiImage.asset(asset: assetName, height: 72),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Text(
-                        titleText,
-                        style: Theme.of(context).textTheme.headline6,
-                        textAlign: TextAlign.center,
+                      child: Center(
+                        child: Text(
+                          titleText,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
                       ),
                     ),
-                    if (subtitle != null) subtitle!,
+                    if (subtitle != null)
+                      DefaultTextStyle(
+                        style: textStyle,
+                        child: subtitle!,
+                      ),
                   ],
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.only(right: 8, bottom: 2),
-                child: TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Color(0xFF5C2D91),
-                    textStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+            if (onPressed != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 8, bottom: 2),
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Color(0xFF5C2D91),
+                      textStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    child: Text('OK'),
+                    onPressed: onPressed,
                   ),
-                  child: Text('OK'),
-                  onPressed: onPressed,
                 ),
               ),
-            ),
           ],
         ),
       ),
