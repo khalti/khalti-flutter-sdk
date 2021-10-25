@@ -40,10 +40,13 @@ class PaymentPage extends StatelessWidget {
     final colorScheme = Theme.of(context).brightness == Brightness.light
         ? ColorScheme.light(
             primary: Colors.deepPurple,
+            onPrimary: Colors.deepPurple,
             secondary: Colors.purple,
           )
         : ColorScheme.dark(
             primary: Colors.deepPurple,
+            onPrimary: Colors.white,
+            secondary: Colors.purple,
           );
 
     return Theme(
@@ -58,7 +61,7 @@ class PaymentPage extends StatelessWidget {
         appBarTheme: AppBarTheme(
           elevation: 0,
           color: colorScheme.background,
-          foregroundColor: colorScheme.onSurface,
+          foregroundColor: colorScheme.onPrimary,
           iconTheme: IconThemeData(color: Color(0xFF474747)),
         ),
         tabBarTheme: TabBarTheme(
@@ -66,7 +69,7 @@ class PaymentPage extends StatelessWidget {
           unselectedLabelStyle: TextStyle(
             color: Color(0xFF848484), //surface100
           ),
-          labelColor: colorScheme.onSurface,
+          labelColor: colorScheme.onPrimary,
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: baseBorder,
@@ -79,7 +82,7 @@ class PaymentPage extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(64, 50),
-            onPrimary: colorScheme.onSurface,
+            onPrimary: Colors.white,
           ),
         ),
       ),
