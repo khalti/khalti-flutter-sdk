@@ -44,27 +44,30 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _animation,
-      builder: (context, _) {
-        return CustomPaint(
-          painter: ProgressPainter(fraction: _animation.value),
-          child: SizedBox.square(
-            dimension: widget.size,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Opacity(
-                  opacity: sin(_animation.value * pi),
-                  child: KhaltiImage.asset(
-                    asset: 'logo/khalti-inner-icon.svg',
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, _) {
+          return CustomPaint(
+            painter: ProgressPainter(fraction: _animation.value),
+            child: SizedBox.square(
+              dimension: widget.size - 16 * 2,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Center(
+                  child: Opacity(
+                    opacity: sin(_animation.value * pi),
+                    child: KhaltiImage.asset(
+                      asset: 'logo/khalti-inner-icon.svg',
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
