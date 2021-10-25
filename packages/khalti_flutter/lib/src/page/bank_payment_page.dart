@@ -49,7 +49,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
       future: banksFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: KhaltiProgressIndicator(size: 60));
+          return Center(child: KhaltiProgressIndicator());
         }
 
         if (snapshot.hasError) {
