@@ -8,7 +8,7 @@ import 'package:khalti_core/src/model/payload_model.dart';
 
 class KhaltiService {
   final String _baseUrl = 'https://khalti.com';
-  final int _apiVersion = 5;
+  final int _apiVersion = 2;
 
   final KhaltiClient _client;
 
