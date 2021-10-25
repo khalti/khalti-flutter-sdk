@@ -34,6 +34,10 @@ class _AmountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final headline6 = Theme.of(context).textTheme.headline6?.copyWith(
+          fontWeight: FontWeight.w600,
+        );
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,12 +50,7 @@ class _AmountWidget extends StatelessWidget {
               .copyWith(color: KhaltiColor.of(context).surface.shade50),
         ),
         const SizedBox(height: 4),
-        Text(
-          'Rs. ${amount ~/ 100}',
-          style: Theme.of(context).textTheme.headline6?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-        ),
+        Text('Rs. ${amount ~/ 100}', style: headline6),
       ],
     );
   }
