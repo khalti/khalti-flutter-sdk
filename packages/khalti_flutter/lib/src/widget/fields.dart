@@ -50,6 +50,29 @@ class PINField extends StatelessWidget {
   }
 }
 
+class CodeField extends StatelessWidget {
+  const CodeField({
+    Key? key,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      validator: Validators.code,
+      decoration: InputDecoration(
+        label: Text('Payment Code'),
+        prefixIcon: Icon(Icons.password),
+      ),
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      onChanged: onChanged,
+    );
+  }
+}
+
 const double _searchFieldHeight = 40;
 
 class SearchField extends StatelessWidget {
