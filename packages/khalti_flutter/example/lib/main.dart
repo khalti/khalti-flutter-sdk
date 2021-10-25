@@ -61,6 +61,7 @@ class HomePage extends StatelessWidget {
             config: config,
             onSuccess: onSuccess,
             onFailure: onFailure,
+            onCancel: onCancel,
           ),
           GestureDetector(
             onTap: () {

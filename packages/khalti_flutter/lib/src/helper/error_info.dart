@@ -5,21 +5,26 @@ class ErrorInfo {
     required this.primary,
     required this.secondary,
     required this.asset,
+    required this.data,
   });
 
   final String primary;
   final String? secondary;
   final String asset;
+  final Map<String, dynamic> data;
 
   factory ErrorInfo.from(Object e) {
     var assetName = 'error/general-error.svg';
     var primary = 'An Error Occurred';
     String? secondary;
+    Map<String, Object?> _data = {};
 
     if (e is FailureHttpResponse) {
       final errorData = e.data;
 
-      if (errorData is Map && errorData.containsKey('detail')) {
+      if (errorData is Map<String, dynamic> &&
+          errorData.containsKey('detail')) {
+        _data = errorData;
         secondary = errorData['detail'];
       } else {
         secondary = e.message;
@@ -45,6 +50,7 @@ class ErrorInfo {
       primary: primary,
       secondary: secondary,
       asset: assetName,
+      data: _data,
     );
   }
 }
