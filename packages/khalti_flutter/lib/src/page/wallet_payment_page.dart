@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
@@ -6,6 +7,7 @@ import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
+import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class WalletPaymentPage extends StatefulWidget {
   const WalletPaymentPage({Key? key}) : super(key: key);
@@ -121,7 +123,63 @@ class _ResetMPINSection extends StatelessWidget {
               ),
         ),
         child: Text('RESET KHALTI MPIN'),
-        onPressed: () {},
+        onPressed: () async {
+          try {
+            await launcher.launch('khalti://go/?t=mpin');
+          } on PlatformException {
+            showInfoDialog(
+              context,
+              title: 'Reset Khalti MPIN',
+              body: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Khalti is not installed in your device. Either install Khalti App or proceed using your browser.',
+                  ),
+                  const SizedBox(height: 24),
+                  TextButton(
+                    onPressed: () async {
+                      final platform = Theme.of(context).platform;
+                      if (platform == TargetPlatform.android) {
+                        launcher.launch(
+                          'https://play.google.com/store/apps/details?id=com.khalti',
+                        );
+                      } else if (platform == TargetPlatform.iOS) {
+                        launcher.launch(
+                          'https://apps.apple.com/us/app/khalti-digital-wallet-nepal/id1263400741',
+                        );
+                      }
+                      Navigator.pop(context);
+                    },
+                    child: Text('INSTALL KHALTI'),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Divider(height: 1, thickness: 1),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      launcher.launch(
+                        'https://khalti.com/#/account/transaction_pin',
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: Text('PROCEED USING BROWSER'),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 8),
+                    child: Divider(height: 1, thickness: 1),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(primary: Color(0xFF848484)),
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('CANCEL'),
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
