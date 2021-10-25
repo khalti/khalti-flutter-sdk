@@ -78,42 +78,54 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                         (bank) => _contains(bank, query),
                       );
 
-                      return ListView.builder(
-                        itemCount: filteredBanks.length,
-                        itemBuilder: (context, index) {
-                          final bank = filteredBanks.elementAt(index);
+                      return AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        child: filteredBanks.isEmpty
+                            ? KhaltiErrorWidget(
+                                error: {},
+                                title: 'No banks found',
+                                subtitle: 'Please search for another keyword',
+                              )
+                            : ListView.builder(
+                                itemCount: filteredBanks.length,
+                                itemBuilder: (context, index) {
+                                  final bank = filteredBanks.elementAt(index);
 
-                          return KhaltiBankTile(
-                            name: bank.name,
-                            logoUrl: bank.logo,
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.transparent,
-                                builder: (context) => _BankBottomSheet(
-                                  logo: bank.logo,
-                                  name: bank.name,
-                                  amount: config.amount,
-                                  onTap: (mobile) async {
-                                    final url = Khalti.service.buildBankUrl(
-                                      bankId: bank.idx,
-                                      mobile: mobile,
-                                      amount: config.amount,
-                                      productIdentity: config.productIdentity,
-                                      productName: config.productName,
-                                      paymentType: widget.paymentType,
-                                      productUrl: config.productUrl,
-                                      additionalData: config.additionalData,
-                                    );
-                                    await launcher.launch(url);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        },
+                                  return KhaltiBankTile(
+                                    name: bank.name,
+                                    logoUrl: bank.logo,
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (context) => _BankBottomSheet(
+                                          logo: bank.logo,
+                                          name: bank.name,
+                                          amount: config.amount,
+                                          onTap: (mobile) async {
+                                            final url =
+                                                Khalti.service.buildBankUrl(
+                                              bankId: bank.idx,
+                                              mobile: mobile,
+                                              amount: config.amount,
+                                              productIdentity:
+                                                  config.productIdentity,
+                                              productName: config.productName,
+                                              paymentType: widget.paymentType,
+                                              productUrl: config.productUrl,
+                                              additionalData:
+                                                  config.additionalData,
+                                            );
+                                            await launcher.launch(url);
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                       );
                     },
                   ),
