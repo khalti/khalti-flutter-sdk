@@ -170,12 +170,10 @@ class PaymentSuccessModel {
 
 class PaymentFailureModel {
   PaymentFailureModel({
-    required this.action,
     required this.message,
     required this.data,
   });
 
-  final String action;
   final String message;
-  final Map<String, Object>? data;
+  final Map<String, dynamic> data;
 }
