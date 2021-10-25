@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti_flutter/src/helper/validators.dart';
 
+import 'color.dart';
+
 class MobileField extends StatelessWidget {
   const MobileField({
     Key? key,
@@ -87,6 +89,7 @@ class SearchField extends StatelessWidget {
       minWidth: _searchFieldHeight,
     );
     final bodyText2 = Theme.of(context).textTheme.bodyText2;
+    final khaltiColor = KhaltiColor.of(context);
 
     return Material(
       child: Padding(
@@ -99,18 +102,19 @@ class SearchField extends StatelessWidget {
               decoration: InputDecoration(
                 labelText: 'Search Bank',
                 hintText: 'Search Bank',
-                labelStyle: bodyText2?.copyWith(
-                  color: Color(0xFF333333), // surface
-                ),
+                labelStyle: bodyText2?.copyWith(color: khaltiColor.surface),
                 hintStyle: bodyText2?.copyWith(
                   color: Theme.of(context).disabledColor,
                   fontWeight: FontWeight.w300,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFFDED5E9), width: 1),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.secondary,
+                    width: 1,
+                  ),
                   borderRadius: BorderRadius.circular(6),
                 ),
-                fillColor: Color(0xFFDED5E9), //primary 20
+                fillColor: Theme.of(context).colorScheme.secondary,
                 filled: true,
                 isCollapsed: true,
                 floatingLabelBehavior: FloatingLabelBehavior.never,

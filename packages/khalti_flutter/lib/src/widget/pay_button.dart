@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 
 class PayButton extends StatelessWidget {
   const PayButton({
@@ -42,7 +43,7 @@ class _AmountWidget extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .caption!
-              .copyWith(color: Color(0xFF989898)),
+              .copyWith(color: KhaltiColor.of(context).surface.shade50),
         ),
         const SizedBox(height: 4),
         Text(

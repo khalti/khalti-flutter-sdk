@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
@@ -11,12 +12,12 @@ Future<void> showProgressDialog(
   return showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) {
+    builder: (ctx) {
       return DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
             .bodyText2!
-            .copyWith(color: Color(0xFF474747)), //s400
+            .copyWith(color: KhaltiColor.of(context).surface.shade400),
         child: Dialog(
           elevation: 0,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -46,15 +47,22 @@ Future<void> showErrorDialog(
 }) {
   return showDialog(
     context: context,
-    builder: (context) {
+    builder: (ctx) {
       final errorInfo = ErrorInfo.from(error);
 
       return _Dialog(
+        parentContext: context,
         assetName: 'dialog/error.svg',
         titleText: errorInfo.primary,
         subtitle: errorInfo.secondary == null
             ? null
-            : _ErrorBodyWidget(message: errorInfo.secondary!),
+            : _ErrorBodyWidget(
+                message: errorInfo.secondary!,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyText2!
+                    .copyWith(color: KhaltiColor.of(context).surface.shade400),
+              ),
         onPressed: onPressed,
       );
     },
@@ -70,14 +78,15 @@ Future<void> showSuccessDialog(
   return showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (context) {
+    builder: (ctx) {
       return _Dialog(
+        parentContext: context,
         assetName: 'dialog/success.svg',
         titleText: title,
         subtitle: Text(
           subtitle,
           style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                color: Color(0xFF474747),
+                color: KhaltiColor.of(context).surface.shade400,
                 height: 1.5,
               ),
         ),
@@ -94,8 +103,9 @@ Future<void> showInfoDialog(
 }) {
   return showDialog(
     context: context,
-    builder: (context) {
+    builder: (ctx) {
       return _Dialog(
+        parentContext: context,
         assetName: 'dialog/info.svg',
         titleText: title,
         subtitle: body,
@@ -107,12 +117,14 @@ Future<void> showInfoDialog(
 class _Dialog extends StatelessWidget {
   const _Dialog({
     Key? key,
+    required this.parentContext,
     required this.assetName,
     required this.titleText,
     required this.subtitle,
     this.onPressed,
   }) : super(key: key);
 
+  final BuildContext parentContext;
   final String assetName;
   final String titleText;
   final Widget? subtitle;
@@ -120,10 +132,10 @@ class _Dialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context)
-        .textTheme
-        .bodyText2!
-        .copyWith(color: Color(0xFF474747), height: 1.5);
+    final textStyle = Theme.of(parentContext).textTheme.bodyText2!.copyWith(
+          color: KhaltiColor.of(parentContext).surface.shade400,
+          height: 1.5,
+        );
 
     return Dialog(
       elevation: 0,
@@ -150,7 +162,7 @@ class _Dialog extends StatelessWidget {
                       child: Center(
                         child: Text(
                           titleText,
-                          style: Theme.of(context).textTheme.headline6,
+                          style: Theme.of(parentContext).textTheme.headline6,
                         ),
                       ),
                     ),
@@ -170,7 +182,7 @@ class _Dialog extends StatelessWidget {
                   padding: EdgeInsets.only(right: 8, bottom: 2),
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      primary: Color(0xFF5C2D91),
+                      primary: Theme.of(parentContext).primaryColor,
                       textStyle: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -189,17 +201,17 @@ class _Dialog extends StatelessWidget {
 }
 
 class _ErrorBodyWidget extends StatelessWidget {
-  const _ErrorBodyWidget({Key? key, required this.message}) : super(key: key);
+  const _ErrorBodyWidget({
+    Key? key,
+    required this.message,
+    required this.style,
+  }) : super(key: key);
 
   final String message;
+  final TextStyle style;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context)
-        .textTheme
-        .bodyText2!
-        .copyWith(color: Color(0xFF474747));
-
     final regex = RegExp(r"(.+)?<a.*href='(.+)' .*>(.+)</a>(.+)?");
 
     if (regex.hasMatch(message)) {
@@ -234,12 +246,12 @@ class _ErrorBodyWidget extends StatelessWidget {
               ),
               if (trailingText != null) TextSpan(text: trailingText),
             ],
-            style: textStyle.copyWith(height: 1.5),
+            style: style.copyWith(height: 1.5),
           ),
         );
       }
     }
 
-    return Text(message, style: textStyle);
+    return Text(message, style: style);
   }
 }

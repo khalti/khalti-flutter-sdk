@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 
 class KhaltiErrorWidget extends StatelessWidget {
@@ -30,7 +31,7 @@ class KhaltiErrorWidget extends StatelessWidget {
           if (errorInfo.secondary != null)
             Text(
               errorInfo.secondary!,
-              style: TextStyle(color: Color(0xFF848484)),
+              style: TextStyle(color: KhaltiColor.of(context).surface.shade100),
             ),
         ],
       ),

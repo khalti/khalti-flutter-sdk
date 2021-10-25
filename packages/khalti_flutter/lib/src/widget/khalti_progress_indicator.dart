@@ -84,7 +84,7 @@ class ProgressPainter extends CustomPainter {
     final activeLength = width + height;
 
     final paint = Paint()
-      ..color = Color(0xFF5C2D91)
+      ..color = const Color(0xFF5C2D91)
       ..strokeWidth = width / 14
       ..strokeJoin = StrokeJoin.round
       ..style = PaintingStyle.stroke

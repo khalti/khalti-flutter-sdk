@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 
 abstract class KhaltiImage extends StatelessWidget {
   const KhaltiImage({
@@ -63,6 +64,8 @@ class _NetworkImage extends KhaltiImage {
 
   @override
   Widget build(BuildContext context) {
+    final khaltiColor = KhaltiColor.of(context);
+
     return Image.network(
       url,
       color: _imageColor(context),
@@ -74,8 +77,8 @@ class _NetworkImage extends KhaltiImage {
           child: SizedBox.square(
             dimension: 20,
             child: CircularProgressIndicator(
-              color: Color(0xFFEAEAEA),
-              backgroundColor: Color(0xFFF4F4F4),
+              color: khaltiColor.surface[10],
+              backgroundColor: khaltiColor.surface[5],
               strokeWidth: 2,
             ),
           ),

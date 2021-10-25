@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +5,7 @@ import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/helper/payment_preference.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 
 import 'page/bank_payment_page.dart';
 import 'page/card_payment_page.dart';
@@ -32,43 +32,71 @@ class PaymentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseBorder = OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(6)),
-      borderSide: BorderSide(color: Color(0xFFD3D3D3), width: 1),
-    );
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final colorScheme = Theme.of(context).brightness == Brightness.light
-        ? ColorScheme.light(
-            primary: Colors.deepPurple,
-            onPrimary: Colors.deepPurple,
-            secondary: Colors.purple,
-          )
-        : ColorScheme.dark(
+    final colorScheme = isDark
+        ? ColorScheme.dark(
             primary: Colors.deepPurple,
             onPrimary: Colors.white,
-            secondary: Colors.purple,
+            secondary: Color(0xFF12091D),
+          )
+        : ColorScheme.light(
+            primary: Colors.deepPurple,
+            onPrimary: Colors.deepPurple,
+            secondary: Color(0xFFDED5E9),
           );
 
-    return Theme(
-      data: ThemeData.from(
-        colorScheme: colorScheme,
-        textTheme: TextTheme(
-          button: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          caption: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-          subtitle1: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+    return KhaltiColor(
+      isDark: isDark,
+      child: Theme(
+        data: ThemeData.from(
+          colorScheme: colorScheme,
+          textTheme: TextTheme(
+            button: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            caption: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+            subtitle1: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
         ),
-      ).copyWith(
+        child: PaymentConfigScope(
+          config: config,
+          child: KhaltiService.publicKey.startsWith('test_')
+              ? Banner(
+                  location: BannerLocation.bottomEnd,
+                  message: 'TEST',
+                  child: _HomePage(preferences: preferences),
+                )
+              : _HomePage(preferences: preferences),
+        ),
+      ),
+    );
+  }
+}
+
+class _HomePage extends StatelessWidget {
+  _HomePage({Key? key, required this.preferences}) : super(key: key);
+
+  final List<PaymentPreference> preferences;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final khaltiColor = KhaltiColor.of(context);
+    final baseBorder = OutlineInputBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(6)),
+      borderSide: BorderSide(color: khaltiColor.surface.shade300, width: 1),
+    );
+
+    return Theme(
+      data: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
           elevation: 0,
           color: colorScheme.background,
           foregroundColor: colorScheme.onPrimary,
-          iconTheme: IconThemeData(color: Color(0xFF474747)),
+          iconTheme: IconThemeData(color: khaltiColor.surface.shade400),
         ),
         tabBarTheme: TabBarTheme(
-          unselectedLabelColor: Color(0xFF989898), //surface50
-          unselectedLabelStyle: TextStyle(
-            color: Color(0xFF848484), //surface100
-          ),
+          unselectedLabelColor: khaltiColor.surface.shade50,
+          unselectedLabelStyle: TextStyle(color: khaltiColor.surface.shade100),
           labelColor: colorScheme.onPrimary,
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -86,64 +114,45 @@ class PaymentPage extends StatelessWidget {
           ),
         ),
       ),
-      child: PaymentConfigScope(
-        config: config,
-        child: KhaltiService.publicKey.startsWith('test_')
-            ? Banner(
-                location: BannerLocation.bottomEnd,
-                message: 'TEST',
-                child: _HomePage(preferences: preferences),
-              )
-            : _HomePage(preferences: preferences),
-      ),
-    );
-  }
-}
-
-class _HomePage extends StatelessWidget {
-  _HomePage({Key? key, required this.preferences}) : super(key: key);
-
-  final List<PaymentPreference> preferences;
-
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: preferences.length,
-      child: Scaffold(
-        body: AnnotatedRegion(
-          value: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarBrightness: Theme.of(context).brightness,
-            statusBarIconBrightness:
-                Theme.of(context).brightness == Brightness.light
-                    ? Brightness.dark
-                    : Brightness.light,
-          ),
-          child: SafeArea(
-            child: NestedScrollView(
-              headerSliverBuilder: (context, _) {
-                return [
-                  SliverAppBar(
-                    title: Text(
-                      preferences.length > 1
-                          ? 'Choose your payment method'
-                          : 'Pay with Khalti',
-                    ),
-                  ),
-                  SliverPersistentHeader(
-                    delegate: _TabBarDelegate(
-                      tabBar: TabBar(
-                        isScrollable: preferences.length > 2,
-                        indicatorColor: Theme.of(context).primaryColor,
-                        tabs: preferences.map(_getTab).toList(growable: false),
+      child: DefaultTabController(
+        length: preferences.length,
+        child: Scaffold(
+          body: AnnotatedRegion(
+            value: SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              statusBarBrightness: Theme.of(context).brightness,
+              statusBarIconBrightness:
+                  Theme.of(context).brightness == Brightness.light
+                      ? Brightness.dark
+                      : Brightness.light,
+            ),
+            child: SafeArea(
+              child: NestedScrollView(
+                headerSliverBuilder: (context, _) {
+                  return [
+                    SliverAppBar(
+                      title: Text(
+                        preferences.length > 1
+                            ? 'Choose your payment method'
+                            : 'Pay with Khalti',
                       ),
                     ),
-                    pinned: true,
-                  )
-                ];
-              },
-              body: TabBarView(
-                children: preferences.map(_getView).toList(growable: false),
+                    SliverPersistentHeader(
+                      delegate: _TabBarDelegate(
+                        tabBar: TabBar(
+                          isScrollable: preferences.length > 2,
+                          indicatorColor: Theme.of(context).primaryColor,
+                          tabs:
+                              preferences.map(_getTab).toList(growable: false),
+                        ),
+                      ),
+                      pinned: true,
+                    )
+                  ];
+                },
+                body: TabBarView(
+                  children: preferences.map(_getView).toList(growable: false),
+                ),
               ),
             ),
           ),

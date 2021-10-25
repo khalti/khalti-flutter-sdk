@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -96,7 +97,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.w500,
-            color: Color(0xFF5B5B5B),
+            color: KhaltiColor.of(context).surface.shade300,
           ),
         ),
         const SizedBox(height: 8),
@@ -171,7 +172,9 @@ class _ResetMPINSection extends StatelessWidget {
                     child: Divider(height: 1, thickness: 1),
                   ),
                   TextButton(
-                    style: TextButton.styleFrom(primary: Color(0xFF848484)),
+                    style: TextButton.styleFrom(
+                      primary: KhaltiColor.of(context).surface.shade100,
+                    ),
                     onPressed: () => Navigator.pop(context),
                     child: Text('CANCEL'),
                   ),
