@@ -37,12 +37,18 @@ class PaymentPage extends StatelessWidget {
       borderSide: BorderSide(color: Color(0xFFD3D3D3), width: 1),
     );
 
+    final colorScheme = Theme.of(context).brightness == Brightness.light
+        ? ColorScheme.light(
+            primary: Colors.deepPurple,
+            secondary: Colors.purple,
+          )
+        : ColorScheme.dark(
+            primary: Colors.deepPurple,
+          );
+
     return Theme(
       data: ThemeData.from(
-        colorScheme: ColorScheme.light(
-          primary: Colors.deepPurple,
-          secondary: Colors.purple,
-        ),
+        colorScheme: colorScheme,
         textTheme: TextTheme(
           button: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           caption: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
@@ -51,8 +57,8 @@ class PaymentPage extends StatelessWidget {
       ).copyWith(
         appBarTheme: AppBarTheme(
           elevation: 0,
-          color: Colors.white,
-          foregroundColor: Colors.deepPurple,
+          color: colorScheme.background,
+          foregroundColor: colorScheme.onSurface,
           iconTheme: IconThemeData(color: Color(0xFF474747)),
         ),
         tabBarTheme: TabBarTheme(
@@ -60,12 +66,12 @@ class PaymentPage extends StatelessWidget {
           unselectedLabelStyle: TextStyle(
             color: Color(0xFF848484), //surface100
           ),
-          labelColor: Colors.deepPurple,
+          labelColor: colorScheme.onSurface,
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: baseBorder,
           focusedBorder: baseBorder.copyWith(
-            borderSide: BorderSide(color: Colors.deepPurple, width: 2),
+            borderSide: BorderSide(color: colorScheme.primary, width: 2),
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 16),
           labelStyle: TextStyle(fontWeight: FontWeight.normal),
@@ -73,6 +79,7 @@ class PaymentPage extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             minimumSize: Size(64, 50),
+            onPrimary: colorScheme.onSurface,
           ),
         ),
       ),
@@ -103,8 +110,11 @@ class _HomePage extends StatelessWidget {
         body: AnnotatedRegion(
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarBrightness: Theme.of(context).brightness,
+            statusBarIconBrightness:
+                Theme.of(context).brightness == Brightness.light
+                    ? Brightness.dark
+                    : Brightness.light,
           ),
           child: SafeArea(
             child: NestedScrollView(
