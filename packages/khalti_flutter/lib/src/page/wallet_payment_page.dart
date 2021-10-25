@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
+import 'package:khalti_flutter/src/page/confirmation_page.dart';
 import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -59,9 +60,22 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
                 context,
                 title: 'Success',
                 subtitle:
-                    'Khalti has sent a confirmation code in your Khalti registered number.',
+                    'Khalti has sent a confirmation code in your Khalti registered number and email address.',
                 onPressed: () {
-                  print('done');
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => Theme(
+                        data: Theme.of(context),
+                        child: ConfirmationPage(
+                          mobileNo: _mobile!,
+                          mPin: _mPin!,
+                          token: response.token,
+                        ),
+                      ),
+                    ),
+                  );
                 },
               );
             } catch (e) {

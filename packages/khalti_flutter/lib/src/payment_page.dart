@@ -49,6 +49,12 @@ class PaymentPage extends StatelessWidget {
           subtitle1: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
         ),
       ).copyWith(
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+          color: Colors.white,
+          foregroundColor: Colors.deepPurple,
+          iconTheme: IconThemeData(color: Color(0xFF474747)),
+        ),
         tabBarTheme: TabBarTheme(
           unselectedLabelColor: Color(0xFF989898), //surface50
           unselectedLabelStyle: TextStyle(
@@ -105,17 +111,11 @@ class _HomePage extends StatelessWidget {
               headerSliverBuilder: (context, _) {
                 return [
                   SliverAppBar(
-                    leading: BackButton(
-                      color: Theme.of(context).disabledColor,
-                    ),
                     title: Text(
                       preferences.length > 1
                           ? 'Choose your payment method'
                           : 'Pay with Khalti',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
                     ),
-                    elevation: 0,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   ),
                   SliverPersistentHeader(
                     delegate: _TabBarDelegate(
