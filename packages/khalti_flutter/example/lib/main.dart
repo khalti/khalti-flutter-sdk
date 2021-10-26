@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter_example/app_preference.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
 
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
             return Consumer<AppPreferenceNotifier>(
               builder: (context, appPreference, _) {
                 return MaterialApp(
-                  title: 'Flutter Demo',
+                  title: 'Khalti Payment Gateway',
                   supportedLocales: [
                     Locale('en', 'US'),
                     Locale('ne', 'NP'),
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
                   navigatorKey: navKey,
                   localizationsDelegates: [
                     KhaltiLocalizations.delegate,
+                    AppLocalizations.delegate,
                     GlobalMaterialLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
@@ -72,10 +74,11 @@ class HomePage extends StatelessWidget {
         'vendor': 'Khalti Bazaar',
       },
     );
+    final localization = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Khalti Payment Gateway'),
+        title: Text(localization.kpg),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -89,13 +92,13 @@ class HomePage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 16, left: 16),
                       child: Text(
-                        'App Preference'.toUpperCase(),
+                        localization.appPreference.toUpperCase(),
                         style: Theme.of(context).textTheme.overline,
                       ),
                     ),
                     SwitchListTile(
                       value: appPreference.isDarkMode,
-                      title: Text('Dark Mode'),
+                      title: Text(localization.darkMode),
                       onChanged: (isDarkMode) {
                         context
                             .read<AppPreferenceNotifier>()
@@ -103,12 +106,12 @@ class HomePage extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      title: Text('Language'),
+                      title: Text(localization.language),
                       trailing: DropdownButtonHideUnderline(
                         child: DropdownButton<Locale>(
                           items: {
                             'English': Locale('en', 'US'),
-                            'Nepali': Locale('ne', 'NP'),
+                            'नेपाली': Locale('ne', 'NP'),
                           }
                               .entries
                               .map(
