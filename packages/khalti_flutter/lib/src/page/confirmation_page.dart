@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
 import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
@@ -28,9 +29,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Confirm Payment',
-        ),
+        title: Text(context.loc.confirmPayment),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -40,7 +39,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Enter the OTP sent via SMS to mobile number ${widget.mobileNo}',
+                context.loc.enterOtpSentTo(widget.mobileNo),
                 style: Theme.of(context).textTheme.caption,
               ),
               const SizedBox(height: 24),
@@ -49,7 +48,10 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState?.validate() ?? false) {
-                    showProgressDialog(context, message: 'Confirming Payment');
+                    showProgressDialog(
+                      context,
+                      message: context.loc.confirmingPayment,
+                    );
                     try {
                       final response = await Khalti.service.confirmPayment(
                         request: PaymentConfirmationRequestModel(
@@ -84,7 +86,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                     }
                   }
                 },
-                child: Text('VERIFY OTP'),
+                child: Text(context.loc.verifyOTP.toUpperCase()),
               ),
             ],
           ),

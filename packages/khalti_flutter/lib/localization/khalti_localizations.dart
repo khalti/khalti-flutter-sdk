@@ -99,15 +99,39 @@ class KhaltiLocalizations {
   /// No banks found
   String get noBanksFound => Intl.message(
         'No banks found',
-        desc:
-            'title shown when bank is not found after searching for a keyword',
+        desc: 'title shown when bank search result is empty',
       );
 
   /// Please search for another keyword
   String get searchForAnotherKeyword => Intl.message(
         'Please search for another keyword',
-        desc:
-            'message shown when bank is not found after searching for a keyword',
+        desc: 'message shown when bank search result is empty',
+      );
+
+  /// Confirm Payment
+  String get confirmPayment => Intl.message(
+        'Confirm Payment',
+        desc: 'OTP confirmation title',
+      );
+
+  /// Enter the OTP sent via SMS to mobile number [mobileNo]
+  String enterOtpSentTo(String mobileNo) => Intl.message(
+        'Enter the OTP sent via SMS to mobile number $mobileNo',
+        desc: 'otp sent hint',
+        name: 'enterOtpSentTo',
+        args: [mobileNo],
+      );
+
+  /// Confirming Payment
+  String get confirmingPayment => Intl.message(
+        'Confirming Payment',
+        desc: 'OTP confirmation progress dialog message',
+      );
+
+  /// Verify OTP
+  String get verifyOTP => Intl.message(
+        'Verify OTP',
+        desc: 'OTP verification button text',
       );
 }
 
