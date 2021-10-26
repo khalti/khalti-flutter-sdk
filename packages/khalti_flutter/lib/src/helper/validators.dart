@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 
 class Validators {
   const Validators(this.context);
@@ -10,7 +11,7 @@ class Validators {
       value,
       (value) {
         if (!_isValid(value, r'(^[9][678][0-9]{8}$)')) {
-          return 'Please enter a valid mobile number';
+          return context.loc.enterValidMobileNumber;
         }
       },
     );
@@ -21,7 +22,7 @@ class Validators {
       value,
       (value) {
         if (value.length < 4) {
-          return 'Khalti MPIN must be at least 4 characters';
+          return context.loc.mPinMustBeMin4Chars;
         }
       },
     );
@@ -32,7 +33,7 @@ class Validators {
       value,
       (value) {
         if (value.length < 6) {
-          return 'Payment Code must be at least 6 characters';
+          return context.loc.payCodeMustBeMin6Chars;
         }
       },
     );
@@ -42,7 +43,7 @@ class Validators {
     String? value,
     String? Function(String value) onValue,
   ) {
-    if (value == null || value.isEmpty) return 'This field is required';
+    if (value == null || value.isEmpty) return context.loc.fieldRequired;
 
     return onValue(value);
   }

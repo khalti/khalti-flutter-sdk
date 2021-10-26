@@ -65,6 +65,24 @@ class KhaltiLocalizations {
   String get noConnectionMessage => Intl.message(
         'Slow or no internet connection. Please check your internet & try again.',
       );
+
+  /// Please enter a valid mobile number
+  String get enterValidMobileNumber => Intl.message(
+        'Please enter a valid mobile number',
+      );
+
+  /// Khalti MPIN must be at least 4 characters
+  String get mPinMustBeMin4Chars => Intl.message(
+        'Khalti MPIN must be at least 4 characters',
+      );
+
+  /// Payment Code must be at least 6 characters
+  String get payCodeMustBeMin6Chars => Intl.message(
+        'Payment Code must be at least 6 characters',
+      );
+
+  /// This field is required
+  String get fieldRequired => Intl.message('This field is required');
 }
 
 class _KhaltiLocalizationsDelegate
