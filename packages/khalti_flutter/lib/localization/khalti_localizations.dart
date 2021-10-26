@@ -69,20 +69,46 @@ class KhaltiLocalizations {
   /// Please enter a valid mobile number
   String get enterValidMobileNumber => Intl.message(
         'Please enter a valid mobile number',
+        desc: 'mobile number validation',
       );
 
   /// Khalti MPIN must be at least 4 characters
   String get mPinMustBeMin4Chars => Intl.message(
         'Khalti MPIN must be at least 4 characters',
+        desc: 'pin validation',
       );
 
   /// Payment Code must be at least 6 characters
   String get payCodeMustBeMin6Chars => Intl.message(
         'Payment Code must be at least 6 characters',
+        desc: 'otp validation',
       );
 
   /// This field is required
-  String get fieldRequired => Intl.message('This field is required');
+  String get fieldRequired => Intl.message(
+        'This field is required',
+        desc: 'empty field validation',
+      );
+
+  /// Please select your Bank
+  String get pleaseSelectYourBank => Intl.message(
+        'Please select your Bank',
+        desc: 'bank payment',
+      );
+
+  /// No banks found
+  String get noBanksFound => Intl.message(
+        'No banks found',
+        desc:
+            'title shown when bank is not found after searching for a keyword',
+      );
+
+  /// Please search for another keyword
+  String get searchForAnotherKeyword => Intl.message(
+        'Please search for another keyword',
+        desc:
+            'message shown when bank is not found after searching for a keyword',
+      );
 }
 
 class _KhaltiLocalizationsDelegate

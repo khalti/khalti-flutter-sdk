@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/widget/bank_tile.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
@@ -67,7 +68,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                 Padding(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text(
-                    'Please select your Bank',
+                    context.loc.pleaseSelectYourBank,
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
@@ -84,8 +85,8 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                         child: filteredBanks.isEmpty
                             ? KhaltiErrorWidget(
                                 error: {},
-                                title: 'No banks found',
-                                subtitle: 'Please search for another keyword',
+                                title: context.loc.noBanksFound,
+                                subtitle: context.loc.searchForAnotherKeyword,
                               )
                             : ListView.builder(
                                 itemCount: filteredBanks.length,
