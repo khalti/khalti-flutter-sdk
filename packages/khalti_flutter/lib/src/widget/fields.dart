@@ -19,8 +19,10 @@ class MobileField extends StatelessWidget {
       decoration: InputDecoration(
         label: Text('Khalti Mobile Number'),
         prefixIcon: Icon(Icons.perm_identity),
+        counterText: '',
       ),
       keyboardType: TextInputType.phone,
+      maxLength: 10,
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
       ],

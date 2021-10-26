@@ -19,6 +19,8 @@ class WalletPaymentPage extends StatefulWidget {
 
 class _WalletPaymentPageState extends State<WalletPaymentPage>
     with AutomaticKeepAliveClientMixin {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
   String? _mobile, _mPin;
 
   @override
@@ -27,85 +29,91 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
 
     final config = PaymentConfigScope.of(context);
 
-    return ListView(
-      padding: EdgeInsets.all(16),
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40),
-          child: KhaltiImage.asset(asset: 'logo/khalti.svg', height: 72),
-        ),
-        MobileField(
-          onChanged: (mobile) => _mobile = mobile,
-        ),
-        const SizedBox(height: 24),
-        PINField(
-          onChanged: (pin) => _mPin = pin,
-        ),
-        const SizedBox(height: 24),
-        PayButton(
-          amount: config.amount,
-          onPressed: () async {
-            showProgressDialog(context, message: 'Initiating Payment');
-            try {
-              final response = await Khalti.service.initiatePayment(
-                request: PaymentInitiationRequestModel(
-                  mobile: _mobile!,
-                  transactionPin: _mPin!,
-                  amount: config.amount,
-                  productIdentity: config.productIdentity,
-                  productName: config.productName,
-                  productUrl: config.productUrl,
-                  additionalData: config.additionalData,
-                ),
-              );
-              Navigator.pop(context);
-              showSuccessDialog(
-                context,
-                title: 'Success',
-                subtitle:
-                    'Khalti has sent a confirmation code in your Khalti registered number and email address.',
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => KhaltiColor(
-                        isDark: Theme.of(context).brightness == Brightness.dark,
-                        child: Theme(
-                          data: Theme.of(context),
-                          child: ConfirmationPage(
-                            mobileNo: _mobile!,
-                            mPin: _mPin!,
-                            token: response.token,
-                          ),
-                        ),
-                      ),
+    return Form(
+      key: _formKey,
+      child: ListView(
+        padding: EdgeInsets.all(16),
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: KhaltiImage.asset(asset: 'logo/khalti.svg', height: 72),
+          ),
+          MobileField(
+            onChanged: (mobile) => _mobile = mobile,
+          ),
+          const SizedBox(height: 24),
+          PINField(
+            onChanged: (pin) => _mPin = pin,
+          ),
+          const SizedBox(height: 24),
+          PayButton(
+            amount: config.amount,
+            onPressed: () async {
+              if (_formKey.currentState?.validate() ?? false) {
+                showProgressDialog(context, message: 'Initiating Payment');
+                try {
+                  final response = await Khalti.service.initiatePayment(
+                    request: PaymentInitiationRequestModel(
+                      mobile: _mobile!,
+                      transactionPin: _mPin!,
+                      amount: config.amount,
+                      productIdentity: config.productIdentity,
+                      productName: config.productName,
+                      productUrl: config.productUrl,
+                      additionalData: config.additionalData,
                     ),
                   );
-                },
-              );
-            } catch (e) {
-              Navigator.pop(context);
-              showErrorDialog(
-                context,
-                error: e,
-                onPressed: () => Navigator.pop(context),
-              );
-            }
-          },
-        ),
-        const SizedBox(height: 40),
-        Text(
-          'Forgot Khalti MPIN?',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: KhaltiColor.of(context).surface.shade300,
+                  Navigator.pop(context);
+                  showSuccessDialog(
+                    context,
+                    title: 'Success',
+                    subtitle:
+                        'Khalti has sent a confirmation code in your Khalti registered number and email address.',
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => KhaltiColor(
+                            isDark:
+                                Theme.of(context).brightness == Brightness.dark,
+                            child: Theme(
+                              data: Theme.of(context),
+                              child: ConfirmationPage(
+                                mobileNo: _mobile!,
+                                mPin: _mPin!,
+                                token: response.token,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } catch (e) {
+                  Navigator.pop(context);
+                  showErrorDialog(
+                    context,
+                    error: e,
+                    onPressed: () => Navigator.pop(context),
+                  );
+                }
+              }
+            },
           ),
-        ),
-        const SizedBox(height: 8),
-        const _ResetMPINSection(),
-      ],
+          const SizedBox(height: 40),
+          Text(
+            'Forgot Khalti MPIN?',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: KhaltiColor.of(context).surface.shade300,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const _ResetMPINSection(),
+        ],
+      ),
     );
   }
 

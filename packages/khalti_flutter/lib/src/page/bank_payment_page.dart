@@ -182,6 +182,8 @@ class _BankBottomSheet extends StatefulWidget {
 }
 
 class _BankBottomSheetState extends State<_BankBottomSheet> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
   String? _khaltiMobileNumber;
 
   @override
@@ -200,33 +202,40 @@ class _BankBottomSheetState extends State<_BankBottomSheet> {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
         child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox.square(
-                    dimension: 32,
-                    child: KhaltiImage.network(url: widget.logo),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(widget.name, style: titleStyle),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              MobileField(
-                onChanged: (number) => _khaltiMobileNumber = number,
-              ),
-              const SizedBox(height: 24),
-              PayButton(
-                amount: widget.amount,
-                onPressed: () => widget.onTap(_khaltiMobileNumber!),
-              ),
-            ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox.square(
+                      dimension: 32,
+                      child: KhaltiImage.network(url: widget.logo),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(widget.name, style: titleStyle),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                MobileField(
+                  onChanged: (number) => _khaltiMobileNumber = number,
+                ),
+                const SizedBox(height: 24),
+                PayButton(
+                  amount: widget.amount,
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      widget.onTap(_khaltiMobileNumber!);
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

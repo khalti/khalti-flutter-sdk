@@ -21,6 +21,7 @@ class ConfirmationPage extends StatefulWidget {
 }
 
 class _ConfirmationPageState extends State<ConfirmationPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   String? _code;
 
   @override
@@ -33,54 +34,60 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Enter the OTP sent via SMS to mobile number ${widget.mobileNo}',
-              style: Theme.of(context).textTheme.caption,
-            ),
-            const SizedBox(height: 24),
-            CodeField(onChanged: (code) => _code = code),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () async {
-                showProgressDialog(context, message: 'Confirming Payment');
-                try {
-                  final response = await Khalti.service.confirmPayment(
-                    request: PaymentConfirmationRequestModel(
-                      transactionPin: widget.mPin,
-                      confirmationCode: _code!,
-                      token: widget.token,
-                    ),
-                  );
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context, response);
-                } catch (e) {
-                  Navigator.pop(context);
-                  showErrorDialog(
-                    context,
-                    error: e,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      final errorInfo = ErrorInfo.from(e);
-
-                      Navigator.pop(
-                        context,
-                        PaymentFailureModel(
-                          message: errorInfo.secondary ?? errorInfo.primary,
-                          data: errorInfo.data,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Enter the OTP sent via SMS to mobile number ${widget.mobileNo}',
+                style: Theme.of(context).textTheme.caption,
+              ),
+              const SizedBox(height: 24),
+              CodeField(onChanged: (code) => _code = code),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    showProgressDialog(context, message: 'Confirming Payment');
+                    try {
+                      final response = await Khalti.service.confirmPayment(
+                        request: PaymentConfirmationRequestModel(
+                          transactionPin: widget.mPin,
+                          confirmationCode: _code!,
+                          token: widget.token,
                         ),
                       );
-                    },
-                  );
-                }
-              },
-              child: Text('VERIFY OTP'),
-            ),
-          ],
+                      Navigator.popUntil(context, ModalRoute.withName('kpg'));
+                      Navigator.pop(context, response);
+                    } catch (e) {
+                      Navigator.pop(context);
+                      showErrorDialog(
+                        context,
+                        error: e,
+                        onPressed: () {
+                          Navigator.popUntil(
+                            context,
+                            ModalRoute.withName('kpg'),
+                          );
+                          final errorInfo = ErrorInfo.from(e);
+
+                          Navigator.pop(
+                            context,
+                            PaymentFailureModel(
+                              message: errorInfo.secondary ?? errorInfo.primary,
+                              data: errorInfo.data,
+                            ),
+                          );
+                        },
+                      );
+                    }
+                  }
+                },
+                child: Text('VERIFY OTP'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -48,6 +48,7 @@ class KhaltiScope extends StatefulWidget {
     final result = await navigatorState!.push(
       MaterialPageRoute(
         builder: (_) => PaymentPage(config: config, preferences: preferences),
+        settings: RouteSettings(name: 'kpg'),
       ),
     );
 
