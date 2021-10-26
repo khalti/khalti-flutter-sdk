@@ -133,6 +133,46 @@ class KhaltiLocalizations {
         'Verify OTP',
         desc: 'OTP verification button text',
       );
+
+  /// Initiating Payment
+  String get initiatingPayment => Intl.message(
+        'Initiating Payment',
+        desc: 'payment initiation progress dialog message',
+      );
+
+  /// Success
+  String get success => Intl.message(
+        'Success',
+        desc: 'success dialog title',
+      );
+
+  /// Khalti has sent a confirmation code in your Khalti registered number and email address.
+  String get paymentInitiationSuccessMessage => Intl.message(
+        'Khalti has sent a confirmation code in your Khalti registered number and email address.',
+        desc: 'payment initiation success dialog message',
+      );
+
+  /// Forgot Khalti MPIN?
+  String get forgotPin => Intl.message('Forgot Khalti MPIN?');
+
+  /// Reset Khalti MPIN
+  String get resetKhaltiMPIN => Intl.message('Reset Khalti MPIN');
+
+  /// Khalti is not installed in your device. Either install Khalti App or proceed using your browser.
+  String get khaltiNotInstalledMessage => Intl.message(
+        'Khalti is not installed in your device. Either install Khalti App or proceed using your browser.',
+        desc:
+            'shows when Khalti app is not installed but user tries to reset MPIN',
+      );
+
+  /// Install Khalti
+  String get installKhalti => Intl.message('Install Khalti');
+
+  /// Proceed using browser
+  String get proceedUsingBrowser => Intl.message('Proceed using browser');
+
+  /// Cancel
+  String get cancel => Intl.message('Cancel');
 }
 
 class _KhaltiLocalizationsDelegate

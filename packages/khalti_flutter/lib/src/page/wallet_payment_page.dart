@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
@@ -50,7 +51,8 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
             amount: config.amount,
             onPressed: () async {
               if (_formKey.currentState?.validate() ?? false) {
-                showProgressDialog(context, message: 'Initiating Payment');
+                showProgressDialog(context,
+                    message: context.loc.initiatingPayment);
                 try {
                   final response = await Khalti.service.initiatePayment(
                     request: PaymentInitiationRequestModel(
@@ -66,9 +68,8 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
                   Navigator.pop(context);
                   showSuccessDialog(
                     context,
-                    title: 'Success',
-                    subtitle:
-                        'Khalti has sent a confirmation code in your Khalti registered number and email address.',
+                    title: context.loc.success,
+                    subtitle: context.loc.paymentInitiationSuccessMessage,
                     onPressed: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -103,7 +104,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           ),
           const SizedBox(height: 40),
           Text(
-            'Forgot Khalti MPIN?',
+            context.loc.forgotPin,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w500,
@@ -134,20 +135,18 @@ class _ResetMPINSection extends StatelessWidget {
                 fontSize: 14,
               ),
         ),
-        child: Text('RESET KHALTI MPIN'),
+        child: Text(context.loc.resetKhaltiMPIN.toUpperCase()),
         onPressed: () async {
           try {
             await launcher.launch('khalti://go/?t=mpin');
           } on PlatformException {
             showInfoDialog(
               context,
-              title: 'Reset Khalti MPIN',
+              title: context.loc.resetKhaltiMPIN,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Khalti is not installed in your device. Either install Khalti App or proceed using your browser.',
-                  ),
+                  Text(context.loc.khaltiNotInstalledMessage),
                   const SizedBox(height: 24),
                   TextButton(
                     onPressed: () async {
@@ -163,7 +162,7 @@ class _ResetMPINSection extends StatelessWidget {
                       }
                       Navigator.pop(context);
                     },
-                    child: Text('INSTALL KHALTI'),
+                    child: Text(context.loc.installKhalti.toUpperCase()),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
@@ -176,7 +175,7 @@ class _ResetMPINSection extends StatelessWidget {
                       );
                       Navigator.pop(context);
                     },
-                    child: Text('PROCEED USING BROWSER'),
+                    child: Text(context.loc.proceedUsingBrowser.toUpperCase()),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
@@ -187,7 +186,7 @@ class _ResetMPINSection extends StatelessWidget {
                       primary: KhaltiColor.of(context).surface.shade100,
                     ),
                     onPressed: () => Navigator.pop(context),
-                    child: Text('CANCEL'),
+                    child: Text(context.loc.cancel.toUpperCase()),
                   ),
                 ],
               ),
