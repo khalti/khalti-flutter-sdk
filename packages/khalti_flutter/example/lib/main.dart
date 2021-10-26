@@ -35,6 +35,9 @@ class MyApp extends StatelessWidget {
                   ),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: navKey,
+                  localizationsDelegates: [
+                    KhaltiLocalizations.delegate,
+                  ],
                   home: HomePage(),
                 );
               },

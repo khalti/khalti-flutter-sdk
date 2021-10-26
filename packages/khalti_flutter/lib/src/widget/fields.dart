@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/validators.dart';
 
 import 'color.dart';
@@ -17,7 +18,7 @@ class MobileField extends StatelessWidget {
     return TextFormField(
       validator: Validators(context).mobile,
       decoration: InputDecoration(
-        label: Text('Khalti Mobile Number'),
+        label: Text(context.loc.khaltiMobileNumber),
         prefixIcon: Icon(Icons.perm_identity),
         counterText: '',
       ),
@@ -44,7 +45,7 @@ class PINField extends StatelessWidget {
     return TextFormField(
       validator: Validators(context).pin,
       decoration: InputDecoration(
-        label: Text('Khalti MPIN'),
+        label: Text(context.loc.khaltiMPIN),
         prefixIcon: Icon(Icons.password),
       ),
       keyboardType: TextInputType.number,
@@ -67,7 +68,7 @@ class CodeField extends StatelessWidget {
     return TextFormField(
       validator: Validators(context).code,
       decoration: InputDecoration(
-        label: Text('Payment Code'),
+        label: Text(context.loc.paymentCode),
         prefixIcon: Icon(Icons.password),
       ),
       keyboardType: TextInputType.number,
@@ -102,8 +103,8 @@ class SearchField extends StatelessWidget {
             return TextFormField(
               controller: controller,
               decoration: InputDecoration(
-                labelText: 'Search Bank',
-                hintText: 'Search Bank',
+                labelText: context.loc.searchBank,
+                hintText: context.loc.searchBank,
                 labelStyle: bodyText2?.copyWith(color: khaltiColor.surface),
                 hintStyle: bodyText2?.copyWith(
                   color: Theme.of(context).disabledColor,

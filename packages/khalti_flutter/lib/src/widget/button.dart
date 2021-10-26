@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 
 class KhaltiButton extends StatelessWidget {
   const KhaltiButton({
@@ -24,7 +25,7 @@ class KhaltiButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () => pay(context),
-      child: Text(label ?? 'PAY'),
+      child: Text(label ?? context.loc.pay.toUpperCase()),
     );
   }
 

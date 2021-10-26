@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 
 class PayButton extends StatelessWidget {
@@ -20,7 +21,7 @@ class PayButton extends StatelessWidget {
         const SizedBox(height: 32),
         ElevatedButton(
           onPressed: onPressed,
-          child: Text('PAY'),
+          child: Text(context.loc.pay.toUpperCase()),
         ),
       ],
     );
@@ -43,14 +44,14 @@ class _AmountWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Amount',
+          context.loc.amount,
           style: Theme.of(context)
               .textTheme
               .caption!
               .copyWith(color: KhaltiColor.of(context).surface.shade50),
         ),
         const SizedBox(height: 4),
-        Text('Rs. ${amount ~/ 100}', style: headline6),
+        Text(context.loc.rupee(amount / 100), style: headline6),
       ],
     );
   }

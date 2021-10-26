@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -188,7 +189,7 @@ class _Dialog extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    child: Text('OK'),
+                    child: Text(context.loc.ok.toUpperCase()),
                     onPressed: onPressed,
                   ),
                 ),

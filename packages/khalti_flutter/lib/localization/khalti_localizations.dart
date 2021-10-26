@@ -173,6 +173,40 @@ class KhaltiLocalizations {
 
   /// Cancel
   String get cancel => Intl.message('Cancel');
+
+  /// Pay
+  String get pay => Intl.message('Pay');
+
+  /// Ok
+  String get ok => Intl.message('Ok');
+
+  /// Khalti Mobile Number
+  String get khaltiMobileNumber => Intl.message('Khalti Mobile Number');
+
+  /// Khalti MPIN
+  String get khaltiMPIN => Intl.message('Khalti MPIN');
+
+  /// Payment Code
+  String get paymentCode => Intl.message('Payment Code');
+
+  /// Search Bank
+  String get searchBank => Intl.message('Search Bank');
+
+  /// Amount
+  String get amount => Intl.message('Amount');
+
+  /// Rs. [amount]
+  String rupee(double amount) {
+    final formattedAmount = NumberFormat.currency(
+      symbol: (Intl.defaultLocale ?? 'en').startsWith('ne') ? 'रू.' : 'Rs.',
+      customPattern: '\u00A4\u00A0##,##,##0.00',
+    ).format(amount);
+
+    if (formattedAmount.endsWith('.00')) {
+      return formattedAmount.substring(0, formattedAmount.length - 3);
+    }
+    return formattedAmount;
+  }
 }
 
 class _KhaltiLocalizationsDelegate
