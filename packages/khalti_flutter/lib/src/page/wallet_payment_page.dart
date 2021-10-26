@@ -69,12 +69,15 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => Theme(
-                        data: Theme.of(context),
-                        child: ConfirmationPage(
-                          mobileNo: _mobile!,
-                          mPin: _mPin!,
-                          token: response.token,
+                      builder: (_) => KhaltiColor(
+                        isDark: Theme.of(context).brightness == Brightness.dark,
+                        child: Theme(
+                          data: Theme.of(context),
+                          child: ConfirmationPage(
+                            mobileNo: _mobile!,
+                            mPin: _mPin!,
+                            token: response.token,
+                          ),
                         ),
                       ),
                     ),

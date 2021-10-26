@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/widget/bank_tile.dart';
+import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/error_widget.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -95,32 +96,42 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                                     name: bank.name,
                                     logoUrl: bank.logo,
                                     onTap: () {
+                                      final isDark =
+                                          Theme.of(context).brightness ==
+                                              Brightness.dark;
                                       showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
                                         backgroundColor: Colors.transparent,
-                                        builder: (context) => _BankBottomSheet(
-                                          logo: bank.logo,
-                                          name: bank.name,
-                                          amount: config.amount,
-                                          onTap: (mobile) async {
-                                            final url =
-                                                Khalti.service.buildBankUrl(
-                                              bankId: bank.idx,
-                                              mobile: mobile,
+                                        builder: (ctx) {
+                                          return KhaltiColor(
+                                            isDark: isDark,
+                                            child: _BankBottomSheet(
+                                              logo: bank.logo,
+                                              name: bank.name,
                                               amount: config.amount,
-                                              productIdentity:
-                                                  config.productIdentity,
-                                              productName: config.productName,
-                                              paymentType: widget.paymentType,
-                                              productUrl: config.productUrl,
-                                              additionalData:
-                                                  config.additionalData,
-                                            );
-                                            await launcher.launch(url);
-                                            Navigator.pop(context);
-                                          },
-                                        ),
+                                              onTap: (mobile) async {
+                                                final url =
+                                                    Khalti.service.buildBankUrl(
+                                                  bankId: bank.idx,
+                                                  mobile: mobile,
+                                                  amount: config.amount,
+                                                  productIdentity:
+                                                      config.productIdentity,
+                                                  productName:
+                                                      config.productName,
+                                                  paymentType:
+                                                      widget.paymentType,
+                                                  productUrl: config.productUrl,
+                                                  additionalData:
+                                                      config.additionalData,
+                                                );
+                                                await launcher.launch(url);
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          );
+                                        },
                                       );
                                     },
                                   );
