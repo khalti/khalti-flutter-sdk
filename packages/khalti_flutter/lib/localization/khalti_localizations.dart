@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -13,13 +12,13 @@ extension KhaltiLocalizationsExtension on BuildContext {
 class KhaltiLocalizations {
   const KhaltiLocalizations._();
 
-  factory KhaltiLocalizations._for(Locale locale) {
+  static Future<KhaltiLocalizations> _load(Locale locale) async {
     final name = (locale.countryCode?.isEmpty ?? true)
         ? locale.languageCode
         : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
 
-    unawaited(initializeMessages(localeName));
+    await initializeMessages(localeName);
     Intl.defaultLocale = localeName;
     return KhaltiLocalizations._();
   }
@@ -215,7 +214,7 @@ class _KhaltiLocalizationsDelegate
 
   @override
   Future<KhaltiLocalizations> load(Locale locale) {
-    return SynchronousFuture(KhaltiLocalizations._for(locale));
+    return KhaltiLocalizations._load(locale);
   }
 
   @override
