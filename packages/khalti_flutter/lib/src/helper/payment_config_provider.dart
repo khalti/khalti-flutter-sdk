@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:khalti_flutter/src/helper/payment_config.dart';
 
 class PaymentConfigScope extends InheritedWidget {

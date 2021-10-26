@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 
 class ErrorInfo {
   ErrorInfo._({
@@ -13,9 +15,9 @@ class ErrorInfo {
   final String asset;
   final Map<String, dynamic> data;
 
-  factory ErrorInfo.from(Object e) {
+  factory ErrorInfo.from(BuildContext context, Object e) {
     var assetName = 'error/general-error.svg';
-    var primary = 'An Error Occurred';
+    var primary = context.loc.anErrorOccurred;
     String? secondary;
     Map<String, Object?> _data = {};
 
@@ -33,16 +35,14 @@ class ErrorInfo {
       assetName = 'error/no-internet.svg';
 
       if (e.code == 7) {
-        primary = 'No Internet';
-        secondary = 'You are not connected to the internet.'
-            ' Please check your connection.';
+        primary = context.loc.noInternet;
+        secondary = context.loc.noInternetMessage;
       } else if (e.code == 101) {
-        primary = 'Network Unreachable';
-        secondary = 'Your connection could not be established.';
+        primary = context.loc.networkUnreachable;
+        secondary = context.loc.networkUnreachableMessage;
       } else {
-        primary = 'No Connection';
-        secondary = 'Slow or no internet connection.'
-            ' Please check your internet & try again.';
+        primary = context.loc.noConnection;
+        secondary = context.loc.noConnectionMessage;
       }
     }
 

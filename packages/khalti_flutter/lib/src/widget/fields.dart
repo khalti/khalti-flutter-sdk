@@ -15,7 +15,7 @@ class MobileField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: Validators.mobile,
+      validator: Validators(context).mobile,
       decoration: InputDecoration(
         label: Text('Khalti Mobile Number'),
         prefixIcon: Icon(Icons.perm_identity),
@@ -42,7 +42,7 @@ class PINField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: Validators.pin,
+      validator: Validators(context).pin,
       decoration: InputDecoration(
         label: Text('Khalti MPIN'),
         prefixIcon: Icon(Icons.password),
@@ -65,7 +65,7 @@ class CodeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: Validators.code,
+      validator: Validators(context).code,
       decoration: InputDecoration(
         label: Text('Payment Code'),
         prefixIcon: Icon(Icons.password),

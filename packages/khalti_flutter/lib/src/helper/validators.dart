@@ -1,5 +1,11 @@
-abstract class Validators {
-  static String? mobile(String? value) {
+import 'package:flutter/widgets.dart';
+
+class Validators {
+  const Validators(this.context);
+
+  final BuildContext context;
+
+  String? mobile(String? value) {
     return _required(
       value,
       (value) {
@@ -10,7 +16,7 @@ abstract class Validators {
     );
   }
 
-  static String? pin(String? value) {
+  String? pin(String? value) {
     return _required(
       value,
       (value) {
@@ -21,7 +27,7 @@ abstract class Validators {
     );
   }
 
-  static String? code(String? value) {
+  String? code(String? value) {
     return _required(
       value,
       (value) {
@@ -32,7 +38,7 @@ abstract class Validators {
     );
   }
 
-  static String? _required(
+  String? _required(
     String? value,
     String? Function(String value) onValue,
   ) {
@@ -41,7 +47,7 @@ abstract class Validators {
     return onValue(value);
   }
 
-  static bool _isValid(String? text, String? regex) {
+  bool _isValid(String? text, String? regex) {
     if (text == null || regex == null) return false;
     final regExp = RegExp(regex);
     return regExp.hasMatch(text);

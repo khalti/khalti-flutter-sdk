@@ -70,7 +70,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
                             context,
                             ModalRoute.withName('kpg'),
                           );
-                          final errorInfo = ErrorInfo.from(e);
+                          final errorInfo = ErrorInfo.from(context, e);
 
                           Navigator.pop(
                             context,

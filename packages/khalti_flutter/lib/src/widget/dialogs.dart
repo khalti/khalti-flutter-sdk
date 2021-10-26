@@ -48,7 +48,7 @@ Future<void> showErrorDialog(
   return showDialog(
     context: context,
     builder: (ctx) {
-      final errorInfo = ErrorInfo.from(error);
+      final errorInfo = ErrorInfo.from(context, error);
 
       return _Dialog(
         parentContext: context,
