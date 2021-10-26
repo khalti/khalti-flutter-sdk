@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemePreferenceNotifier extends ChangeNotifier {
+class AppPreferenceNotifier extends ChangeNotifier {
   Brightness _brightness = Brightness.light;
   Locale _locale = Locale('en', 'US');
 
@@ -11,6 +11,11 @@ class ThemePreferenceNotifier extends ChangeNotifier {
 
   void updateBrightness({required bool isDarkMode}) {
     _brightness = isDarkMode ? Brightness.dark : Brightness.light;
+    notifyListeners();
+  }
+
+  void updateLocale(Locale locale) {
+    _locale = locale;
     notifyListeners();
   }
 }

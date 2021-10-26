@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
-import 'package:khalti_flutter_example/theme_preference.dart';
+import 'package:khalti_flutter_example/app_preference.dart';
 import 'package:provider/provider.dart';
 
 const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
@@ -17,15 +18,20 @@ class MyApp extends StatelessWidget {
       publicKey: testPublicKey,
       enabledDebugging: true,
       builder: (context, navKey) {
-        return ChangeNotifierProvider<ThemePreferenceNotifier>(
-          create: (_) => ThemePreferenceNotifier(),
+        return ChangeNotifierProvider<AppPreferenceNotifier>(
+          create: (_) => AppPreferenceNotifier(),
           builder: (context, _) {
-            return Consumer<ThemePreferenceNotifier>(
-              builder: (context, themeNotifier, _) {
+            return Consumer<AppPreferenceNotifier>(
+              builder: (context, appPreference, _) {
                 return MaterialApp(
                   title: 'Flutter Demo',
+                  supportedLocales: [
+                    Locale('en', 'US'),
+                    Locale('ne', 'NP'),
+                  ],
+                  locale: appPreference.locale,
                   theme: ThemeData(
-                    brightness: themeNotifier.brightness,
+                    brightness: appPreference.brightness,
                     primarySwatch: Colors.deepPurple,
                     pageTransitionsTheme: PageTransitionsTheme(
                       builders: {
@@ -37,6 +43,9 @@ class MyApp extends StatelessWidget {
                   navigatorKey: navKey,
                   localizationsDelegates: [
                     KhaltiLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
                   ],
                   home: HomePage(),
                 );
@@ -72,30 +81,55 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Consumer<ThemePreferenceNotifier>(
-                builder: (context, themeNotifier, _) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Theme Preference'.toUpperCase(),
+            child: Consumer<AppPreferenceNotifier>(
+              builder: (context, appPreference, _) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, left: 16),
+                      child: Text(
+                        'App Preference'.toUpperCase(),
                         style: Theme.of(context).textTheme.overline,
                       ),
-                      SwitchListTile(
-                        value: themeNotifier.isDarkMode,
-                        title: Text('Dark Mode'),
-                        onChanged: (isDarkMode) {
-                          context
-                              .read<ThemePreferenceNotifier>()
-                              .updateBrightness(isDarkMode: isDarkMode);
-                        },
+                    ),
+                    SwitchListTile(
+                      value: appPreference.isDarkMode,
+                      title: Text('Dark Mode'),
+                      onChanged: (isDarkMode) {
+                        context
+                            .read<AppPreferenceNotifier>()
+                            .updateBrightness(isDarkMode: isDarkMode);
+                      },
+                    ),
+                    ListTile(
+                      title: Text('Language'),
+                      trailing: DropdownButtonHideUnderline(
+                        child: DropdownButton<Locale>(
+                          items: {
+                            'English': Locale('en', 'US'),
+                            'Nepali': Locale('ne', 'NP'),
+                          }
+                              .entries
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e.key),
+                                  value: e.value,
+                                ),
+                              )
+                              .toList(growable: false),
+                          value: appPreference.locale,
+                          onChanged: (locale) {
+                            if (locale != null) {
+                              appPreference.updateLocale(locale);
+                            }
+                          },
+                        ),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
           ),
           const SizedBox(height: 16),
