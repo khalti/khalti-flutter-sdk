@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/payment_config.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/helper/payment_preference.dart';
@@ -62,7 +63,7 @@ class PaymentPage extends StatelessWidget {
           child: KhaltiService.publicKey.startsWith('test_')
               ? Banner(
                   location: BannerLocation.bottomEnd,
-                  message: 'TEST',
+                  message: context.loc.test.toUpperCase(),
                   child: _HomePage(preferences: preferences),
                 )
               : _HomePage(preferences: preferences),
@@ -133,8 +134,8 @@ class _HomePage extends StatelessWidget {
                     SliverAppBar(
                       title: Text(
                         preferences.length > 1
-                            ? 'Choose your payment method'
-                            : 'Pay with Khalti',
+                            ? context.loc.chooseYourPaymentMethod
+                            : context.loc.payWithKhalti,
                       ),
                     ),
                     SliverPersistentHeader(
@@ -142,8 +143,9 @@ class _HomePage extends StatelessWidget {
                         tabBar: TabBar(
                           isScrollable: preferences.length > 2,
                           indicatorColor: Theme.of(context).primaryColor,
-                          tabs:
-                              preferences.map(_getTab).toList(growable: false),
+                          tabs: preferences
+                              .map((p) => _getTab(context, p))
+                              .toList(growable: false),
                         ),
                       ),
                       pinned: true,
@@ -161,34 +163,34 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  KhaltiTab _getTab(PaymentPreference preference) {
+  KhaltiTab _getTab(BuildContext context, PaymentPreference preference) {
     switch (preference) {
       case PaymentPreference.khalti:
         return KhaltiTab(
-          label: 'Khalti',
+          label: context.loc.khalti,
           iconAsset: 'payment/wallet.svg',
           horizontalPadding: 16,
         );
       case PaymentPreference.eBanking:
         return KhaltiTab(
-          label: 'E-Banking',
+          label: context.loc.eBanking,
           iconAsset: 'payment/ebanking.svg',
           horizontalPadding: 8,
         );
       case PaymentPreference.mobileBanking:
         return KhaltiTab(
-          label: 'Mobile Banking',
+          label: context.loc.mobileBanking,
           iconAsset: 'payment/mobilebanking.svg',
         );
       case PaymentPreference.connectIPS:
         return KhaltiTab(
-          label: 'Connect IPS',
+          label: context.loc.connectIps,
           iconAsset: 'payment/connect-ips.svg',
           horizontalPadding: 8,
         );
       case PaymentPreference.sct:
         return KhaltiTab(
-          label: 'SCT',
+          label: context.loc.sct,
           iconAsset: 'payment/sct.svg',
           horizontalPadding: 16,
         );

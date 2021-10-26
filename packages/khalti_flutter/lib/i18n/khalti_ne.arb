@@ -222,5 +222,53 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
+  },
+  "Test": "परीक्षण",
+  "@Test": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Choose your payment method": "आफ्नो भुक्तानी विधि छान्नुहोस्",
+  "@Choose your payment method": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Pay with Khalti": "खल्ती बाट तिर्नुहोस्",
+  "@Pay with Khalti": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Khalti": "खल्ती",
+  "@Khalti": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "E-Banking": "इबैङ्किङ",
+  "@E-Banking": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Mobile Banking": "मोबाइल बैङ्किङ",
+  "@Mobile Banking": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Connect IPS": "कनेक्ट आइपिएस",
+  "@Connect IPS": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "SCT": "एससिटी कार्ड",
+  "@SCT": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
   }
 }

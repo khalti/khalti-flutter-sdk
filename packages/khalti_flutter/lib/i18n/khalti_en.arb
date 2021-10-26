@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2021-10-26T16:41:11.032240",
+  "@@last_modified": "2021-10-26T17:19:35.450553",
   "An Error Occurred": "An Error Occurred",
   "@An Error Occurred": {
     "type": "text",
@@ -219,6 +219,54 @@
   },
   "Amount": "Amount",
   "@Amount": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Test": "Test",
+  "@Test": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Choose your payment method": "Choose your payment method",
+  "@Choose your payment method": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Pay with Khalti": "Pay with Khalti",
+  "@Pay with Khalti": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Khalti": "Khalti",
+  "@Khalti": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "E-Banking": "E-Banking",
+  "@E-Banking": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Mobile Banking": "Mobile Banking",
+  "@Mobile Banking": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "Connect IPS": "Connect IPS",
+  "@Connect IPS": {
+    "type": "text",
+    "placeholders_order": [],
+    "placeholders": {}
+  },
+  "SCT": "SCT",
+  "@SCT": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}

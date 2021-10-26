@@ -194,6 +194,32 @@ class KhaltiLocalizations {
   /// Amount
   String get amount => Intl.message('Amount');
 
+  /// Test
+  String get test => Intl.message('Test');
+
+  /// Choose your payment method
+  String get chooseYourPaymentMethod => Intl.message(
+        'Choose your payment method',
+      );
+
+  /// Pay with Khalti
+  String get payWithKhalti => Intl.message('Pay with Khalti');
+
+  /// Khalti
+  String get khalti => Intl.message('Khalti');
+
+  /// E-Banking
+  String get eBanking => Intl.message('E-Banking');
+
+  /// Mobile Banking
+  String get mobileBanking => Intl.message('Mobile Banking');
+
+  /// Connect IPS
+  String get connectIps => Intl.message('Connect IPS');
+
+  /// SCT
+  String get sct => Intl.message('SCT');
+
   /// Rs. [amount]
   String rupee(double amount) {
     final formattedAmount = NumberFormat.currency(
