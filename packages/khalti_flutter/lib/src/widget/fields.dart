@@ -50,6 +50,8 @@ class PINField extends StatelessWidget {
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      obscureText: true,
+      obscuringCharacter: '*',
       onChanged: onChanged,
     );
   }
