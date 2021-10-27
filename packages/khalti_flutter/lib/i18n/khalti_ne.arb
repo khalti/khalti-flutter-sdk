@@ -235,11 +235,15 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "Pay with Khalti": "खल्ती बाट तिर्नुहोस्",
-  "@Pay with Khalti": {
+  "payWith": "{method} बाट भुक्तानी गर्नुहोस्",
+  "@payWith": {
     "type": "text",
-    "placeholders_order": [],
-    "placeholders": {}
+    "placeholders_order": [
+      "method"
+    ],
+    "placeholders": {
+      "method": {}
+    }
   },
   "Khalti": "खल्ती",
   "@Khalti": {

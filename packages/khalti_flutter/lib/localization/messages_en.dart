@@ -21,6 +21,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m0(mobileNo) => "Enter the OTP sent via SMS to mobile number ${mobileNo}";
 
+  static m1(method) => "Pay with ${method}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function> {
     "Amount" : MessageLookupByLibrary.simpleMessage("Amount"),
@@ -47,7 +49,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "No banks found" : MessageLookupByLibrary.simpleMessage("No banks found"),
     "Ok" : MessageLookupByLibrary.simpleMessage("Ok"),
     "Pay" : MessageLookupByLibrary.simpleMessage("Pay"),
-    "Pay with Khalti" : MessageLookupByLibrary.simpleMessage("Pay with Khalti"),
     "Payment Code" : MessageLookupByLibrary.simpleMessage("Payment Code"),
     "Payment Code must be at least 6 characters" : MessageLookupByLibrary.simpleMessage("Payment Code must be at least 6 characters"),
     "Please enter a valid mobile number" : MessageLookupByLibrary.simpleMessage("Please enter a valid mobile number"),
@@ -64,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "Verify OTP" : MessageLookupByLibrary.simpleMessage("Verify OTP"),
     "You are not connected to the internet. Please check your connection." : MessageLookupByLibrary.simpleMessage("You are not connected to the internet. Please check your connection."),
     "Your connection could not be established." : MessageLookupByLibrary.simpleMessage("Your connection could not be established."),
-    "enterOtpSentTo" : m0
+    "enterOtpSentTo" : m0,
+    "payWith" : m1
   };
 }

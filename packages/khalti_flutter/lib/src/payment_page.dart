@@ -135,7 +135,9 @@ class _HomePage extends StatelessWidget {
                       title: Text(
                         preferences.length > 1
                             ? context.loc.chooseYourPaymentMethod
-                            : context.loc.payWithKhalti,
+                            : context.loc.payWith(
+                                _getTab(context, preferences.first).label,
+                              ),
                       ),
                     ),
                     SliverPersistentHeader(

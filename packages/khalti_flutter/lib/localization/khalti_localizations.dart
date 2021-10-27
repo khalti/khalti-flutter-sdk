@@ -202,8 +202,10 @@ class KhaltiLocalizations {
         'Choose your payment method',
       );
 
-  /// Pay with Khalti
-  String get payWithKhalti => Intl.message('Pay with Khalti');
+  /// Pay with [method]
+  String payWith(String method) {
+    return Intl.message('Pay with $method', name: 'payWith', args: [method]);
+  }
 
   /// Khalti
   String get khalti => Intl.message('Khalti');
