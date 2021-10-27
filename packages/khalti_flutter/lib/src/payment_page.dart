@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
-import 'package:khalti_flutter/src/helper/payment_config.dart';
-import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
-import 'package:khalti_flutter/src/helper/payment_preference.dart';
-import 'package:khalti_flutter/src/widget/color.dart';
 
+import 'helper/assets.dart';
+import 'helper/payment_config.dart';
+import 'helper/payment_config_provider.dart';
+import 'helper/payment_preference.dart';
 import 'page/bank_payment_page.dart';
 import 'page/card_payment_page.dart';
 import 'page/wallet_payment_page.dart';
+import 'widget/color.dart';
 import 'widget/tab.dart';
 
 class PaymentPage extends StatelessWidget {
@@ -64,82 +65,38 @@ class PaymentPage extends StatelessWidget {
               ? Banner(
                   location: BannerLocation.bottomEnd,
                   message: context.loc.test.toUpperCase(),
-                  child: _HomePage(preferences: preferences),
+                  child: _MainPage(preferences: preferences),
                 )
-              : _HomePage(preferences: preferences),
+              : _MainPage(preferences: preferences),
         ),
       ),
     );
   }
 }
 
-class _HomePage extends StatelessWidget {
-  _HomePage({Key? key, required this.preferences}) : super(key: key);
+class _MainPage extends StatelessWidget {
+  _MainPage({Key? key, required this.preferences}) : super(key: key);
 
   final List<PaymentPreference> preferences;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final khaltiColor = KhaltiColor.of(context);
-    final baseBorder = OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(6)),
-      borderSide: BorderSide(color: khaltiColor.surface.shade300, width: 1),
-    );
+    final title = preferences.length > 1
+        ? context.loc.chooseYourPaymentMethod
+        : context.loc.payWith(_getTab(context, preferences.first).label);
 
     return Theme(
-      data: Theme.of(context).copyWith(
-        appBarTheme: AppBarTheme(
-          elevation: 0,
-          color: colorScheme.background,
-          foregroundColor: colorScheme.onPrimary,
-          iconTheme: IconThemeData(color: khaltiColor.surface.shade400),
-        ),
-        tabBarTheme: TabBarTheme(
-          unselectedLabelColor: khaltiColor.surface.shade50,
-          unselectedLabelStyle: TextStyle(color: khaltiColor.surface.shade100),
-          labelColor: colorScheme.onPrimary,
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: baseBorder,
-          focusedBorder: baseBorder.copyWith(
-            borderSide: BorderSide(color: colorScheme.primary, width: 2),
-          ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16),
-          labelStyle: TextStyle(fontWeight: FontWeight.normal),
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(64, 50),
-            onPrimary: Colors.white,
-          ),
-        ),
-      ),
+      data: _themeData(context),
       child: DefaultTabController(
         length: preferences.length,
         child: Scaffold(
-          body: AnnotatedRegion(
-            value: SystemUiOverlayStyle(
-              statusBarColor: Colors.transparent,
-              statusBarBrightness: Theme.of(context).brightness,
-              statusBarIconBrightness:
-                  Theme.of(context).brightness == Brightness.light
-                      ? Brightness.dark
-                      : Brightness.light,
-            ),
+          body: AnnotatedRegion<SystemUiOverlayStyle>(
+            value: _systemUiOverlayStyle(context),
             child: SafeArea(
               child: NestedScrollView(
                 headerSliverBuilder: (context, _) {
                   return [
-                    SliverAppBar(
-                      title: Text(
-                        preferences.length > 1
-                            ? context.loc.chooseYourPaymentMethod
-                            : context.loc.payWith(
-                                _getTab(context, preferences.first).label,
-                              ),
-                      ),
-                    ),
+                    SliverAppBar(title: Text(title)),
                     SliverPersistentHeader(
                       delegate: _TabBarDelegate(
                         tabBar: TabBar(
@@ -165,35 +122,82 @@ class _HomePage extends StatelessWidget {
     );
   }
 
+  SystemUiOverlayStyle _systemUiOverlayStyle(BuildContext context) {
+    return SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarBrightness: Theme.of(context).brightness,
+      statusBarIconBrightness: Theme.of(context).brightness == Brightness.light
+          ? Brightness.dark
+          : Brightness.light,
+    );
+  }
+
+  ThemeData _themeData(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final khaltiColor = KhaltiColor.of(context);
+    final baseBorder = OutlineInputBorder(
+      borderRadius: const BorderRadius.all(Radius.circular(6)),
+      borderSide: BorderSide(color: khaltiColor.surface.shade300, width: 1),
+    );
+
+    return Theme.of(context).copyWith(
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        color: colorScheme.background,
+        foregroundColor: colorScheme.onPrimary,
+        iconTheme: IconThemeData(color: khaltiColor.surface.shade400),
+      ),
+      tabBarTheme: TabBarTheme(
+        unselectedLabelColor: khaltiColor.surface.shade50,
+        unselectedLabelStyle: TextStyle(color: khaltiColor.surface.shade100),
+        labelColor: colorScheme.onPrimary,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: baseBorder,
+        focusedBorder: baseBorder.copyWith(
+          borderSide: BorderSide(color: colorScheme.primary, width: 2),
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 16),
+        labelStyle: TextStyle(fontWeight: FontWeight.normal),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size(64, 50),
+          onPrimary: Colors.white,
+        ),
+      ),
+    );
+  }
+
   KhaltiTab _getTab(BuildContext context, PaymentPreference preference) {
     switch (preference) {
       case PaymentPreference.khalti:
         return KhaltiTab(
           label: context.loc.khalti,
-          iconAsset: 'payment/wallet.svg',
+          iconAsset: a_walletIcon,
           horizontalPadding: 16,
         );
       case PaymentPreference.eBanking:
         return KhaltiTab(
           label: context.loc.eBanking,
-          iconAsset: 'payment/ebanking.svg',
+          iconAsset: a_eBankingIcon,
           horizontalPadding: 8,
         );
       case PaymentPreference.mobileBanking:
         return KhaltiTab(
           label: context.loc.mobileBanking,
-          iconAsset: 'payment/mobilebanking.svg',
+          iconAsset: a_mobileBankingIcon,
         );
       case PaymentPreference.connectIPS:
         return KhaltiTab(
           label: context.loc.connectIps,
-          iconAsset: 'payment/connect-ips.svg',
+          iconAsset: a_connectIpsIcon,
           horizontalPadding: 8,
         );
       case PaymentPreference.sct:
         return KhaltiTab(
           label: context.loc.sct,
-          iconAsset: 'payment/sct.svg',
+          iconAsset: a_sctIcon,
           horizontalPadding: 16,
         );
     }

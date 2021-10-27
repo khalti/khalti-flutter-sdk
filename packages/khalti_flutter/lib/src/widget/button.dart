@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 
 class KhaltiButton extends StatelessWidget {
   const KhaltiButton({
@@ -109,7 +110,7 @@ class _WalletButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: 'payment/wallet.svg'),
+      icon: _ButtonIcon(assetName: a_walletIcon),
       label: Text(context.loc.khalti.toUpperCase()),
     );
   }
@@ -136,7 +137,7 @@ class _EBankingButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: 'payment/ebanking.svg'),
+      icon: _ButtonIcon(assetName: a_eBankingIcon),
       label: Text(context.loc.eBanking.toUpperCase()),
     );
   }
@@ -163,7 +164,7 @@ class _MobileBankingButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: 'payment/mobilebanking.svg'),
+      icon: _ButtonIcon(assetName: a_mobileBankingIcon),
       label: Text(context.loc.mobileBanking.toUpperCase()),
     );
   }
@@ -190,7 +191,7 @@ class _SCTButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: 'payment/sct.svg'),
+      icon: _ButtonIcon(assetName: a_sctIcon),
       label: Text(context.loc.sct.toUpperCase()),
     );
   }
@@ -217,7 +218,7 @@ class _ConnectIPSButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: 'payment/connect-ips.svg'),
+      icon: _ButtonIcon(assetName: a_connectIpsIcon),
       label: Text(context.loc.connectIps.toUpperCase()),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
@@ -37,7 +38,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
-            child: KhaltiImage.asset(asset: 'logo/khalti.svg', height: 72),
+            child: KhaltiImage.asset(asset: a_khaltiLogo, height: 72),
           ),
           MobileField(
             onChanged: (mobile) => _mobile = mobile,

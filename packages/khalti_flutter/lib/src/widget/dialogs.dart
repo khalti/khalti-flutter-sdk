@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -53,7 +54,7 @@ Future<void> showErrorDialog(
 
       return _Dialog(
         parentContext: context,
-        assetName: 'dialog/error.svg',
+        assetName: a_errorDialog,
         titleText: errorInfo.primary,
         subtitle: errorInfo.secondary == null
             ? null
@@ -82,7 +83,7 @@ Future<void> showSuccessDialog(
     builder: (ctx) {
       return _Dialog(
         parentContext: context,
-        assetName: 'dialog/success.svg',
+        assetName: a_successDialog,
         titleText: title,
         subtitle: Text(
           subtitle,
@@ -107,7 +108,7 @@ Future<void> showInfoDialog(
     builder: (ctx) {
       return _Dialog(
         parentContext: context,
-        assetName: 'dialog/info.svg',
+        assetName: a_infoDialog,
         titleText: title,
         subtitle: body,
       );

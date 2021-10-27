@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 
 class ErrorInfo {
   ErrorInfo._({
@@ -16,7 +17,7 @@ class ErrorInfo {
   final Map<String, dynamic> data;
 
   factory ErrorInfo.from(BuildContext context, Object e) {
-    var assetName = 'error/general-error.svg';
+    var assetName = a_generalError;
     var primary = context.loc.anErrorOccurred;
     String? secondary;
     Map<String, Object?> _data = {};
@@ -32,7 +33,7 @@ class ErrorInfo {
         secondary = e.message;
       }
     } else if (e is ExceptionHttpResponse && e.isSocketException) {
-      assetName = 'error/no-internet.svg';
+      assetName = a_noInternet;
 
       if (e.code == 7) {
         primary = context.loc.noInternet;

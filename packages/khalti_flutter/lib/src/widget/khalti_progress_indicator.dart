@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 
 import 'image.dart';
 
@@ -58,9 +59,7 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
                 child: Center(
                   child: Opacity(
                     opacity: sin(_animation.value * pi),
-                    child: KhaltiImage.asset(
-                      asset: 'logo/khalti-inner-icon.svg',
-                    ),
+                    child: KhaltiImage.asset(asset: a_khaltiInnerLogo),
                   ),
                 ),
               ),

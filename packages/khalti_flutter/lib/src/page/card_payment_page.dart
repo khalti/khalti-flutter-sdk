@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
+import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
@@ -34,8 +35,8 @@ class _CardPaymentPageState extends State<CardPaymentPage>
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: KhaltiImage.asset(
               asset: widget.paymentType == PaymentType.connectIPS
-                  ? 'logo/connect-ips.svg'
-                  : 'logo/sct.svg',
+                  ? a_connectIpsLogo
+                  : a_sctLogo,
               height: 100,
             ),
           ),
