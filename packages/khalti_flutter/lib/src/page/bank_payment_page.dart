@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
+import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/bank_tile.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/error_widget.dart';
@@ -9,7 +10,6 @@ import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
-import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class BankPaymentPage extends StatefulWidget {
   const BankPaymentPage({
@@ -127,7 +127,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                                                   additionalData:
                                                       config.additionalData,
                                                 );
-                                                await launcher.launch(url);
+                                                await urlLauncher.launch(url);
                                                 Navigator.pop(context);
                                               },
                                             ),

@@ -40,7 +40,9 @@ class Khalti {
   static KhaltiService get service => _service;
 
   @visibleForTesting
-  static set service(KhaltiService service) => _service = service;
+  static set debugKhaltiServiceOverride(KhaltiService service) {
+    _service = service;
+  }
 }
 
 KhaltiService _service = KhaltiService(client: KhaltiHttpClient());

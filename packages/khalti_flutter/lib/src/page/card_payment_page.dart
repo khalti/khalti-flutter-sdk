@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
+import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
-import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class CardPaymentPage extends StatefulWidget {
   const CardPaymentPage({Key? key, required this.paymentType})
@@ -55,7 +55,7 @@ class _CardPaymentPageState extends State<CardPaymentPage>
                 productUrl: config.productUrl,
                 additionalData: config.additionalData,
               );
-              await launcher.launch(url);
+              await urlLauncher.launch(url);
             },
           ),
         ],

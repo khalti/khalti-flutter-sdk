@@ -5,12 +5,12 @@ import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
+import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
-import 'package:url_launcher/url_launcher.dart' as launcher;
 
 class WalletPaymentPage extends StatefulWidget {
   const WalletPaymentPage({Key? key}) : super(key: key);
@@ -52,8 +52,10 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
             amount: config.amount,
             onPressed: () async {
               if (_formKey.currentState?.validate() ?? false) {
-                showProgressDialog(context,
-                    message: context.loc.initiatingPayment);
+                showProgressDialog(
+                  context,
+                  message: context.loc.initiatingPayment,
+                );
                 try {
                   final response = await Khalti.service.initiatePayment(
                     request: PaymentInitiationRequestModel(
@@ -139,7 +141,7 @@ class _ResetMPINSection extends StatelessWidget {
         child: Text(context.loc.resetKhaltiMPIN.toUpperCase()),
         onPressed: () async {
           try {
-            await launcher.launch('khalti://go/?t=mpin');
+            await urlLauncher.launchMPINSetting();
           } on PlatformException {
             showInfoDialog(
               context,
@@ -151,16 +153,9 @@ class _ResetMPINSection extends StatelessWidget {
                   const SizedBox(height: 24),
                   TextButton(
                     onPressed: () async {
-                      final platform = Theme.of(context).platform;
-                      if (platform == TargetPlatform.android) {
-                        launcher.launch(
-                          'https://play.google.com/store/apps/details?id=com.khalti',
-                        );
-                      } else if (platform == TargetPlatform.iOS) {
-                        launcher.launch(
-                          'https://apps.apple.com/us/app/khalti-digital-wallet-nepal/id1263400741',
-                        );
-                      }
+                      urlLauncher.openStoreToInstallKhalti(
+                        Theme.of(context).platform,
+                      );
                       Navigator.pop(context);
                     },
                     child: Text(context.loc.installKhalti.toUpperCase()),
@@ -171,9 +166,7 @@ class _ResetMPINSection extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      launcher.launch(
-                        'https://khalti.com/#/account/transaction_pin',
-                      );
+                      urlLauncher.openResetPinPageInBrowser();
                       Navigator.pop(context);
                     },
                     child: Text(context.loc.proceedUsingBrowser.toUpperCase()),

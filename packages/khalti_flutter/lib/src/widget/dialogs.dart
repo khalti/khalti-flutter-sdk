@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
+import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
-import 'package:url_launcher/url_launcher.dart' as launcher;
 
 Future<void> showProgressDialog(
   BuildContext context, {
@@ -231,7 +231,7 @@ class _ErrorBodyWidget extends StatelessWidget {
               WidgetSpan(
                 child: InkWell(
                   onTap: () {
-                    if (link != null) launcher.launch(link);
+                    if (link != null) urlLauncher.launch(link);
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 2),
