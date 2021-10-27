@@ -10,10 +10,12 @@ const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return KhaltiScope(
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
               builder: (context, appPreference, _) {
                 return MaterialApp(
                   title: 'Khalti Payment Gateway',
-                  supportedLocales: [
+                  supportedLocales: const [
                     Locale('en', 'US'),
                     Locale('ne', 'NP'),
                   ],
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
                   theme: ThemeData(
                     brightness: appPreference.brightness,
                     primarySwatch: Colors.deepPurple,
-                    pageTransitionsTheme: PageTransitionsTheme(
+                    pageTransitionsTheme: const PageTransitionsTheme(
                       builders: {
                         TargetPlatform.android: ZoomPageTransitionsBuilder(),
                       },
@@ -43,14 +45,14 @@ class MyApp extends StatelessWidget {
                   ),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: navKey,
-                  localizationsDelegates: [
+                  localizationsDelegates: const [
                     KhaltiLocalizations.delegate,
                     AppLocalizations.delegate,
                     GlobalMaterialLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
                   ],
-                  home: HomePage(),
+                  home: const HomePage(),
                 );
               },
             );

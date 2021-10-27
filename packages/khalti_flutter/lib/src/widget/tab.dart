@@ -29,5 +29,5 @@ class KhaltiTab extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(72);
+  Size get preferredSize => const Size.fromHeight(72);
 }

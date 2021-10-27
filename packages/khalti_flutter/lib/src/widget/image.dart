@@ -10,14 +10,14 @@ abstract class KhaltiImage extends StatelessWidget {
 
   final bool inheritIconTheme;
 
-  factory KhaltiImage.asset({
+  const factory KhaltiImage.asset({
     Key? key,
     required String asset,
     double? height,
     bool inheritIconTheme,
   }) = _AssetSVGImage;
 
-  factory KhaltiImage.network({
+  const factory KhaltiImage.network({
     Key? key,
     required String url,
     double? height,

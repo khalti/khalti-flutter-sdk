@@ -78,7 +78,7 @@ class KhaltiButton extends StatelessWidget {
   }
 
   ButtonStyle get style {
-    return _style ?? ElevatedButton.styleFrom(minimumSize: Size(180, 40));
+    return _style ?? ElevatedButton.styleFrom(minimumSize: const Size(180, 40));
   }
 
   Future<void> pay(BuildContext context) {
@@ -113,7 +113,7 @@ class _WalletButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: a_walletIcon),
+      icon: const _ButtonIcon(assetName: a_walletIcon),
       label: Text(context.loc.khalti.toUpperCase()),
     );
   }
@@ -140,7 +140,7 @@ class _EBankingButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: a_eBankingIcon),
+      icon: const _ButtonIcon(assetName: a_eBankingIcon),
       label: Text(context.loc.eBanking.toUpperCase()),
     );
   }
@@ -167,7 +167,7 @@ class _MobileBankingButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: a_mobileBankingIcon),
+      icon: const _ButtonIcon(assetName: a_mobileBankingIcon),
       label: Text(context.loc.mobileBanking.toUpperCase()),
     );
   }
@@ -194,7 +194,7 @@ class _SCTButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: a_sctIcon),
+      icon: const _ButtonIcon(assetName: a_sctIcon),
       label: Text(context.loc.sct.toUpperCase()),
     );
   }
@@ -221,7 +221,7 @@ class _ConnectIPSButton extends KhaltiButton {
     return ElevatedButton.icon(
       style: style,
       onPressed: () => pay(context),
-      icon: _ButtonIcon(assetName: a_connectIpsIcon),
+      icon: const _ButtonIcon(assetName: a_connectIpsIcon),
       label: Text(context.loc.connectIps.toUpperCase()),
     );
   }

@@ -59,7 +59,7 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
                 child: Center(
                   child: Opacity(
                     opacity: sin(_animation.value * pi),
-                    child: KhaltiImage.asset(asset: a_khaltiInnerLogo),
+                    child: const KhaltiImage.asset(asset: a_khaltiInnerLogo),
                   ),
                 ),
               ),
@@ -109,13 +109,15 @@ class ProgressPainter extends CustomPainter {
           ..addPath(metric.extractPath(start, total), Offset.zero)
           ..addPath(metric.extractPath(0, end - total), Offset.zero);
       } else {
-        activePath..addPath(metric.extractPath(start, end), Offset.zero);
+        activePath.addPath(metric.extractPath(start, end), Offset.zero);
       }
     }
 
-    canvas..drawPath(activePath, paint);
+    canvas.drawPath(activePath, paint);
   }
 
   @override
-  bool shouldRepaint(ProgressPainter old) => old.fraction != fraction;
+  bool shouldRepaint(ProgressPainter oldDelegate) {
+    return oldDelegate.fraction != fraction;
+  }
 }

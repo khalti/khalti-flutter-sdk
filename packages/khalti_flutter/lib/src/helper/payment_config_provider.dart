@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:khalti_flutter/src/helper/payment_config.dart';
 
 class PaymentConfigScope extends InheritedWidget {
-  PaymentConfigScope({
+  const PaymentConfigScope({
     Key? key,
     required this.config,
     required Widget child,
@@ -22,5 +22,7 @@ class PaymentConfigScope extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(PaymentConfigScope old) => old.config != config;
+  bool updateShouldNotify(PaymentConfigScope oldWidget) {
+    return oldWidget.config != config;
+  }
 }

@@ -37,12 +37,12 @@ class PaymentPage extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final colorScheme = isDark
-        ? ColorScheme.dark(
+        ? const ColorScheme.dark(
             primary: Colors.deepPurple,
             onPrimary: Colors.white,
             secondary: Color(0xFF12091D),
           )
-        : ColorScheme.light(
+        : const ColorScheme.light(
             primary: Colors.deepPurple,
             onPrimary: Colors.deepPurple,
             secondary: Color(0xFFDED5E9),
@@ -53,7 +53,7 @@ class PaymentPage extends StatelessWidget {
       child: Theme(
         data: ThemeData.from(
           colorScheme: colorScheme,
-          textTheme: TextTheme(
+          textTheme: const TextTheme(
             button: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             caption: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
             subtitle1: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
@@ -75,7 +75,7 @@ class PaymentPage extends StatelessWidget {
 }
 
 class _MainPage extends StatelessWidget {
-  _MainPage({Key? key, required this.preferences}) : super(key: key);
+  const _MainPage({Key? key, required this.preferences}) : super(key: key);
 
   final List<PaymentPreference> preferences;
 
@@ -157,12 +157,12 @@ class _MainPage extends StatelessWidget {
         focusedBorder: baseBorder.copyWith(
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16),
-        labelStyle: TextStyle(fontWeight: FontWeight.normal),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        labelStyle: const TextStyle(fontWeight: FontWeight.normal),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          minimumSize: Size(64, 50),
+          minimumSize: const Size(64, 50),
           onPrimary: Colors.white,
         ),
       ),
@@ -206,15 +206,15 @@ class _MainPage extends StatelessWidget {
   Widget _getView(PaymentPreference preference) {
     switch (preference) {
       case PaymentPreference.khalti:
-        return WalletPaymentPage();
+        return const WalletPaymentPage();
       case PaymentPreference.eBanking:
-        return BankPaymentPage(paymentType: PaymentType.eBanking);
+        return const BankPaymentPage(paymentType: PaymentType.eBanking);
       case PaymentPreference.mobileBanking:
-        return BankPaymentPage(paymentType: PaymentType.mobileCheckout);
+        return const BankPaymentPage(paymentType: PaymentType.mobileCheckout);
       case PaymentPreference.connectIPS:
-        return CardPaymentPage(paymentType: PaymentType.connectIPS);
+        return const CardPaymentPage(paymentType: PaymentType.connectIPS);
       case PaymentPreference.sct:
-        return CardPaymentPage(paymentType: PaymentType.sct);
+        return const CardPaymentPage(paymentType: PaymentType.sct);
     }
   }
 }

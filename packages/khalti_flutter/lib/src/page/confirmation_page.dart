@@ -32,7 +32,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         title: Text(context.loc.confirmPayment),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Form(
           key: _formKey,
           child: Column(

@@ -48,7 +48,7 @@ class KhaltiScope extends StatefulWidget {
     final result = await navigatorState!.push(
       MaterialPageRoute(
         builder: (_) => PaymentPage(config: config, preferences: preferences),
-        settings: RouteSettings(name: 'kpg'),
+        settings: const RouteSettings(name: 'kpg'),
       ),
     );
 
@@ -104,7 +104,7 @@ class _KhaltiScopeState extends State<KhaltiScope> with WidgetsBindingObserver {
 }
 
 class _InheritedKhaltiScope extends InheritedWidget {
-  _InheritedKhaltiScope({
+  const _InheritedKhaltiScope({
     Key? key,
     required this.scope,
     required Widget child,

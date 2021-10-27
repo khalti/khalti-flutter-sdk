@@ -30,7 +30,7 @@ Future<void> showProgressDialog(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Center(child: KhaltiProgressIndicator()),
+                const Center(child: KhaltiProgressIndicator()),
                 const SizedBox(height: 16),
                 Text(message, textAlign: TextAlign.center),
               ],
@@ -181,11 +181,11 @@ class _Dialog extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: EdgeInsets.only(right: 8, bottom: 2),
+                  padding: const EdgeInsets.only(right: 8, bottom: 2),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       primary: Theme.of(parentContext).colorScheme.onPrimary,
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),

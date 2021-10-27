@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppPreferenceNotifier extends ChangeNotifier {
   Brightness _brightness = Brightness.light;
-  Locale _locale = Locale('en', 'US');
+  Locale _locale = const Locale('en', 'US');
 
   Brightness get brightness => _brightness;
   Locale get locale => _locale;

@@ -35,10 +35,10 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
     return Form(
       key: _formKey,
       child: ListView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
             child: KhaltiImage.asset(asset: a_khaltiLogo, height: 72),
           ),
           MobileField(
@@ -137,7 +137,7 @@ class _ResetMPINSection extends StatelessWidget {
     return Center(
       child: TextButton(
         style: TextButton.styleFrom(
-          minimumSize: Size(144, 40),
+          minimumSize: const Size(144, 40),
           textStyle: buttonStyle?.copyWith(fontSize: 14),
         ),
         child: Text(context.loc.resetKhaltiMPIN.toUpperCase()),

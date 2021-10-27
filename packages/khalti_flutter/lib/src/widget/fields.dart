@@ -19,7 +19,7 @@ class MobileField extends StatelessWidget {
       validator: Validators(context).mobile,
       decoration: InputDecoration(
         label: Text(context.loc.khaltiMobileNumber),
-        prefixIcon: Icon(Icons.perm_identity),
+        prefixIcon: const Icon(Icons.perm_identity),
         counterText: '',
       ),
       keyboardType: TextInputType.phone,
@@ -46,7 +46,7 @@ class PINField extends StatelessWidget {
       validator: Validators(context).pin,
       decoration: InputDecoration(
         label: Text(context.loc.khaltiMPIN),
-        prefixIcon: Icon(Icons.password),
+        prefixIcon: const Icon(Icons.password),
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -71,7 +71,7 @@ class CodeField extends StatelessWidget {
       validator: Validators(context).code,
       decoration: InputDecoration(
         label: Text(context.loc.paymentCode),
-        prefixIcon: Icon(Icons.password),
+        prefixIcon: const Icon(Icons.password),
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -132,13 +132,13 @@ class SearchField extends StatelessWidget {
                         splashRadius: 20,
                         onPressed: controller.clear,
                         constraints: constraint,
-                        icon: Icon(Icons.close, size: 24),
+                        icon: const Icon(Icons.close, size: 24),
                       ),
               ),
               textAlignVertical: TextAlignVertical.center,
             );
           },
-          child: Icon(Icons.search, size: 24),
+          child: const Icon(Icons.search, size: 24),
         ),
       ),
     );

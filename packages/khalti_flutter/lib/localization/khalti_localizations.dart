@@ -20,7 +20,7 @@ class KhaltiLocalizations {
 
     await initializeMessages(localeName);
     Intl.defaultLocale = localeName;
-    return KhaltiLocalizations._();
+    return const KhaltiLocalizations._();
   }
 
   static KhaltiLocalizations of(BuildContext context) {

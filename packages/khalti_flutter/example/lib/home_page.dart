@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
@@ -59,8 +61,8 @@ class HomePage extends StatelessWidget {
                         trailing: DropdownButtonHideUnderline(
                           child: DropdownButton<Locale>(
                             items: {
-                              'English': Locale('en', 'US'),
-                              'नेपाली': Locale('ne', 'NP'),
+                              'English': const Locale('en', 'US'),
+                              'नेपाली': const Locale('ne', 'NP'),
                             }
                                 .entries
                                 .map(
@@ -141,7 +143,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               child: Material(
-                shape: StadiumBorder(),
+                shape: const StadiumBorder(),
                 color: Colors.orange,
                 child: SizedBox(
                   height: 40,
@@ -168,7 +170,7 @@ class HomePage extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Payment Successful'),
+          title: const Text('Payment Successful'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -182,17 +184,17 @@ class HomePage extends StatelessWidget {
                   children: [
                     TextSpan(
                       text: success.productName,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w300,
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    TextSpan(text: ' of '),
+                    const TextSpan(text: ' of '),
                     TextSpan(
                       text: 'Rs. ${success.amount ~/ 100} ',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    TextSpan(text: ' was successfully made.'),
+                    const TextSpan(text: ' was successfully made.'),
                   ],
                 ),
               ),
@@ -204,10 +206,10 @@ class HomePage extends StatelessWidget {
   }
 
   void onFailure(PaymentFailureModel failure) {
-    print('Failure; $failure');
+    log(failure.toString(), name: 'Failure');
   }
 
   void onCancel() {
-    print('Cancelled');
+    log('Cancelled');
   }
 }

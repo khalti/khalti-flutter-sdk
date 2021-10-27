@@ -49,7 +49,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
       future: banksFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: KhaltiProgressIndicator());
+          return const Center(child: KhaltiProgressIndicator());
         }
 
         if (snapshot.hasError) {
@@ -82,7 +82,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                         duration: const Duration(milliseconds: 300),
                         child: filteredBanks.isEmpty
                             ? KhaltiErrorWidget(
-                                error: {},
+                                error: const {},
                                 title: context.loc.noBanksFound,
                                 subtitle: context.loc.searchForAnotherKeyword,
                               )
@@ -105,7 +105,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
           );
         }
 
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }

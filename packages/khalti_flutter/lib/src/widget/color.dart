@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class KhaltiColor extends InheritedWidget {
-  KhaltiColor({required this.isDark, required Widget child})
-      : super(child: child);
+  const KhaltiColor({
+    Key? key,
+    required this.isDark,
+    required Widget child,
+  }) : super(key: key, child: child);
 
   final bool isDark;
 
@@ -14,7 +17,7 @@ class KhaltiColor extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(KhaltiColor old) => false;
+  bool updateShouldNotify(KhaltiColor oldWidget) => false;
 }
 
 const int _rawSurface = 0xFF333333;

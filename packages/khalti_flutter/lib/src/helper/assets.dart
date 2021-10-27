@@ -1,3 +1,5 @@
+//ignore_for_file: constant_identifier_names
+
 const String a_errorDialog = 'dialog/error.svg';
 const String a_infoDialog = 'dialog/info.svg';
 const String a_successDialog = 'dialog/success.svg';
