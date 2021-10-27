@@ -80,100 +80,137 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(localization.kpg),
       ),
-      body: ListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: Consumer<AppPreferenceNotifier>(
-              builder: (context, appPreference, _) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16, left: 16),
-                      child: Text(
-                        localization.appPreference.toUpperCase(),
-                        style: Theme.of(context).textTheme.overline,
-                      ),
-                    ),
-                    SwitchListTile(
-                      value: appPreference.isDarkMode,
-                      title: Text(localization.darkMode),
-                      onChanged: (isDarkMode) {
-                        context
-                            .read<AppPreferenceNotifier>()
-                            .updateBrightness(isDarkMode: isDarkMode);
-                      },
-                    ),
-                    ListTile(
-                      title: Text(localization.language),
-                      trailing: DropdownButtonHideUnderline(
-                        child: DropdownButton<Locale>(
-                          items: {
-                            'English': Locale('en', 'US'),
-                            'नेपाली': Locale('ne', 'NP'),
-                          }
-                              .entries
-                              .map(
-                                (e) => DropdownMenuItem(
-                                  child: Text(e.key),
-                                  value: e.value,
-                                ),
-                              )
-                              .toList(growable: false),
-                          value: appPreference.locale,
-                          onChanged: (locale) {
-                            if (locale != null) {
-                              appPreference.updateLocale(locale);
-                            }
-                          },
+        child: Column(
+          children: [
+            Card(
+              child: Consumer<AppPreferenceNotifier>(
+                builder: (context, appPreference, _) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16, left: 16),
+                        child: Text(
+                          localization.appPreference.toUpperCase(),
+                          style: Theme.of(context).textTheme.overline,
                         ),
                       ),
-                    ),
+                      SwitchListTile(
+                        value: appPreference.isDarkMode,
+                        title: Text(localization.darkMode),
+                        onChanged: (isDarkMode) {
+                          context
+                              .read<AppPreferenceNotifier>()
+                              .updateBrightness(isDarkMode: isDarkMode);
+                        },
+                      ),
+                      ListTile(
+                        title: Text(localization.language),
+                        trailing: DropdownButtonHideUnderline(
+                          child: DropdownButton<Locale>(
+                            items: {
+                              'English': Locale('en', 'US'),
+                              'नेपाली': Locale('ne', 'NP'),
+                            }
+                                .entries
+                                .map(
+                                  (e) => DropdownMenuItem(
+                                    child: Text(e.key),
+                                    value: e.value,
+                                  ),
+                                )
+                                .toList(growable: false),
+                            value: appPreference.locale,
+                            onChanged: (locale) {
+                              if (locale != null) {
+                                appPreference.updateLocale(locale);
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 16),
+            KhaltiButton(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            KhaltiButton.wallet(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            KhaltiButton.eBanking(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            KhaltiButton.mBanking(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            KhaltiButton.sct(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            KhaltiButton.connectIPS(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
+            ),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () {
+                KhaltiScope.of(context).pay(
+                  config: config,
+                  preferences: [
+                    PaymentPreference.khalti,
+                    PaymentPreference.eBanking,
                   ],
+                  onSuccess: onSuccess,
+                  onFailure: onFailure,
+                  onCancel: onCancel,
                 );
               },
-            ),
-          ),
-          const SizedBox(height: 16),
-          KhaltiButton(
-            config: config,
-            onSuccess: onSuccess,
-            onFailure: onFailure,
-            onCancel: onCancel,
-          ),
-          const SizedBox(height: 16),
-          GestureDetector(
-            onTap: () {
-              KhaltiScope.of(context).pay(
-                config: config,
-                preferences: [
-                  PaymentPreference.khalti,
-                  PaymentPreference.eBanking,
-                ],
-                onSuccess: onSuccess,
-                onFailure: onFailure,
-                onCancel: onCancel,
-              );
-            },
-            child: Material(
-              shape: StadiumBorder(),
-              color: Colors.orange,
-              child: SizedBox(
-                height: 40,
-                child: Center(
-                  child: Text(
-                    'CUSTOM PAY',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(color: Colors.white),
+              child: Material(
+                shape: StadiumBorder(),
+                color: Colors.orange,
+                child: SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      'CUSTOM PAY',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.copyWith(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
