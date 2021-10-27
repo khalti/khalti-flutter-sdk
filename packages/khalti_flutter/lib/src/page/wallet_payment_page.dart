@@ -148,7 +148,7 @@ class _ResetMPINSection extends StatelessWidget {
             showInfoDialog(
               context,
               title: context.loc.resetKhaltiMPIN,
-              body: _ResetMPINDialogBody(),
+              body: _ResetMPINDialogBody(parentContext: context),
             );
           }
         },
@@ -158,7 +158,12 @@ class _ResetMPINSection extends StatelessWidget {
 }
 
 class _ResetMPINDialogBody extends StatelessWidget {
-  const _ResetMPINDialogBody({Key? key}) : super(key: key);
+  const _ResetMPINDialogBody({
+    Key? key,
+    required this.parentContext,
+  }) : super(key: key);
+
+  final BuildContext parentContext;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +198,7 @@ class _ResetMPINDialogBody extends StatelessWidget {
         ),
         TextButton(
           style: TextButton.styleFrom(
-            primary: KhaltiColor.of(context).surface.shade100,
+            primary: KhaltiColor.of(parentContext).surface.shade100,
           ),
           onPressed: () => Navigator.pop(context),
           child: Text(context.loc.cancel.toUpperCase()),
