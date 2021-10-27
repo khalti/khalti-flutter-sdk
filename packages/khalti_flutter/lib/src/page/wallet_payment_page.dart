@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
+import 'package:khalti_flutter/src/helper/payment_config.dart';
 import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
 import 'package:khalti_flutter/src/page/confirmation_page.dart';
 import 'package:khalti_flutter/src/util/url_launcher_util.dart';
@@ -50,60 +51,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           const SizedBox(height: 24),
           PayButton(
             amount: config.amount,
-            onPressed: () async {
-              if (_formKey.currentState?.validate() ?? false) {
-                showProgressDialog(
-                  context,
-                  message: context.loc.initiatingPayment,
-                );
-                try {
-                  final response = await Khalti.service.initiatePayment(
-                    request: PaymentInitiationRequestModel(
-                      mobile: _mobile!,
-                      transactionPin: _mPin!,
-                      amount: config.amount,
-                      productIdentity: config.productIdentity,
-                      productName: config.productName,
-                      productUrl: config.productUrl,
-                      additionalData: config.additionalData,
-                    ),
-                  );
-                  Navigator.pop(context);
-                  showSuccessDialog(
-                    context,
-                    title: context.loc.success,
-                    subtitle: context.loc.paymentInitiationSuccessMessage,
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => KhaltiColor(
-                            isDark:
-                                Theme.of(context).brightness == Brightness.dark,
-                            child: Theme(
-                              data: Theme.of(context),
-                              child: ConfirmationPage(
-                                mobileNo: _mobile!,
-                                mPin: _mPin!,
-                                token: response.token,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                } catch (e) {
-                  Navigator.pop(context);
-                  showErrorDialog(
-                    context,
-                    error: e,
-                    onPressed: () => Navigator.pop(context),
-                  );
-                }
-              }
-            },
+            onPressed: () => _initiatePayment(config),
           ),
           const SizedBox(height: 40),
           Text(
@@ -123,6 +71,60 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
 
   @override
   bool get wantKeepAlive => true;
+
+  Future<void> _initiatePayment(PaymentConfig config) async {
+    if (_formKey.currentState?.validate() ?? false) {
+      showProgressDialog(
+        context,
+        message: context.loc.initiatingPayment,
+      );
+      try {
+        final response = await Khalti.service.initiatePayment(
+          request: PaymentInitiationRequestModel(
+            mobile: _mobile!,
+            transactionPin: _mPin!,
+            amount: config.amount,
+            productIdentity: config.productIdentity,
+            productName: config.productName,
+            productUrl: config.productUrl,
+            additionalData: config.additionalData,
+          ),
+        );
+        Navigator.pop(context);
+        showSuccessDialog(
+          context,
+          title: context.loc.success,
+          subtitle: context.loc.paymentInitiationSuccessMessage,
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => KhaltiColor(
+                  isDark: Theme.of(context).brightness == Brightness.dark,
+                  child: Theme(
+                    data: Theme.of(context),
+                    child: ConfirmationPage(
+                      mobileNo: _mobile!,
+                      mPin: _mPin!,
+                      token: response.token,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      } catch (e) {
+        Navigator.pop(context);
+        showErrorDialog(
+          context,
+          error: e,
+          onPressed: () => Navigator.pop(context),
+        );
+      }
+    }
+  }
 }
 
 class _ResetMPINSection extends StatelessWidget {
@@ -130,64 +132,73 @@ class _ResetMPINSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonStyle = Theme.of(context).textTheme.button;
+
     return Center(
       child: TextButton(
         style: TextButton.styleFrom(
           minimumSize: Size(144, 40),
-          textStyle: Theme.of(context).textTheme.button?.copyWith(
-                fontSize: 14,
-              ),
+          textStyle: buttonStyle?.copyWith(fontSize: 14),
         ),
         child: Text(context.loc.resetKhaltiMPIN.toUpperCase()),
         onPressed: () async {
-          try {
-            await urlLauncher.launchMPINSetting();
-          } on PlatformException {
+          final appInstalled = await urlLauncher.launchMPINSetting();
+
+          if (!appInstalled) {
             showInfoDialog(
               context,
               title: context.loc.resetKhaltiMPIN,
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(context.loc.khaltiNotInstalledMessage),
-                  const SizedBox(height: 24),
-                  TextButton(
-                    onPressed: () async {
-                      urlLauncher.openStoreToInstallKhalti(
-                        Theme.of(context).platform,
-                      );
-                      Navigator.pop(context);
-                    },
-                    child: Text(context.loc.installKhalti.toUpperCase()),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Divider(height: 1, thickness: 1),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      urlLauncher.openResetPinPageInBrowser();
-                      Navigator.pop(context);
-                    },
-                    child: Text(context.loc.proceedUsingBrowser.toUpperCase()),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Divider(height: 1, thickness: 1),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: KhaltiColor.of(context).surface.shade100,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(context.loc.cancel.toUpperCase()),
-                  ),
-                ],
-              ),
+              body: _ResetMPINDialogBody(),
             );
           }
         },
       ),
+    );
+  }
+}
+
+class _ResetMPINDialogBody extends StatelessWidget {
+  const _ResetMPINDialogBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(context.loc.khaltiNotInstalledMessage),
+        const SizedBox(height: 24),
+        TextButton(
+          onPressed: () async {
+            urlLauncher.openStoreToInstallKhalti(
+              Theme.of(context).platform,
+            );
+            Navigator.pop(context);
+          },
+          child: Text(context.loc.installKhalti.toUpperCase()),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Divider(height: 1, thickness: 1),
+        ),
+        TextButton(
+          onPressed: () {
+            urlLauncher.openResetPinPageInBrowser();
+            Navigator.pop(context);
+          },
+          child: Text(context.loc.proceedUsingBrowser.toUpperCase()),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Divider(height: 1, thickness: 1),
+        ),
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: KhaltiColor.of(context).surface.shade100,
+          ),
+          onPressed: () => Navigator.pop(context),
+          child: Text(context.loc.cancel.toUpperCase()),
+        ),
+      ],
     );
   }
 }

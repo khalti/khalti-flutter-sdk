@@ -46,46 +46,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
               CodeField(onChanged: (code) => _code = code),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    showProgressDialog(
-                      context,
-                      message: context.loc.confirmingPayment,
-                    );
-                    try {
-                      final response = await Khalti.service.confirmPayment(
-                        request: PaymentConfirmationRequestModel(
-                          transactionPin: widget.mPin,
-                          confirmationCode: _code!,
-                          token: widget.token,
-                        ),
-                      );
-                      Navigator.popUntil(context, ModalRoute.withName('kpg'));
-                      Navigator.pop(context, response);
-                    } catch (e) {
-                      Navigator.pop(context);
-                      showErrorDialog(
-                        context,
-                        error: e,
-                        onPressed: () {
-                          Navigator.popUntil(
-                            context,
-                            ModalRoute.withName('kpg'),
-                          );
-                          final errorInfo = ErrorInfo.from(context, e);
-
-                          Navigator.pop(
-                            context,
-                            PaymentFailureModel(
-                              message: errorInfo.secondary ?? errorInfo.primary,
-                              data: errorInfo.data,
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  }
-                },
+                onPressed: _confirmPayment,
                 child: Text(context.loc.verifyOTP.toUpperCase()),
               ),
             ],
@@ -93,5 +54,46 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
         ),
       ),
     );
+  }
+
+  Future<void> _confirmPayment() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      showProgressDialog(
+        context,
+        message: context.loc.confirmingPayment,
+      );
+      try {
+        final response = await Khalti.service.confirmPayment(
+          request: PaymentConfirmationRequestModel(
+            transactionPin: widget.mPin,
+            confirmationCode: _code!,
+            token: widget.token,
+          ),
+        );
+        Navigator.popUntil(context, ModalRoute.withName('kpg'));
+        Navigator.pop(context, response);
+      } catch (e) {
+        Navigator.pop(context);
+        showErrorDialog(
+          context,
+          error: e,
+          onPressed: () {
+            Navigator.popUntil(
+              context,
+              ModalRoute.withName('kpg'),
+            );
+            final errorInfo = ErrorInfo.from(context, e);
+
+            Navigator.pop(
+              context,
+              PaymentFailureModel(
+                message: errorInfo.secondary ?? errorInfo.primary,
+                data: errorInfo.data,
+              ),
+            );
+          },
+        );
+      }
+    }
   }
 }

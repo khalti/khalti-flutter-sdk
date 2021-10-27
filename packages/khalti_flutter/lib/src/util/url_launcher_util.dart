@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
@@ -19,7 +22,15 @@ set debugUrlLauncherOverride(UrlLauncherUtil launcher) {
 }
 
 class UrlLauncherUtil {
-  Future<bool> launch(String url) => launcher.launch(url);
+  Future<bool> launch(String url) async {
+    try {
+      await launcher.launch(url);
+      return true;
+    } on PlatformException catch (e) {
+      log(e.message ?? '', name: 'URL Launcher Failed');
+      return false;
+    }
+  }
 
   Future<bool> launchMPINSetting() => launch(_mPinDeeplink);
 

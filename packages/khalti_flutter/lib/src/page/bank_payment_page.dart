@@ -45,8 +45,6 @@ class _BankPaymentPageState extends State<BankPaymentPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final config = PaymentConfigScope.of(context);
-
     return FutureBuilder<BankListModel>(
       future: banksFuture,
       builder: (context, snapshot) {
@@ -91,50 +89,9 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                             : ListView.builder(
                                 itemCount: filteredBanks.length,
                                 itemBuilder: (context, index) {
-                                  final bank = filteredBanks.elementAt(index);
-
-                                  return KhaltiBankTile(
-                                    name: bank.name,
-                                    logoUrl: bank.logo,
-                                    onTap: () {
-                                      final isDark =
-                                          Theme.of(context).brightness ==
-                                              Brightness.dark;
-                                      showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        backgroundColor: Colors.transparent,
-                                        builder: (ctx) {
-                                          return KhaltiColor(
-                                            isDark: isDark,
-                                            child: _BankBottomSheet(
-                                              logo: bank.logo,
-                                              name: bank.name,
-                                              amount: config.amount,
-                                              onTap: (mobile) async {
-                                                final url =
-                                                    Khalti.service.buildBankUrl(
-                                                  bankId: bank.idx,
-                                                  mobile: mobile,
-                                                  amount: config.amount,
-                                                  productIdentity:
-                                                      config.productIdentity,
-                                                  productName:
-                                                      config.productName,
-                                                  paymentType:
-                                                      widget.paymentType,
-                                                  productUrl: config.productUrl,
-                                                  additionalData:
-                                                      config.additionalData,
-                                                );
-                                                await urlLauncher.launch(url);
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
+                                  return _BankTile(
+                                    bank: filteredBanks.elementAt(index),
+                                    paymentType: widget.paymentType,
                                   );
                                 },
                               ),
@@ -162,6 +119,59 @@ class _BankPaymentPageState extends State<BankPaymentPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class _BankTile extends StatelessWidget {
+  const _BankTile({
+    Key? key,
+    required this.bank,
+    required this.paymentType,
+  }) : super(key: key);
+
+  final BankModel bank;
+  final PaymentType paymentType;
+
+  @override
+  Widget build(BuildContext context) {
+    final config = PaymentConfigScope.of(context);
+
+    return KhaltiBankTile(
+      name: bank.name,
+      logoUrl: bank.logo,
+      onTap: () {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (ctx) {
+            return KhaltiColor(
+              isDark: isDark,
+              child: _BankBottomSheet(
+                logo: bank.logo,
+                name: bank.name,
+                amount: config.amount,
+                onTap: (mobile) async {
+                  final url = Khalti.service.buildBankUrl(
+                    bankId: bank.idx,
+                    mobile: mobile,
+                    amount: config.amount,
+                    productIdentity: config.productIdentity,
+                    productName: config.productName,
+                    paymentType: paymentType,
+                    productUrl: config.productUrl,
+                    additionalData: config.additionalData,
+                  );
+                  await urlLauncher.launch(url);
+                  Navigator.pop(context);
+                },
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 class _BankBottomSheet extends StatefulWidget {
