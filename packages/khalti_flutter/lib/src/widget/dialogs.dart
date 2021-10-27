@@ -183,7 +183,7 @@ class _Dialog extends StatelessWidget {
                   padding: EdgeInsets.only(right: 8, bottom: 2),
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      primary: Theme.of(parentContext).primaryColor,
+                      primary: Theme.of(parentContext).colorScheme.onPrimary,
                       textStyle: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
