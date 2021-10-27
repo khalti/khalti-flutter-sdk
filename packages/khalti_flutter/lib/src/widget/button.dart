@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
-import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
+import 'package:khalti_flutter/src/helper/payment_config.dart';
+import 'package:khalti_flutter/src/helper/payment_preference.dart';
+import 'package:khalti_flutter/src/widget/image.dart';
+import 'package:khalti_flutter/src/widget/khalti_scope.dart';
 
 class KhaltiButton extends StatelessWidget {
   const KhaltiButton({
