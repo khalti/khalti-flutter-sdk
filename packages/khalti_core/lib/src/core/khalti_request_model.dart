@@ -4,7 +4,7 @@ abstract class KhaltiRequestModel {
   Map<String, Object?> toMap();
 
   String toJson({bool beautify = false}) {
-    if (beautify) return JsonEncoder.withIndent('  ').convert(toMap());
+    if (beautify) return const JsonEncoder.withIndent('  ').convert(toMap());
     return jsonEncode(toMap());
   }
 }

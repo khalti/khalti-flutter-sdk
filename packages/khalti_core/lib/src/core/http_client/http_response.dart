@@ -25,11 +25,10 @@ class HttpResponse {
 }
 
 class SuccessHttpResponse extends HttpResponse {
-  final Object data;
-  final int statusCode;
-
-  const SuccessHttpResponse({required this.data, required this.statusCode})
-      : super._(data: data, statusCode: statusCode);
+  const SuccessHttpResponse({
+    required Object data,
+    required int statusCode,
+  }) : super._(data: data, statusCode: statusCode);
 
   @override
   String toString() {
@@ -38,11 +37,10 @@ class SuccessHttpResponse extends HttpResponse {
 }
 
 class FailureHttpResponse extends HttpResponse {
-  final Object data;
-  final int statusCode;
-
-  const FailureHttpResponse({required this.data, required this.statusCode})
-      : super._(data: data, statusCode: statusCode);
+  const FailureHttpResponse({
+    required Object data,
+    required int statusCode,
+  }) : super._(data: data, statusCode: statusCode);
 
   @override
   String toString() {
@@ -51,14 +49,13 @@ class FailureHttpResponse extends HttpResponse {
 }
 
 class ExceptionHttpResponse extends HttpResponse {
-  final String message;
   final int code;
   final StackTrace stackTrace;
   final Object? detail;
   final bool isSocketException;
 
   const ExceptionHttpResponse({
-    required this.message,
+    required String message,
     required this.code,
     required this.stackTrace,
     this.detail,

@@ -122,7 +122,7 @@ class KhaltiService {
   }
 
   String _buildUrl(String path) {
-    return '${_baseUrl}/api/v$_apiVersion/$path';
+    return '$_baseUrl/api/v$_apiVersion/$path';
   }
 
   MapEntry<String, String> _stringifyValue(String key, Object value) {
@@ -156,10 +156,18 @@ class _Logger {
   void _logHeading() => _log(url, name: method);
 
   void _log(String message, {required String name}) {
-    if (KhaltiService.enableDebugging) print('[$name] $message');
+    if (KhaltiService.enableDebugging) _debugPrint('[$name] $message');
   }
 
   void _divider() {
-    if (KhaltiService.enableDebugging) print('-' * 140);
+    if (KhaltiService.enableDebugging) _debugPrint('-' * 140);
+  }
+
+  void _debugPrint(String message) {
+    assert(() {
+      // ignore: avoid_print
+      print(message);
+      return true;
+    }());
   }
 }
