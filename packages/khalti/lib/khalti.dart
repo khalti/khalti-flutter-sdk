@@ -2,14 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:khalti_core/khalti_core.dart';
 
 import 'src/khalti_http_client.dart';
-import 'src/platform/platform.dart';
 import 'src/util/device_util.dart';
 import 'src/util/package_util.dart';
 
 export 'package:khalti_core/khalti_core.dart';
 
 export 'src/khalti_http_client.dart';
-export 'src/platform/platform.dart';
 
 class Khalti {
   static Future<void> init({

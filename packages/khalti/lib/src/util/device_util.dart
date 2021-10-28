@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:khalti_core/khalti_core.dart';
 
 class DeviceUtil {
   late AndroidDeviceInfo _androidDeviceInfo;
