@@ -88,9 +88,9 @@ class KhaltiService {
     required String productIdentity,
     required String productName,
     required PaymentType paymentType,
+    required String returnUrl,
     String? productUrl,
     Map<String, Object>? additionalData,
-    String returnUrl = 'khalti://pay/kpg',
   }) {
     final params = {
       'bank': bankId,

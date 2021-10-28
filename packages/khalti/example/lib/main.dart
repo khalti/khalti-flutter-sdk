@@ -225,6 +225,7 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                       productIdentity: 'macbook-pro-21',
                       productName: 'Macbook Pro 2021',
                       paymentType: widget.paymentType,
+                      returnUrl: 'https://khalti.com',
                     );
 
                     print(url);

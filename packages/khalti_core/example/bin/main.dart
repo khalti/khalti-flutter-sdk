@@ -96,6 +96,7 @@ void _buildBankPaymentUrl() {
     productIdentity: 'macbook-pro-21',
     productName: 'Macbook Pro 2021',
     paymentType: PaymentType.eBanking,
+    returnUrl: 'https://khalti.com',
   );
   print(url);
 }
