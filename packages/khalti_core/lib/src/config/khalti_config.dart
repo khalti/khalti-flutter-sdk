@@ -1,6 +1,4 @@
-import 'dart:io';
-
-const bool _kIsWeb = identical(0, 0.0);
+import 'package:khalti_core/src/platform/platform.dart';
 
 class KhaltiConfig {
   final String version = '0.0.1';
@@ -21,9 +19,9 @@ class KhaltiConfig {
     required this.packageVersion,
   });
 
-  factory KhaltiConfig.sourceOnly() {
+  factory KhaltiConfig.platformOnly() {
     return KhaltiConfig(
-      platform: _kIsWeb ? 'web' : Platform.operatingSystem,
+      platform: Platform.operatingSystem,
       osVersion: '',
       deviceModel: '',
       deviceManufacturer: '',

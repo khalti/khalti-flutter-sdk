@@ -25,7 +25,7 @@ class KhaltiService {
 
   static set publicKey(String key) => _publicKey = key;
 
-  static KhaltiConfig config = KhaltiConfig.sourceOnly();
+  static KhaltiConfig config = KhaltiConfig.platformOnly();
 
   KhaltiService({required KhaltiClient client}) : _client = client;
 
