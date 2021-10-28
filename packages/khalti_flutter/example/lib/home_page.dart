@@ -1,13 +1,31 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter_example/app_preference.dart';
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key, this.params}) : super(key: key);
+
+  final Map<String, String>? params;
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.params != null) {
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        onSuccess(PaymentSuccessModel.fromMap(widget.params!));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,42 +107,42 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 16),
             KhaltiButton(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
             const SizedBox(height: 8),
             KhaltiButton.wallet(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
             const SizedBox(height: 8),
             KhaltiButton.eBanking(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
             const SizedBox(height: 8),
             KhaltiButton.mBanking(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
             const SizedBox(height: 8),
             KhaltiButton.sct(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
             const SizedBox(height: 8),
             KhaltiButton.connectIPS(
               config: config,
-              onSuccess: (s) => onSuccess(context, s),
+              onSuccess: onSuccess,
               onFailure: onFailure,
               onCancel: onCancel,
             ),
@@ -137,7 +155,7 @@ class HomePage extends StatelessWidget {
                     PaymentPreference.khalti,
                     PaymentPreference.eBanking,
                   ],
-                  onSuccess: (s) => onSuccess(context, s),
+                  onSuccess: onSuccess,
                   onFailure: onFailure,
                   onCancel: onCancel,
                 );
@@ -165,7 +183,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void onSuccess(BuildContext context, PaymentSuccessModel success) {
+  void onSuccess(PaymentSuccessModel success) {
     showDialog(
       context: context,
       builder: (context) {

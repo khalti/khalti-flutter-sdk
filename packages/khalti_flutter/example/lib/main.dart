@@ -52,7 +52,27 @@ class MyApp extends StatelessWidget {
                     GlobalCupertinoLocalizations.delegate,
                     GlobalWidgetsLocalizations.delegate,
                   ],
-                  home: const HomePage(),
+                  routes: {
+                    '/': (_) => const HomePage(key: Key('home')),
+                  },
+                  onGenerateInitialRoutes: (route) {
+                    // Only used for handling response from KPG in Flutter Web.
+                    if (route.startsWith('/kpg/')) {
+                      final uri = Uri.parse('https://khalti.com$route');
+                      return [
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(
+                            key: const Key('kpg-home'),
+                            params: uri.queryParameters,
+                          ),
+                        ),
+                      ];
+                    }
+                    return Navigator.defaultGenerateInitialRoutes(
+                      navKey.currentState!,
+                      route,
+                    );
+                  },
                 );
               },
             );
