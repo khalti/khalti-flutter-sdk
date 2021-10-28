@@ -13,7 +13,7 @@ class DeviceUtil {
     try {
       final deviceInfo = DeviceInfoPlugin();
       if (kIsWeb) {
-        await deviceInfo.webBrowserInfo;
+        _webBrowserInfo = await deviceInfo.webBrowserInfo;
       } else {
         if (Platform.isIOS) {
           _iosDeviceInfo = await deviceInfo.iosInfo;
