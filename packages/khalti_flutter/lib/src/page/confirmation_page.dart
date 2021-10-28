@@ -74,7 +74,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             token: widget.token,
           ),
         );
-        Navigator.popUntil(context, ModalRoute.withName('kpg'));
+        Navigator.popUntil(context, ModalRoute.withName('/kpg'));
         Navigator.pop(context, response);
       } catch (e) {
         Navigator.pop(context);
@@ -84,7 +84,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
           onPressed: () {
             Navigator.popUntil(
               context,
-              ModalRoute.withName('kpg'),
+              ModalRoute.withName('/kpg'),
             );
             final errorInfo = ErrorInfo.from(context, e);
 
