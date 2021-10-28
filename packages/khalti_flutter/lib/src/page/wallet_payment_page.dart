@@ -12,6 +12,7 @@ import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
+import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
 class WalletPaymentPage extends StatefulWidget {
   const WalletPaymentPage({Key? key}) : super(key: key);
@@ -32,39 +33,43 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
 
     final config = PaymentConfigScope.of(context);
 
-    return Form(
-      key: _formKey,
-      child: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 40),
-            child: KhaltiImage.asset(asset: a_khaltiLogo, height: 72),
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Form(
+        key: _formKey,
+        child: ResponsiveBox(
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 40),
+                child: KhaltiImage.asset(asset: a_khaltiLogo, height: 72),
+              ),
+              MobileField(
+                onChanged: (mobile) => _mobile = mobile,
+              ),
+              const SizedBox(height: 24),
+              PINField(
+                onChanged: (pin) => _mPin = pin,
+              ),
+              const SizedBox(height: 24),
+              PayButton(
+                amount: config.amount,
+                onPressed: () => _initiatePayment(config),
+              ),
+              const SizedBox(height: 40),
+              Text(
+                context.loc.forgotPin,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: KhaltiColor.of(context).surface.shade300,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const _ResetMPINSection(),
+            ],
           ),
-          MobileField(
-            onChanged: (mobile) => _mobile = mobile,
-          ),
-          const SizedBox(height: 24),
-          PINField(
-            onChanged: (pin) => _mPin = pin,
-          ),
-          const SizedBox(height: 24),
-          PayButton(
-            amount: config.amount,
-            onPressed: () => _initiatePayment(config),
-          ),
-          const SizedBox(height: 40),
-          Text(
-            context.loc.forgotPin,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              color: KhaltiColor.of(context).surface.shade300,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const _ResetMPINSection(),
-        ],
+        ),
       ),
     );
   }

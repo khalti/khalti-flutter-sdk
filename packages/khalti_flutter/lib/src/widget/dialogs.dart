@@ -6,6 +6,7 @@ import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
+import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
 Future<void> showProgressDialog(
   BuildContext context, {
@@ -20,20 +21,24 @@ Future<void> showProgressDialog(
             .textTheme
             .bodyText2!
             .copyWith(color: KhaltiColor.of(context).surface.shade400),
-        child: Dialog(
-          elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Center(child: KhaltiProgressIndicator()),
-                const SizedBox(height: 16),
-                Text(message, textAlign: TextAlign.center),
-              ],
+        child: ResponsiveBox(
+          child: Dialog(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+            ),
+            insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Center(child: KhaltiProgressIndicator()),
+                  const SizedBox(height: 16),
+                  Text(message, textAlign: TextAlign.center),
+                ],
+              ),
             ),
           ),
         ),
@@ -139,63 +144,65 @@ class _Dialog extends StatelessWidget {
           height: 1.5,
         );
 
-    return Dialog(
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.75,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    KhaltiImage.asset(asset: assetName, height: 72),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 24),
-                      child: Center(
-                        child: Text(
-                          titleText,
-                          style: Theme.of(parentContext).textTheme.headline6,
+    return ResponsiveBox(
+      child: Dialog(
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      KhaltiImage.asset(asset: assetName, height: 72),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 24),
+                        child: Center(
+                          child: Text(
+                            titleText,
+                            style: Theme.of(parentContext).textTheme.headline6,
+                          ),
                         ),
                       ),
-                    ),
-                    if (subtitle != null)
-                      DefaultTextStyle(
-                        style: textStyle,
-                        child: subtitle!,
-                      ),
-                  ],
-                ),
-              ),
-            ),
-            if (onPressed != null)
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8, bottom: 2),
-                  child: TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Theme.of(parentContext).colorScheme.onPrimary,
-                      textStyle: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    child: Text(context.loc.ok.toUpperCase()),
-                    onPressed: onPressed,
+                      if (subtitle != null)
+                        DefaultTextStyle(
+                          style: textStyle,
+                          child: subtitle!,
+                        ),
+                    ],
                   ),
                 ),
               ),
-          ],
+              if (onPressed != null)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8, bottom: 2),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        primary: Theme.of(parentContext).colorScheme.onPrimary,
+                        textStyle: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      child: Text(context.loc.ok.toUpperCase()),
+                      onPressed: onPressed,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

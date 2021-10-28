@@ -112,7 +112,7 @@ class _MainPage extends StatelessWidget {
                   ];
                 },
                 body: TabBarView(
-                  children: preferences.map(_getView).toList(growable: false),
+                  children: preferences.map(_getView).toList(),
                 ),
               ),
             ),

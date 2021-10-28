@@ -6,6 +6,7 @@ import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
+import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
 class CardPaymentPage extends StatefulWidget {
   const CardPaymentPage({Key? key, required this.paymentType})
@@ -29,37 +30,39 @@ class _CardPaymentPageState extends State<CardPaymentPage>
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
-            child: KhaltiImage.asset(
-              asset: widget.paymentType == PaymentType.connectIPS
-                  ? a_connectIpsLogo
-                  : a_sctLogo,
-              height: 100,
+      child: ResponsiveBox(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: KhaltiImage.asset(
+                asset: widget.paymentType == PaymentType.connectIPS
+                    ? a_connectIpsLogo
+                    : a_sctLogo,
+                height: 100,
+              ),
             ),
-          ),
-          MobileField(onChanged: (mobile) => _mobile = mobile),
-          const SizedBox(height: 24),
-          PayButton(
-            amount: config.amount,
-            onPressed: () async {
-              final url = Khalti.service.buildBankUrl(
-                bankId: widget.paymentType.value,
-                mobile: _mobile!,
-                amount: config.amount,
-                productIdentity: config.productIdentity,
-                productName: config.productName,
-                paymentType: widget.paymentType,
-                productUrl: config.productUrl,
-                additionalData: config.additionalData,
-                returnUrl: config.returnUrl,
-              );
-              await urlLauncher.launch(url);
-            },
-          ),
-        ],
+            MobileField(onChanged: (mobile) => _mobile = mobile),
+            const SizedBox(height: 24),
+            PayButton(
+              amount: config.amount,
+              onPressed: () async {
+                final url = Khalti.service.buildBankUrl(
+                  bankId: widget.paymentType.value,
+                  mobile: _mobile!,
+                  amount: config.amount,
+                  productIdentity: config.productIdentity,
+                  productName: config.productName,
+                  paymentType: widget.paymentType,
+                  productUrl: config.productUrl,
+                  additionalData: config.additionalData,
+                  returnUrl: config.returnUrl,
+                );
+                await urlLauncher.launch(url);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

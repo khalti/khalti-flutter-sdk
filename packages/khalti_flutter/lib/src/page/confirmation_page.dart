@@ -4,6 +4,7 @@ import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/error_info.dart';
 import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
+import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
 class ConfirmationPage extends StatefulWidget {
   const ConfirmationPage({
@@ -33,23 +34,26 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                context.loc.enterOtpSentTo(widget.mobileNo),
-                style: Theme.of(context).textTheme.caption,
-              ),
-              const SizedBox(height: 24),
-              CodeField(onChanged: (code) => _code = code),
-              const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: _confirmPayment,
-                child: Text(context.loc.verifyOTP.toUpperCase()),
-              ),
-            ],
+        child: ResponsiveBox(
+          alignment: Alignment.topLeft,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  context.loc.enterOtpSentTo(widget.mobileNo),
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                const SizedBox(height: 24),
+                CodeField(onChanged: (code) => _code = code),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: _confirmPayment,
+                  child: Text(context.loc.verifyOTP.toUpperCase()),
+                ),
+              ],
+            ),
           ),
         ),
       ),

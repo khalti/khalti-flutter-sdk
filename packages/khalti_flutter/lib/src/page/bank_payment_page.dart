@@ -10,6 +10,7 @@ import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
+import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
 class BankPaymentPage extends StatefulWidget {
   const BankPaymentPage({
@@ -206,47 +207,50 @@ class _BankBottomSheetState extends State<_BankBottomSheet> {
           height: 1.4,
         );
 
-    return Card(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, bottomMargin),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox.square(
-                      dimension: 32,
-                      child: KhaltiImage.network(url: widget.logo),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(widget.name, style: titleStyle),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                MobileField(
-                  onChanged: (number) => _khaltiMobileNumber = number,
-                ),
-                const SizedBox(height: 24),
-                PayButton(
-                  amount: widget.amount,
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      widget.onTap(_khaltiMobileNumber!);
-                    }
-                  },
-                ),
-              ],
+    return ResponsiveBox(
+      alignment: Alignment.bottomLeft,
+      child: Card(
+        margin: EdgeInsets.fromLTRB(16, 0, 16, bottomMargin),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox.square(
+                        dimension: 32,
+                        child: KhaltiImage.network(url: widget.logo),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(widget.name, style: titleStyle),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  MobileField(
+                    onChanged: (number) => _khaltiMobileNumber = number,
+                  ),
+                  const SizedBox(height: 24),
+                  PayButton(
+                    amount: widget.amount,
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        widget.onTap(_khaltiMobileNumber!);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
