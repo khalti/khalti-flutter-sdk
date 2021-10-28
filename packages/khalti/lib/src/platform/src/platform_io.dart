@@ -1,1 +1,1 @@
-export 'dart:io' show Platform;
+export 'dart:io' show Platform, HttpException, SocketException;

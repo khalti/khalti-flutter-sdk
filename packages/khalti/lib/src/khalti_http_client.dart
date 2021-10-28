@@ -1,8 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:khalti_core/khalti_core.dart';
 import 'package:http/http.dart' as http;
+import 'package:khalti/khalti.dart';
+import 'package:khalti_core/khalti_core.dart';
+
+import 'platform/platform.dart';
 
 class KhaltiHttpClient extends KhaltiClient {
   @override
@@ -57,6 +59,13 @@ class KhaltiHttpClient extends KhaltiClient {
     try {
       return await caller();
     } on HttpException catch (e, s) {
+      return HttpResponse.exception(
+        message: e.message,
+        code: 0,
+        stackTrace: s,
+        detail: e.uri,
+      );
+    } on http.ClientException catch (e, s) {
       return HttpResponse.exception(
         message: e.message,
         code: 0,

@@ -30,3 +30,55 @@ abstract class Platform {
   /// [Fuchsia](https://en.wikipedia.org/wiki/Google_Fuchsia).
   static bool get isFuchsia => false;
 }
+
+abstract class HttpException implements Exception {
+  const HttpException(this.message, {this.uri});
+
+  final String message;
+  final Uri? uri;
+}
+
+/// Exception thrown when a socket operation fails.
+abstract class SocketException implements Exception {
+  /// Creates a [SocketException] with the provided values.
+  const SocketException(this.message, {this.osError, this.port});
+
+  /// Creates an exception reporting that a socket was used after it was closed.
+  const SocketException.closed()
+      : message = 'Socket has been closed',
+        osError = null,
+        port = null;
+
+  /// Description of the error.
+  final String message;
+
+  /// The underlying OS error.
+  ///
+  /// If this exception is not thrown due to an OS error, the value is `null`.
+  final OSError? osError;
+
+  /// The port of the socket giving rise to the exception.
+  ///
+  /// This is either the source or destination address of a socket,
+  /// or it can be `null` if no socket end-point was involved in the cause of
+  /// the exception.
+  final int? port;
+}
+
+abstract class OSError {
+  /// Creates an OSError object from a message and an errorCode.
+  const OSError([this.message = "", this.errorCode = noErrorCode]);
+
+  /// Error message supplied by the operating system. This will be empty if no
+  /// message is associated with the error.
+  final String message;
+
+  /// Error code supplied by the operating system.
+  ///
+  /// Will have the value [OSError.noErrorCode] if there is no error code
+  /// associated with the error.
+  final int errorCode;
+
+  /// Constant used to indicate that no OS error code is available.
+  static const int noErrorCode = -1;
+}
