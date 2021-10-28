@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter_example/app_preference.dart';
 import 'package:provider/provider.dart';
@@ -105,77 +106,69 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 16),
-            KhaltiButton(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            KhaltiButton.wallet(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            KhaltiButton.eBanking(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            KhaltiButton.mBanking(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            KhaltiButton.sct(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            KhaltiButton.connectIPS(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
-            const SizedBox(height: 8),
-            GestureDetector(
-              onTap: () {
-                KhaltiScope.of(context).pay(
-                  config: config,
-                  preferences: [
-                    PaymentPreference.khalti,
-                    PaymentPreference.eBanking,
-                  ],
-                  onSuccess: onSuccess,
-                  onFailure: onFailure,
-                  onCancel: onCancel,
-                );
-              },
-              child: Material(
-                shape: const StadiumBorder(),
-                color: Colors.orange,
-                child: SizedBox(
-                  height: 40,
-                  child: Center(
-                    child: Text(
-                      'CUSTOM PAY',
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          ?.copyWith(color: Colors.white),
-                    ),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      KhaltiButton(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                      const SizedBox(height: 8),
+                      KhaltiButton.eBanking(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                      const SizedBox(height: 8),
+                      KhaltiButton.mBanking(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    children: [
+                      KhaltiButton.wallet(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                      const SizedBox(height: 8),
+                      KhaltiButton.sct(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                      const SizedBox(height: 8),
+                      KhaltiButton.connectIPS(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            _CustomButton(
+              config: config,
+              onSuccess: onSuccess,
+              onFailure: onFailure,
+              onCancel: onCancel,
             ),
           ],
         ),
@@ -229,5 +222,74 @@ class _HomePageState extends State<HomePage> {
 
   void onCancel() {
     log('Cancelled');
+  }
+}
+
+class _CustomButton extends StatelessWidget {
+  const _CustomButton({
+    Key? key,
+    required this.config,
+    required this.onSuccess,
+    required this.onFailure,
+    required this.onCancel,
+  }) : super(key: key);
+
+  final PaymentConfig config;
+  final ValueChanged<PaymentSuccessModel> onSuccess;
+  final ValueChanged<PaymentFailureModel> onFailure;
+  final VoidCallback? onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(20),
+      splashColor: Colors.orange.withOpacity(0.3),
+      highlightColor: Colors.orange.withOpacity(0.2),
+      onTap: () {
+        KhaltiScope.of(context).pay(
+          config: config,
+          preferences: [
+            PaymentPreference.khalti,
+            PaymentPreference.eBanking,
+          ],
+          onSuccess: onSuccess,
+          onFailure: onFailure,
+          onCancel: onCancel,
+        );
+      },
+      child: Material(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: Colors.orange, width: 2.5),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 16,
+          ),
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  'assets/logo/khalti.svg',
+                  package: 'khalti_flutter',
+                  width: 200,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'PAY',
+                  style: Theme.of(context).textTheme.headline6?.copyWith(
+                        color: Colors.pink,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
