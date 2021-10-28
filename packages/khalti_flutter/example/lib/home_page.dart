@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 16),
             Row(
               children: [
-                Expanded(
+                Flexible(
                   child: Column(
                     children: [
                       KhaltiButton(
@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Expanded(
+                Flexible(
                   child: Column(
                     children: [
                       KhaltiButton.wallet(
@@ -161,15 +161,30 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
+                if (MediaQuery.of(context).size.width > 500)
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16),
+                      child: _CustomButton(
+                        config: config,
+                        onSuccess: onSuccess,
+                        onFailure: onFailure,
+                        onCancel: onCancel,
+                      ),
+                    ),
+                  ),
               ],
             ),
-            const SizedBox(height: 16),
-            _CustomButton(
-              config: config,
-              onSuccess: onSuccess,
-              onFailure: onFailure,
-              onCancel: onCancel,
-            ),
+            if (MediaQuery.of(context).size.width < 500)
+              Padding(
+                padding: const EdgeInsets.only(top: 24),
+                child: _CustomButton(
+                  config: config,
+                  onSuccess: onSuccess,
+                  onFailure: onFailure,
+                  onCancel: onCancel,
+                ),
+              ),
           ],
         ),
       ),
@@ -241,10 +256,16 @@ class _CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final headline6 = Theme.of(context).textTheme.headline6?.copyWith(
+          color: Colors.pink,
+          fontWeight: FontWeight.bold,
+        );
+
     return InkWell(
       borderRadius: BorderRadius.circular(20),
       splashColor: Colors.orange.withOpacity(0.3),
       highlightColor: Colors.orange.withOpacity(0.2),
+      hoverColor: Colors.orange.withOpacity(0.1),
       onTap: () {
         KhaltiScope.of(context).pay(
           config: config,
@@ -278,13 +299,7 @@ class _CustomButton extends StatelessWidget {
                   width: 200,
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'PAY',
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: Colors.pink,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+                Text('PAY', style: headline6),
               ],
             ),
           ),
