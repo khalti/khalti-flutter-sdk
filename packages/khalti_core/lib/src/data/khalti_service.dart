@@ -6,15 +6,20 @@ import 'package:khalti_core/src/helper/payment_type.dart';
 import 'package:khalti_core/src/model/bank_model.dart';
 import 'package:khalti_core/src/model/payload_model.dart';
 
+/// The wrapper class to access Khalti Payment Gateway API.
 class KhaltiService {
+  /// Default constructor for [KhaltiService] to initialize [KhaltiClient].
+  KhaltiService({required KhaltiClient client}) : _client = client;
+
   final String _baseUrl = 'https://khalti.com';
   final int _apiVersion = 2;
-
   final KhaltiClient _client;
 
+  /// Enabling [enableDebugging] will print network logs.
   static bool enableDebugging = false;
   static String? _publicKey;
 
+  /// The [publicKey] configured using [KhaltiService.publicKey].
   static String get publicKey {
     assert(
       _publicKey != null,
@@ -25,10 +30,12 @@ class KhaltiService {
 
   static set publicKey(String key) => _publicKey = key;
 
+  /// The default platform only configuration.
   static KhaltiConfig config = KhaltiConfig.platformOnly();
 
-  KhaltiService({required KhaltiClient client}) : _client = client;
-
+  /// Fetches the list for available banks that supports [paymentType].
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-ebanking/#1-get-bank-list
   Future<BankListModel> getBanks({required PaymentType paymentType}) async {
     final params = {
       'page': '1',
@@ -49,6 +56,13 @@ class KhaltiService {
     );
   }
 
+  /// Initiates the payment.
+  ///
+  /// e.g. When the user clicks Pay button,
+  /// you will need to prompt for their Khalti registered mobile number,
+  /// and call this API once the payer submits.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-wallet/#1-initiate-transaction
   Future<PaymentInitiationResponseModel> initiatePayment({
     required PaymentInitiationRequestModel request,
   }) async {
@@ -65,6 +79,9 @@ class KhaltiService {
     );
   }
 
+  /// Confirms the payment.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-wallet/#2-confirm-transaction
   Future<PaymentSuccessModel> confirmPayment({
     required PaymentConfirmationRequestModel request,
   }) async {
@@ -81,6 +98,31 @@ class KhaltiService {
     );
   }
 
+  /// Constructs a bank payment URL.
+  ///
+  /// [bankId] is the unique bank identifier which can be obtained from the bank list API
+  ///
+  /// [mobile] : The Khalti registered mobile number of payer
+  ///
+  /// [amount] : The amount value of payment.
+  /// Amount must be in paisa and greater than equal to 1000 i.e Rs 10
+  ///
+  /// [productIdentity] : A unique string to identify the product
+  ///
+  /// [productName] : Descriptive name for the product
+  ///
+  /// [paymentType] is one of the  available [PaymentType]
+  ///
+  /// [returnUrl] is the redirection url after successful payment.
+  /// The redirected URL will be in the following format.
+  /// ```
+  /// <returnUrl>/?<data>
+  /// ```
+  ///
+  /// An [additionalData] to be sent alongside the payment configuration.
+  /// This is only for reporting purposes.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-ebanking/#2-initiate-transaction
   String buildBankUrl({
     required String bankId,
     required String mobile,
