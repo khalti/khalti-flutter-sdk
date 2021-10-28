@@ -54,6 +54,7 @@ class _CardPaymentPageState extends State<CardPaymentPage>
                 paymentType: widget.paymentType,
                 productUrl: config.productUrl,
                 additionalData: config.additionalData,
+                returnUrl: config.returnUrl,
               );
               await urlLauncher.launch(url);
             },

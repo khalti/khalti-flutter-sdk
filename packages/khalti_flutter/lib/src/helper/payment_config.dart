@@ -13,6 +13,8 @@ class PaymentConfig {
   final String? productUrl;
   final Map<String, Object>? additionalData;
 
+  String get returnUrl => 'khalti://pay/kpg';
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||

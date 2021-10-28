@@ -161,6 +161,7 @@ class _BankTile extends StatelessWidget {
                     paymentType: paymentType,
                     productUrl: config.productUrl,
                     additionalData: config.additionalData,
+                    returnUrl: config.returnUrl,
                   );
                   await urlLauncher.launch(url);
                   Navigator.pop(context);
