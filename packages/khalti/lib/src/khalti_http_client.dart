@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:khalti/khalti.dart';
 import 'package:khalti_core/khalti_core.dart';
 
+/// The default [KhaltiClient] implementation.
+///
+/// Uses [http](https://pub.dev/packages/http) package under-the-hood.
 class KhaltiHttpClient extends KhaltiClient {
   @override
   Future<HttpResponse> get(String url, Map<String, Object> params) async {

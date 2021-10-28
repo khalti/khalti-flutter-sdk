@@ -22,7 +22,6 @@ abstract class Khalti {
   /// custom config is not recommended.
   ///
   /// [enabledDebugging] decides whether to show network logs or not.
-  ///
   static Future<void> init({
     required String publicKey,
     KhaltiConfig? config,
@@ -57,7 +56,6 @@ abstract class Khalti {
   ///
   /// This can be used to provide mock implementation of [KhaltiService]
   /// for testing purposes.
-  ///
   @visibleForTesting
   static set debugKhaltiServiceOverride(KhaltiService service) {
     _service = service;
