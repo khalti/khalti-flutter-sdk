@@ -22,9 +22,12 @@ set debugUrlLauncherOverride(UrlLauncherUtil launcher) {
 }
 
 class UrlLauncherUtil {
-  Future<bool> launch(String url) async {
+  Future<bool> launch(String url, {bool openInNewTab = false}) async {
     try {
-      await launcher.launch(url);
+      await launcher.launch(
+        url,
+        webOnlyWindowName: openInNewTab ? null : '_self',
+      );
       return true;
     } on PlatformException catch (e) {
       log(e.message ?? '', name: 'URL Launcher Failed');
@@ -32,7 +35,12 @@ class UrlLauncherUtil {
     }
   }
 
-  Future<bool> launchMPINSetting() => launch(_mPinDeeplink);
+  Future<bool> launchMPINSetting() {
+    if (kIsWeb) {
+      return launch(_resetPinLink, openInNewTab: true);
+    }
+    return launch(_mPinDeeplink);
+  }
 
   Future<bool> openStoreToInstallKhalti(TargetPlatform platform) {
     switch (platform) {
