@@ -3,6 +3,7 @@ import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/helper/assets.dart';
 
+/// The error information extracted from error object.
 class ErrorInfo {
   ErrorInfo._({
     required this.primary,
@@ -11,34 +12,42 @@ class ErrorInfo {
     required this.data,
   });
 
+  /// The [primary] error message.
   final String primary;
+
+  /// The [secondary]; detailed error message.
   final String? secondary;
+
+  /// The [asset] name associated with the error.
   final String asset;
+
+  /// The [data] object associated with the error.
   final Map<String, dynamic> data;
 
-  factory ErrorInfo.from(BuildContext context, Object e) {
+  /// Factory for creating [ErrorInfo] from the [error].
+  factory ErrorInfo.from(BuildContext context, Object error) {
     var assetName = a_generalError;
     var primary = context.loc.anErrorOccurred;
     String? secondary;
     Map<String, Object?> _data = {};
 
-    if (e is FailureHttpResponse) {
-      final errorData = e.data;
+    if (error is FailureHttpResponse) {
+      final errorData = error.data;
 
       if (errorData is Map<String, dynamic> &&
           errorData.containsKey('detail')) {
         _data = errorData;
         secondary = errorData['detail'];
       } else {
-        secondary = e.message;
+        secondary = error.message;
       }
-    } else if (e is ExceptionHttpResponse && e.isSocketException) {
+    } else if (error is ExceptionHttpResponse && error.isSocketException) {
       assetName = a_noInternet;
 
-      if (e.code == 7) {
+      if (error.code == 7) {
         primary = context.loc.noInternet;
         secondary = context.loc.noInternetMessage;
-      } else if (e.code == 101) {
+      } else if (error.code == 101) {
         primary = context.loc.networkUnreachable;
         secondary = context.loc.networkUnreachableMessage;
       } else {
