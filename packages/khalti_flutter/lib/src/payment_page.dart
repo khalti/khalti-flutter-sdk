@@ -14,7 +14,9 @@ import 'page/wallet_payment_page.dart';
 import 'widget/color.dart';
 import 'widget/tab.dart';
 
+/// The payment page for Khalti Payment Gateway.
 class PaymentPage extends StatelessWidget {
+  /// Creates [PaymentPage] with the provided [config] and [preferences].
   PaymentPage({
     Key? key,
     required this.config,
@@ -29,7 +31,10 @@ class PaymentPage extends StatelessWidget {
         ),
         super(key: key);
 
+  /// The [PaymentConfig].
   final PaymentConfig config;
+
+  /// The [PaymentPreference]s.
   final List<PaymentPreference> preferences;
 
   @override
