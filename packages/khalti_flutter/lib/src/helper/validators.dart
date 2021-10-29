@@ -1,11 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 
+/// The field validators.
 class Validators {
+  /// Creates [Validators] for the provided [context].
   const Validators(this.context);
 
+  /// The context.
   final BuildContext context;
 
+  /// Checks for valid mobile number, which is 10 digit number starting with '9'.
   String? mobile(String? value) {
     return _required(
       value,
@@ -17,6 +21,7 @@ class Validators {
     );
   }
 
+  /// Checks for valid Khalti MPIN, which is [value] at least of 4 characters.
   String? pin(String? value) {
     return _required(
       value,
@@ -28,6 +33,7 @@ class Validators {
     );
   }
 
+  /// Checks for valid payment code, which is [value] at least of 6 characters.
   String? code(String? value) {
     return _required(
       value,
