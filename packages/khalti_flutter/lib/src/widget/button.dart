@@ -7,7 +7,9 @@ import 'package:khalti_flutter/src/helper/payment_preference.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_scope.dart';
 
+/// The widget that provides set of button to launch Khalti Payment Gateway interface.
 class KhaltiButton extends StatelessWidget {
+  /// Creates [KhaltiButton] with the provided properties.
   const KhaltiButton({
     Key? key,
     required this.config,
@@ -20,14 +22,31 @@ class KhaltiButton extends StatelessWidget {
   })  : _style = style,
         super(key: key);
 
+  /// The [PaymentConfig].
   final PaymentConfig config;
+
+  /// Called when payment succeeds.
   final ValueChanged<PaymentSuccessModel> onSuccess;
+
+  /// Called when payment fails.
   final ValueChanged<PaymentFailureModel> onFailure;
+
+  /// Called when user manually cancels the payment without performing any action.
   final VoidCallback? onCancel;
+
+  /// The [PaymentPreference]s.
+  ///
+  /// Set which payment option tabs are to be shown.
   final List<PaymentPreference> preferences;
+
+  /// The button [label].
+  ///
+  /// Default is 'PAY'.
   final String? label;
   final ButtonStyle? _style;
 
+  /// Creates [KhaltiButton] which launches KPG interface
+  /// with only wallet payment option.
   factory KhaltiButton.wallet({
     Key? key,
     required PaymentConfig config,
@@ -36,6 +55,8 @@ class KhaltiButton extends StatelessWidget {
     VoidCallback? onCancel,
   }) = _WalletButton;
 
+  /// Creates [KhaltiButton] which launches KPG interface
+  /// with only e-banking payment option.
   factory KhaltiButton.eBanking({
     Key? key,
     required PaymentConfig config,
@@ -44,6 +65,8 @@ class KhaltiButton extends StatelessWidget {
     VoidCallback? onCancel,
   }) = _EBankingButton;
 
+  /// Creates [KhaltiButton] which launches KPG interface
+  /// with only mobile banking payment option.
   factory KhaltiButton.mBanking({
     Key? key,
     required PaymentConfig config,
@@ -52,6 +75,8 @@ class KhaltiButton extends StatelessWidget {
     VoidCallback? onCancel,
   }) = _MobileBankingButton;
 
+  /// Creates [KhaltiButton] which launches KPG interface
+  /// with only SCT card payment option.
   factory KhaltiButton.sct({
     Key? key,
     required PaymentConfig config,
@@ -60,6 +85,8 @@ class KhaltiButton extends StatelessWidget {
     VoidCallback? onCancel,
   }) = _SCTButton;
 
+  /// Creates [KhaltiButton] which launches KPG interface
+  /// with only Connect IPS payment option.
   factory KhaltiButton.connectIPS({
     Key? key,
     required PaymentConfig config,
@@ -72,16 +99,17 @@ class KhaltiButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       child: Text(label ?? context.loc.pay.toUpperCase()),
     );
   }
 
+  /// The button [style], which can be overridden with [KhaltiButton.style].
   ButtonStyle get style {
     return _style ?? ElevatedButton.styleFrom(minimumSize: const Size(180, 40));
   }
 
-  Future<void> pay(BuildContext context) {
+  Future<void> _pay(BuildContext context) {
     return KhaltiScope.of(context).pay(
       config: config,
       onSuccess: onSuccess,
@@ -112,7 +140,7 @@ class _WalletButton extends KhaltiButton {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       icon: const _ButtonIcon(assetName: a_walletIcon),
       label: Text(context.loc.khalti.toUpperCase()),
     );
@@ -139,7 +167,7 @@ class _EBankingButton extends KhaltiButton {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       icon: const _ButtonIcon(assetName: a_eBankingIcon),
       label: Text(context.loc.eBanking.toUpperCase()),
     );
@@ -166,7 +194,7 @@ class _MobileBankingButton extends KhaltiButton {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       icon: const _ButtonIcon(assetName: a_mobileBankingIcon),
       label: Text(context.loc.mobileBanking.toUpperCase()),
     );
@@ -193,7 +221,7 @@ class _SCTButton extends KhaltiButton {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       icon: const _ButtonIcon(assetName: a_sctIcon),
       label: Text(context.loc.sct.toUpperCase()),
     );
@@ -220,7 +248,7 @@ class _ConnectIPSButton extends KhaltiButton {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       style: style,
-      onPressed: () => pay(context),
+      onPressed: () => _pay(context),
       icon: const _ButtonIcon(assetName: a_connectIpsIcon),
       label: Text(context.loc.connectIps.toUpperCase()),
     );
