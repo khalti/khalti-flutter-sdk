@@ -5,12 +5,15 @@ import 'package:khalti_flutter/src/helper/validators.dart';
 
 import 'color.dart';
 
+/// The Khalti Mobile Number field.
 class MobileField extends StatelessWidget {
+  /// Creates [MobileField].
   const MobileField({
     Key? key,
     required this.onChanged,
   }) : super(key: key);
 
+  /// Called when the mobile number changes.
   final ValueChanged<String> onChanged;
 
   @override
@@ -32,12 +35,15 @@ class MobileField extends StatelessWidget {
   }
 }
 
+/// The Khalti MPIN field.
 class PINField extends StatelessWidget {
+  /// Creates [PINField].
   const PINField({
     Key? key,
     required this.onChanged,
   }) : super(key: key);
 
+  /// Called when the MPIN changes.
   final ValueChanged<String> onChanged;
 
   @override
@@ -57,12 +63,15 @@ class PINField extends StatelessWidget {
   }
 }
 
+/// The Payment Code field.
 class CodeField extends StatelessWidget {
+  /// Creates [CodeField].
   const CodeField({
     Key? key,
     required this.onChanged,
   }) : super(key: key);
 
+  /// Called when the payment code changes.
   final ValueChanged<String> onChanged;
 
   @override
@@ -82,9 +91,12 @@ class CodeField extends StatelessWidget {
 
 const double _searchFieldHeight = 40;
 
+/// The Search field.
 class SearchField extends StatelessWidget {
+  /// Creates [SearchField].
   const SearchField({Key? key, required this.controller}) : super(key: key);
 
+  /// The text editing controller associated with the search field.
   final TextEditingController controller;
 
   @override
