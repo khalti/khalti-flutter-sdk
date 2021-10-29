@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 
+/// The internal pay button for KPG interface.
 class PayButton extends StatelessWidget {
+  /// Creates [PayButton] with the provided properties.
   const PayButton({
     Key? key,
     required this.amount,
     required this.onPressed,
   }) : super(key: key);
 
+  /// The [amount] in paisa.
   final int amount;
+
+  /// Called when user presses the button.
   final VoidCallback onPressed;
 
   @override
