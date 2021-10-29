@@ -1,6 +1,8 @@
 import 'package:khalti_core/src/helper/model_helpers.dart';
 
+/// The class representing a Bank.
 class BankModel {
+  /// Default constructor for [BankModel].
   BankModel({
     required this.idx,
     required this.logo,
@@ -8,11 +10,23 @@ class BankModel {
     required this.shortName,
   });
 
+  /// A unique bank identification string.
   final String idx;
+
+  /// URL of Bank's logo.
   final String logo;
+
+  /// Name of the Bank.
+  ///
+  /// e.g. NIC ASIA Bank Limited
   final String name;
+
+  /// Short name of the Bank.
+  ///
+  /// e.g. NICA
   final String shortName;
 
+  /// Factory to create [BankModel] instance from [map].
   factory BankModel.fromMap(Map<String, Object?> map) {
     return BankModel(
       idx: map.getString('idx'),
@@ -28,15 +42,9 @@ class BankModel {
   }
 }
 
+/// Paginated class for [BankModel].
 class BankListModel {
-  final List<BankModel> banks;
-  final int currentPage;
-  final List<int> recordRange;
-  final int totalPages;
-  final int totalRecords;
-  final String? next;
-  final String? previous;
-
+  /// Default constructor for [BankListModel].
   BankListModel({
     required this.banks,
     required this.currentPage,
@@ -47,6 +55,28 @@ class BankListModel {
     this.previous,
   });
 
+  /// The list of Bank.
+  final List<BankModel> banks;
+
+  /// The Current page.
+  final int currentPage;
+
+  /// The record range.
+  final List<int> recordRange;
+
+  /// The total pages available.
+  final int totalPages;
+
+  /// The total records available.
+  final int totalRecords;
+
+  /// The next page url.
+  final String? next;
+
+  /// The previous page url.
+  final String? previous;
+
+  /// Factory to create [BankListModel] instance from [map].
   factory BankListModel.fromMap(Map<String, Object?> map) {
     final rawBanks = map['records'] ?? [];
     return BankListModel(
