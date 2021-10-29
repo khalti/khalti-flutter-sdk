@@ -1,3 +1,4 @@
+/// The web implementation of [Platform].
 abstract class Platform {
   /// A string representing the operating system or platform.
   static String get operatingSystem => 'web';
@@ -31,10 +32,15 @@ abstract class Platform {
   static bool get isFuchsia => false;
 }
 
+/// Exception through by underlying http client.
 abstract class HttpException implements Exception {
+  /// Creates a [HttpException] with the provided value.
   const HttpException(this.message, {this.uri});
 
+  /// Description of the error.
   final String message;
+
+  /// The location [uri] of the error.
   final Uri? uri;
 }
 
@@ -65,6 +71,7 @@ abstract class SocketException implements Exception {
   final int? port;
 }
 
+/// The OS Error.
 abstract class OSError {
   /// Creates an OSError object from a message and an errorCode.
   const OSError([this.message = "", this.errorCode = noErrorCode]);
