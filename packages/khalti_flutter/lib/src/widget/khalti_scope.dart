@@ -4,12 +4,15 @@ import 'package:khalti_flutter/src/helper/payment_config.dart';
 import 'package:khalti_flutter/src/helper/payment_preference.dart';
 import 'package:khalti_flutter/src/payment_page.dart';
 
+/// The [KhaltiScope] builder.
 typedef KhaltiScopeBuilder = Widget Function(
   BuildContext,
   GlobalKey<NavigatorState>,
 );
 
+/// The widget that initializes Khalti Payment Gateway and handles received deeplink.
 class KhaltiScope extends StatefulWidget {
+  /// Creates [KhaltiScope] with the provided properties.
   KhaltiScope({
     Key? key,
     required this.publicKey,
@@ -19,12 +22,20 @@ class KhaltiScope extends StatefulWidget {
         _builder = builder,
         super(key: key);
 
+  /// The [publicKey] can be either test or live public key provided to Khalti merchant account.
+  ///
+  /// See the [Getting Started](https://docs.khalti.com/getting-started/),
+  /// to find out about grabbing public key.
   final String publicKey;
+
+  /// Whether to print network logs or not.
   final bool enabledDebugging;
 
   final KhaltiScopeBuilder _builder;
   final GlobalKey<NavigatorState> _navKey;
 
+  /// Returns the [KhaltiScope] instance for the widget tree
+  /// that corresponds to the given [context].
   static KhaltiScope of(BuildContext context) {
     final _InheritedKhaltiScope? _scope =
         context.dependOnInheritedWidgetOfExactType();
@@ -32,6 +43,7 @@ class KhaltiScope extends StatefulWidget {
     return _scope!.scope;
   }
 
+  /// Launches the Khalti Payment Gateway interface.
   Future<void> pay({
     required PaymentConfig config,
     required ValueChanged<PaymentSuccessModel> onSuccess,

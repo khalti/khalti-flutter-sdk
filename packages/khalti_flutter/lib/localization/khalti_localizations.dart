@@ -27,7 +27,7 @@ class KhaltiLocalizations {
   }
 
   /// Returns the localized resources object of [KhaltiLocalizations] for the widget
-  /// tree that corresponds to the given `context`.
+  /// tree that corresponds to the given [context].
   static KhaltiLocalizations of(BuildContext context) {
     final loc = Localizations.of<KhaltiLocalizations>(
       context,
