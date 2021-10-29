@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 
+/// The class defining color scheme for Khalti.
 class KhaltiColor extends InheritedWidget {
+  /// Creates [KhaltiColor] with the provided values.
   const KhaltiColor({
     Key? key,
     required this.isDark,
     required Widget child,
   }) : super(key: key, child: child);
 
+  /// Whether it is dark mode or light mode.
   final bool isDark;
 
+  /// The surface color variant.
   MaterialColor get surface => isDark ? _surfaceColorDark : _surfaceColorLight;
 
+  /// Returns the [KhaltiColor] found in the [context].
   static KhaltiColor of(BuildContext context) {
     final KhaltiColor? color = context.dependOnInheritedWidgetOfExactType();
     return color!;
