@@ -14,7 +14,7 @@ import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
 import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
-/// A page for making payments using Khalti wallet balance.
+/// The page for making payments using Khalti wallet balance.
 class WalletPaymentPage extends StatefulWidget {
   /// Creates [WalletPaymentPage].
   const WalletPaymentPage({Key? key}) : super(key: key);

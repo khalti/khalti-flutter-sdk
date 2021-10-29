@@ -6,7 +6,9 @@ import 'package:khalti_flutter/src/widget/dialogs.dart';
 import 'package:khalti_flutter/src/widget/fields.dart';
 import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
+/// The page for confirming the payment made.
 class ConfirmationPage extends StatefulWidget {
+  /// Creates [ConfirmationPage] with the provided values.
   const ConfirmationPage({
     Key? key,
     required this.token,
@@ -14,8 +16,13 @@ class ConfirmationPage extends StatefulWidget {
     required this.mPin,
   }) : super(key: key);
 
+  /// The [token] received at payment initiation step.
   final String token;
+
+  /// The [mobileNo] to which the confirmation payment code was sent.
   final String mobileNo;
+
+  /// The Khalti MPIN.
   final String mPin;
 
   @override

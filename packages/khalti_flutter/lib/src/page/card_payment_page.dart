@@ -8,7 +8,7 @@ import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
 import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
-/// A page for making payments using SCT Cards or Connect IPS.
+/// The page for making payments using SCT Cards or Connect IPS.
 class CardPaymentPage extends StatefulWidget {
   /// Creates [CardPaymentPage] with the provided [paymentType].
   const CardPaymentPage({
