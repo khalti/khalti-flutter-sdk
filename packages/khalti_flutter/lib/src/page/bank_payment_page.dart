@@ -12,12 +12,15 @@ import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:khalti_flutter/src/widget/pay_button.dart';
 import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
+/// A page for making payments using E-banking or Mobile Banking
 class BankPaymentPage extends StatefulWidget {
+  /// Creates [BankPaymentPage] with the provided [paymentType].
   const BankPaymentPage({
     Key? key,
     required this.paymentType,
   }) : super(key: key);
 
+  /// The [PaymentType].
   final PaymentType paymentType;
 
   @override
