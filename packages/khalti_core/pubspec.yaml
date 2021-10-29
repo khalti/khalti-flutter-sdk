@@ -1,5 +1,5 @@
 name: khalti_core
-description: Khalti Payment Gateway Core
+description: An official wrapper around Khalti Payment Gateway's REST API.
 version: 1.0.0
 homepage: https://khalti.com/payment-gateway/
 documentation: https://docs.khalti.com/
