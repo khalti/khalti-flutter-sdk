@@ -5,9 +5,12 @@ import 'package:khalti_flutter/src/helper/assets.dart';
 
 import 'image.dart';
 
+/// The progress indicator with Khalti Icon.
 class KhaltiProgressIndicator extends StatefulWidget {
+  /// Creates [KhaltiProgressIndicator] with the provided [size].
   const KhaltiProgressIndicator({Key? key, this.size = 80}) : super(key: key);
 
+  /// The [size] of the indicator.
   final double size;
 
   @override
@@ -51,7 +54,7 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
         animation: _animation,
         builder: (context, _) {
           return CustomPaint(
-            painter: ProgressPainter(fraction: _animation.value),
+            painter: _ProgressPainter(fraction: _animation.value),
             child: SizedBox.square(
               dimension: widget.size - 16 * 2,
               child: Padding(
@@ -71,8 +74,8 @@ class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
   }
 }
 
-class ProgressPainter extends CustomPainter {
-  ProgressPainter({required this.fraction});
+class _ProgressPainter extends CustomPainter {
+  _ProgressPainter({required this.fraction});
 
   final double fraction;
 
@@ -117,7 +120,7 @@ class ProgressPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(ProgressPainter oldDelegate) {
+  bool shouldRepaint(_ProgressPainter oldDelegate) {
     return oldDelegate.fraction != fraction;
   }
 }
