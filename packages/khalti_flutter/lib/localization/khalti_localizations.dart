@@ -42,7 +42,7 @@ class KhaltiLocalizations {
 
   /// The delegate to provide [KhaltiLocalizations].
   ///
-  /// This should be added to [MaterialApp.localizationsDelegate].
+  /// This should be added to [MaterialApp.localizationsDelegates].
   ///
   /// ```dart
   /// MaterialApp(
