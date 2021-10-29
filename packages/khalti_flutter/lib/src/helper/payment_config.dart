@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
 
+/// The payment configuration to configure gateway widgets and
+/// create khalti configuration to be sent to the server.
 class PaymentConfig {
+  /// Creates [PaymentConfig] from the provided objects.
   PaymentConfig({
     required this.amount,
     required this.productIdentity,
@@ -10,13 +13,32 @@ class PaymentConfig {
     String? returnUrl,
   }) : _returnUrl = returnUrl;
 
+  /// The payment [amount] in paisa.
   final int amount;
+
+  /// A unique string to identify the product.
   final String productIdentity;
+
+  /// Descriptive name for the product.
   final String productName;
+
+  /// The product URL.
   final String? productUrl;
+
+  /// An [additionalData] sent alongside the payment configuration.
   final Map<String, Object>? additionalData;
   final String? _returnUrl;
 
+  /// A redirection url after successful payment.
+  /// The redirected URL will be in the following format.
+  /// ```
+  /// <returnUrl>/?<data>
+  /// ```
+  ///
+  /// By default, web platform will have the base url as the [returnUrl].
+  /// And other platforms will have `khalti://pay/kpg` as the returnUrl.
+  ///
+  /// The default [returnUrl] can be overridden with [PaymentConfig.returnUrl].
   String get returnUrl {
     if (_returnUrl == null) {
       if (kIsWeb) {
