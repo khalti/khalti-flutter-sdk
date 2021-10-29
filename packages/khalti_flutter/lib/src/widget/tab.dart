@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'image.dart';
 
+/// The tab widget.
 class KhaltiTab extends StatelessWidget implements PreferredSizeWidget {
+  /// Creates [KhaltiTab] with the provided properties.
   const KhaltiTab({
     Key? key,
     required this.label,
@@ -10,8 +12,13 @@ class KhaltiTab extends StatelessWidget implements PreferredSizeWidget {
     this.horizontalPadding = 0,
   }) : super(key: key);
 
+  /// The tab [label].
   final String label;
+
+  /// The icon asset name.
   final String? iconAsset;
+
+  /// The horizontal padding for tab.
   final double horizontalPadding;
 
   @override
