@@ -6,7 +6,7 @@ import 'package:khalti_flutter/localization/khalti_localizations.dart';
 
 import 'helper/assets.dart';
 import 'helper/payment_config.dart';
-import 'helper/payment_config_provider.dart';
+import 'helper/payment_config_scope.dart';
 import 'helper/payment_preference.dart';
 import 'page/bank_payment_page.dart';
 import 'page/card_payment_page.dart';

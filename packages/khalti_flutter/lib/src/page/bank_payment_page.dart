@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
-import 'package:khalti_flutter/src/helper/payment_config_provider.dart';
+import 'package:khalti_flutter/src/helper/payment_config_scope.dart';
 import 'package:khalti_flutter/src/util/url_launcher_util.dart';
 import 'package:khalti_flutter/src/widget/bank_tile.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
