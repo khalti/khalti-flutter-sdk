@@ -20,7 +20,8 @@ class KhaltiScope extends StatefulWidget {
     required this.publicKey,
     required KhaltiScopeBuilder builder,
     this.enabledDebugging = false,
-  })  : _navKey = GlobalObjectKey(publicKey),
+    GlobalKey<NavigatorState>? navigatorKey,
+  })  : _navKey = navigatorKey ?? GlobalObjectKey(publicKey),
         _builder = builder,
         super(key: key);
 
