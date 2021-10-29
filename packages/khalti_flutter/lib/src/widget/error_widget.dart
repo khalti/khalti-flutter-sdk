@@ -3,7 +3,9 @@ import 'package:khalti_flutter/src/helper/error_info.dart';
 import 'package:khalti_flutter/src/widget/color.dart';
 import 'package:khalti_flutter/src/widget/image.dart';
 
+/// The widget to show error with illustration.
 class KhaltiErrorWidget extends StatelessWidget {
+  /// Create [KhaltiErrorWidget] with the provided values.
   const KhaltiErrorWidget({
     Key? key,
     required this.error,
@@ -11,8 +13,13 @@ class KhaltiErrorWidget extends StatelessWidget {
     this.subtitle,
   }) : super(key: key);
 
+  /// The [error] object.
   final Object error;
+
+  /// The error [title].
   final String? title;
+
+  /// The error [subtitle].
   final String? subtitle;
 
   @override
