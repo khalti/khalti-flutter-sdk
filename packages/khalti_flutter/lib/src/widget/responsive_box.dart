@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:flutter/material.dart';
 
 /// The widget which constraints it's [child] depending upon the screen size.

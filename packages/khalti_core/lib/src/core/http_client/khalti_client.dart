@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'http_response.dart';
 
 /// The base http client to make request to Khalti server.

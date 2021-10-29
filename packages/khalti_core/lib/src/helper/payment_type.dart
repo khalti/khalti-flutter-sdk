@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 /// The payment type to determine the non-wallet payment method.
 enum PaymentType {
   /// Connect IPS

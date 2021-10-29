@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
 import 'package:khalti_flutter/src/helper/payment_config.dart';

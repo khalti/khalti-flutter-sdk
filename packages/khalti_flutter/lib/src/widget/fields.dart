@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';

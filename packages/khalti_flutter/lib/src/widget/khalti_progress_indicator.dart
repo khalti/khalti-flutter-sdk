@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';

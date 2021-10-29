@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 /// Internal Extension for helping with type conversion.
 extension ModelHelperExtension on Map<String, Object?> {
   /// Gets string value of the [key].

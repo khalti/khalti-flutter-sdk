@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;

@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 export 'src/config/khalti_config.dart';
 export 'src/core/http_client/http_response.dart' hide SuccessHttpResponse;
 export 'src/core/http_client/khalti_client.dart';

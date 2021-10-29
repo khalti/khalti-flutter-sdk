@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 /// The web implementation of [Platform].
 abstract class Platform {
   /// A string representing the operating system or platform.

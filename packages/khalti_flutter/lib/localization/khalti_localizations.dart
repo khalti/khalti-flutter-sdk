@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';

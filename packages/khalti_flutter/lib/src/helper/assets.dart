@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 //ignore_for_file: constant_identifier_names
 
 /// dialog/error.svg

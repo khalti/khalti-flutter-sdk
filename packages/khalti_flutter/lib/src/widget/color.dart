@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:flutter/material.dart';
 
 /// The class defining color scheme for Khalti.

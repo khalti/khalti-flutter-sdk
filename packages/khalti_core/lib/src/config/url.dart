@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 /// Bank List API URL Path
 const String banks = 'bank/';
 

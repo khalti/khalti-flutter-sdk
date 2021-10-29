@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:flutter/foundation.dart';
 
 /// The payment configuration to configure gateway widgets and

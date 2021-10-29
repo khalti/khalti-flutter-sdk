@@ -1,3 +1,5 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'dart:convert';
 
 import 'package:khalti_core/src/core/http_client/khalti_client.dart';
