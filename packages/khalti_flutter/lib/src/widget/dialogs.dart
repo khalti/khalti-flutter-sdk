@@ -8,6 +8,7 @@ import 'package:khalti_flutter/src/widget/image.dart';
 import 'package:khalti_flutter/src/widget/khalti_progress_indicator.dart';
 import 'package:khalti_flutter/src/widget/responsive_box.dart';
 
+/// Shows progress dialog with the provided [message].
 Future<void> showProgressDialog(
   BuildContext context, {
   required String message,
@@ -47,6 +48,7 @@ Future<void> showProgressDialog(
   );
 }
 
+/// Shows error dialog for the provided [error] object.
 Future<void> showErrorDialog(
   BuildContext context, {
   required Object error,
@@ -76,6 +78,7 @@ Future<void> showErrorDialog(
   );
 }
 
+/// Shows success dialog with the provided [title] and [subtitle].
 Future<void> showSuccessDialog(
   BuildContext context, {
   required String title,
@@ -103,6 +106,7 @@ Future<void> showSuccessDialog(
   );
 }
 
+/// Shows progress dialog with the provided [title] and [body].
 Future<void> showInfoDialog(
   BuildContext context, {
   required String title,
