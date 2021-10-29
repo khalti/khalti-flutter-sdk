@@ -32,7 +32,7 @@ With this package, you can accepts payments from:
 Using Khalti Payment Gateway, you do not need to integrate with individual banks.
 
 Note: _This package only provides set of methods for client integration of Khalti Payment Gateway.
-If custom UI is not required then prefer using [khalti_flutter](https://pub.dev/packages/khalti_flutter) instead (currently in development)._
+If custom UI is not required then prefer using [khalti_flutter](https://pub.dev/packages/khalti_flutter) instead._
 
 ## Setup
 

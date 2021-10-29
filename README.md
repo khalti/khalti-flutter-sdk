@@ -60,23 +60,17 @@ khalti_flutter  | [![khalti_flutter](https://img.shields.io/pub/v/khalti_flutter
 **For Queries, feel free to call us at:**
 
 _**Contact Our Merchant Team**_
-
 * Mobile (Viber / Whatsapp): 9801165567, 9801165538
-  
 * Email: merchant@khalti.com
 
 (To integrate Khalti to your business and other online platforms.)
 
 _**Contact Our Merchant Support**_
-
 * Mobile (Viber / Whatsapp): 9801165565, 9801856383, 9801856451
-  
 * Email: merchantcare@khalti.com
 
 _**Contact Our Technical Team**_
-
 * Mobile (Viber / Whatsapp): 9843007232
-  
 * Email / Skype: sashant@khalti.com
 
 (For payment gateway integration support.)
