@@ -47,7 +47,9 @@ Using Khalti Payment Gateway, you do not need to integrate with individual banks
   * [Using KhaltiButton](#using-khaltibutton)
   * [Manual Method](#manual-method)
 - [Customizing Return URL](#customizing-return-url)
-- [Server Verification](#server-verification)  
+- [Customizing UI](#customizing-ui)  
+- [Example](#example)  
+- [Server Verification](#server-verification)
 - [Contributing](#contributing)
   * [Internationalization](#internationalization)
 - [Support](#support)  
@@ -250,6 +252,14 @@ final config = PaymentConfig(
   ...
 );
 ```
+
+# Customizing UI
+This package doesn't support high level of customization as this is more of a plug & play package.
+
+If a custom interface is required then [khalti](https://pub.dev/packages/khalti) package can be used.
+
+# Example
+Find more [detailed example here](https://github.com/khalti/khalti-flutter-sdk/tree/master/packages/khalti_flutter/example).
 
 # Server Verification
 After success from the client side payment, the next step is to perform server verification.
