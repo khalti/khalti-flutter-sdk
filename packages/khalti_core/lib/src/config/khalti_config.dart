@@ -1,19 +1,33 @@
-import 'dart:io';
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
-const bool _kIsWeb = identical(0, 0.0);
+import 'package:khalti_core/src/platform/platform.dart';
 
+/// The configuration class for Khalti Payment Gateway.
 class KhaltiConfig {
+  /// The version of the Khalti Payment Gateway Library.
   final String version = '0.0.1';
 
-  final String source;
+  /// The device platform.
+  final String platform;
+
+  /// The OS version.
   final String osVersion;
+
+  /// The device model.
   final String deviceModel;
+
+  /// The device manufacturer.
   final String deviceManufacturer;
+
+  /// The application package name.
   final String packageName;
+
+  /// Tha application package version.
   final String packageVersion;
 
+  /// Default constructor for the configuration.
   KhaltiConfig({
-    required this.source,
+    required this.platform,
     required this.osVersion,
     required this.deviceModel,
     required this.deviceManufacturer,
@@ -21,9 +35,11 @@ class KhaltiConfig {
     required this.packageVersion,
   });
 
-  factory KhaltiConfig.sourceOnly() {
+  /// A factory constructor that only configures the [platform]
+  /// and ignores everything else.
+  factory KhaltiConfig.platformOnly() {
     return KhaltiConfig(
-      source: _kIsWeb ? 'web' : Platform.operatingSystem,
+      platform: Platform.operatingSystem,
       osVersion: '',
       deviceModel: '',
       deviceManufacturer: '',
@@ -32,10 +48,11 @@ class KhaltiConfig {
     );
   }
 
+  /// The map representation of [KhaltiConfig].
   Map<String, String> get raw {
     return {
       'checkout-version': version,
-      'source': source,
+      'checkout-platform': platform,
       'checkout-os-version': osVersion,
       'checkout-device-model': deviceModel,
       'checkout-device-manufacturer': deviceManufacturer,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:khalti/khalti.dart';
-import 'package:url_launcher/url_launcher.dart' as urlLauncher;
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +11,7 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
-      home: KhaltiExampleApp(),
+      home: const KhaltiExampleApp(),
       theme: ThemeData(primarySwatch: Colors.deepPurple),
     ),
   );
@@ -26,8 +26,8 @@ class KhaltiExampleApp extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('KPG Example'),
-          bottom: TabBar(
+          title: const Text('KPG Example'),
+          bottom: const TabBar(
             tabs: [
               Tab(text: 'Wallet Payment'),
               Tab(text: 'EBanking'),
@@ -35,11 +35,11 @@ class KhaltiExampleApp extends StatelessWidget {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             WalletPayment(),
-            Banking(paymentType: BankPaymentType.eBanking),
-            Banking(paymentType: BankPaymentType.mobileCheckout),
+            Banking(paymentType: PaymentType.eBanking),
+            Banking(paymentType: PaymentType.mobileCheckout),
           ],
         ),
       ),
@@ -81,14 +81,14 @@ class _WalletPaymentState extends State<WalletPayment> {
         children: [
           TextFormField(
             validator: (v) => (v?.isEmpty ?? true) ? 'Required ' : null,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               label: Text('Mobile Number'),
             ),
             controller: _mobileController,
           ),
           TextFormField(
             validator: (v) => (v?.isEmpty ?? true) ? 'Required ' : null,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               label: Text('Khalti MPIN'),
             ),
             controller: _pinController,
@@ -119,16 +119,16 @@ class _WalletPaymentState extends State<WalletPayment> {
                 builder: (context) {
                   String? _otp;
                   return AlertDialog(
-                    title: Text('OTP Sent!'),
+                    title: const Text('OTP Sent!'),
                     content: TextField(
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         label: Text('OTP Code'),
                       ),
                       onChanged: (v) => _otp = v,
                     ),
                     actions: [
                       SimpleDialogOption(
-                        child: Text('OK'),
+                        child: const Text('OK'),
                         onPressed: () => Navigator.pop(context, _otp),
                       )
                     ],
@@ -146,7 +146,7 @@ class _WalletPaymentState extends State<WalletPayment> {
                     ),
                   );
 
-                  print(model);
+                  debugPrint(model.toString());
                 } catch (e) {
                   ScaffoldMessenger.maybeOf(context)?.showSnackBar(
                     SnackBar(content: Text(e.toString())),
@@ -154,7 +154,7 @@ class _WalletPaymentState extends State<WalletPayment> {
                 }
               }
             },
-            child: Text('PAY Rs. 10'),
+            child: const Text('PAY Rs. 10'),
           ),
         ],
       ),
@@ -165,7 +165,7 @@ class _WalletPaymentState extends State<WalletPayment> {
 class Banking extends StatefulWidget {
   const Banking({Key? key, required this.paymentType}) : super(key: key);
 
-  final BankPaymentType paymentType;
+  final PaymentType paymentType;
 
   @override
   State<Banking> createState() => _BankingState();
@@ -200,16 +200,16 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                     builder: (context) {
                       String? _mobile;
                       return AlertDialog(
-                        title: Text('Enter Mobile Number'),
+                        title: const Text('Enter Mobile Number'),
                         content: TextField(
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             label: Text('Mobile Number'),
                           ),
                           onChanged: (v) => _mobile = v,
                         ),
                         actions: [
                           SimpleDialogOption(
-                            child: Text('OK'),
+                            child: const Text('OK'),
                             onPressed: () => Navigator.pop(context, _mobile),
                           )
                         ],
@@ -225,10 +225,10 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                       productIdentity: 'macbook-pro-21',
                       productName: 'Macbook Pro 2021',
                       paymentType: widget.paymentType,
+                      returnUrl: 'https://khalti.com',
                     );
 
-                    print(url);
-                    urlLauncher.launch(url);
+                    url_launcher.launch(url);
                   }
                 },
               );
@@ -236,7 +236,7 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
           );
         }
 
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

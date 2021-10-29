@@ -1,21 +1,27 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:khalti_core/khalti_core.dart';
 import 'package:khalti_core/src/config/url.dart';
 import 'package:khalti_core/src/core/http_client/http_response.dart';
 import 'package:khalti_core/src/core/http_client/khalti_client.dart';
-import 'package:khalti_core/src/helper/bank_payment_type.dart';
+import 'package:khalti_core/src/helper/payment_type.dart';
 import 'package:khalti_core/src/model/bank_model.dart';
-import 'package:khalti_core/src/model/payment_confirmation_model.dart';
-import 'package:khalti_core/src/model/payment_initiation_model.dart';
+import 'package:khalti_core/src/model/payload_model.dart';
 
+/// The wrapper class to access Khalti Payment Gateway API.
 class KhaltiService {
-  final String _baseUrl = 'https://khalti.com';
-  final int _apiVersion = 5;
+  /// Default constructor for [KhaltiService] to initialize [KhaltiClient].
+  KhaltiService({required KhaltiClient client}) : _client = client;
 
+  final String _baseUrl = 'https://khalti.com';
+  final int _apiVersion = 2;
   final KhaltiClient _client;
 
+  /// Enabling [enableDebugging] will print network logs.
   static bool enableDebugging = false;
   static String? _publicKey;
 
+  /// The [publicKey] configured using [KhaltiService.publicKey].
   static String get publicKey {
     assert(
       _publicKey != null,
@@ -26,11 +32,13 @@ class KhaltiService {
 
   static set publicKey(String key) => _publicKey = key;
 
-  static KhaltiConfig config = KhaltiConfig.sourceOnly();
+  /// The default platform only configuration.
+  static KhaltiConfig config = KhaltiConfig.platformOnly();
 
-  KhaltiService({required KhaltiClient client}) : _client = client;
-
-  Future<BankListModel> getBanks({required BankPaymentType paymentType}) async {
+  /// Fetches the list for available banks that supports [paymentType].
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-ebanking/#1-get-bank-list
+  Future<BankListModel> getBanks({required PaymentType paymentType}) async {
     final params = {
       'page': '1',
       'page_size': '200',
@@ -44,15 +52,19 @@ class KhaltiService {
     final response = await _client.get(url, params);
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return BankListModel.fromMap(response.data as Map<String, dynamic>);
-    }
+    return _handleError(
+      response,
+      converter: (data) => BankListModel.fromMap(data),
+    );
   }
 
+  /// Initiates the payment.
+  ///
+  /// e.g. When the user clicks Pay button,
+  /// you will need to prompt for their Khalti registered mobile number,
+  /// and call this API once the payer submits.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-wallet/#1-initiate-transaction
   Future<PaymentInitiationResponseModel> initiatePayment({
     required PaymentInitiationRequestModel request,
   }) async {
@@ -63,18 +75,16 @@ class KhaltiService {
     final response = await _client.post(url, request.toMap());
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return PaymentInitiationResponseModel.fromMap(
-        response.data as Map<String, dynamic>,
-      );
-    }
+    return _handleError(
+      response,
+      converter: (data) => PaymentInitiationResponseModel.fromMap(data),
+    );
   }
 
-  Future<PaymentConfirmationResponseModel> confirmPayment({
+  /// Confirms the payment.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-wallet/#2-confirm-transaction
+  Future<PaymentSuccessModel> confirmPayment({
     required PaymentConfirmationRequestModel request,
   }) async {
     final url = _buildUrl(confirmTransaction);
@@ -84,24 +94,47 @@ class KhaltiService {
     final response = await _client.post(url, request.toMap());
     logger.response(response);
 
-    if (response is ExceptionHttpResponse) {
-      throw response.message;
-    } else if (response is FailureHttpResponse) {
-      throw response.data;
-    } else {
-      return PaymentConfirmationResponseModel.fromMap(
-        response.data as Map<String, dynamic>,
-      );
-    }
+    return _handleError(
+      response,
+      converter: (data) => PaymentSuccessModel.fromMap(data),
+    );
   }
 
+  /// Constructs a bank payment URL.
+  ///
+  /// [bankId] is the unique bank identifier which can be obtained from the bank list API
+  ///
+  /// [mobile] : The Khalti registered mobile number of payer
+  ///
+  /// [amount] : The amount value of payment.
+  /// Amount must be in paisa and greater than equal to 1000 i.e Rs 10
+  ///
+  /// [productIdentity] : A unique string to identify the product
+  ///
+  /// [productName] : Descriptive name for the product
+  ///
+  /// [paymentType] is one of the  available [PaymentType]
+  ///
+  /// [returnUrl] is the redirection url after successful payment.
+  /// The redirected URL will be in the following format.
+  /// ```
+  /// <returnUrl>/?<data>
+  /// ```
+  ///
+  /// An [additionalData] to be sent alongside the payment configuration.
+  /// This is only for reporting purposes.
+  ///
+  /// See: https://docs.khalti.com/checkout/diy-ebanking/#2-initiate-transaction
   String buildBankUrl({
     required String bankId,
     required String mobile,
     required int amount,
     required String productIdentity,
     required String productName,
-    required BankPaymentType paymentType,
+    required PaymentType paymentType,
+    required String returnUrl,
+    String? productUrl,
+    Map<String, Object>? additionalData,
   }) {
     final params = {
       'bank': bankId,
@@ -110,16 +143,34 @@ class KhaltiService {
       'mobile': mobile,
       'product_identity': productIdentity,
       'product_name': productName,
+      'source': 'custom',
       ...config.raw,
-      'return_url': config.packageName,
+      if (productUrl != null) 'product_url': productUrl,
+      if (additionalData != null) ...additionalData.map(_stringifyValue),
+      'return_url': returnUrl,
       'payment_type': paymentType.value,
     };
     final uri = Uri.https('khalti.com', 'ebanking/initiate/', params);
     return uri.toString();
   }
 
+  T _handleError<T>(
+    HttpResponse response, {
+    required T Function(Map<String, dynamic>) converter,
+  }) {
+    if (response is ExceptionHttpResponse || response is FailureHttpResponse) {
+      throw response;
+    }
+
+    return converter(response.data as Map<String, dynamic>);
+  }
+
   String _buildUrl(String path) {
-    return '${_baseUrl}/api/v$_apiVersion/$path';
+    return '$_baseUrl/api/v$_apiVersion/$path';
+  }
+
+  MapEntry<String, String> _stringifyValue(String key, Object value) {
+    return MapEntry('merchant_$key', value.toString());
   }
 }
 
@@ -149,10 +200,18 @@ class _Logger {
   void _logHeading() => _log(url, name: method);
 
   void _log(String message, {required String name}) {
-    if (KhaltiService.enableDebugging) print('[$name] $message');
+    if (KhaltiService.enableDebugging) _debugPrint('[$name] $message');
   }
 
   void _divider() {
-    if (KhaltiService.enableDebugging) print('-' * 140);
+    if (KhaltiService.enableDebugging) _debugPrint('-' * 140);
+  }
+
+  void _debugPrint(String message) {
+    assert(() {
+      // ignore: avoid_print
+      print(message);
+      return true;
+    }());
   }
 }

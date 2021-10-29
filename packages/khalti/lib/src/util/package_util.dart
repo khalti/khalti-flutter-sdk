@@ -1,9 +1,15 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:flutter/services.dart';
 
+/// A utility class to extract package related information.
 class PackageUtil {
   late PackageInfo _packageInfo;
 
+  /// Initializes the underlying [package_info](https://pub.dev/packages/package_info) plugin.
+  ///
+  /// This must be invoked before accessing any of the getters in the class.
   Future<void> init() async {
     try {
       _packageInfo = await PackageInfo.fromPlatform();

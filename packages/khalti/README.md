@@ -1,6 +1,24 @@
-# Khalti Payment Gateway
+<p align="center">
+<img src="https://raw.githubusercontent.com/khalti/khalti-flutter-sdk/master/assets/khalti_logo.png" height="150" alt="Khalti Payment Gateway" />
+</p>
 
-Note: _This is an alpha release of the package and the APIs might slightly change with the stable release._
+<p align="center">
+<strong>Khalti Payment Gateway</strong>
+</p>
+
+<p align="center">
+<a href="https://pub.dartlang.org/packages/khalti"><img src="https://img.shields.io/pub/v/khalti" alt="Pub"></a>
+<a href="https://docs.khalti.com/"><img src="https://img.shields.io/badge/Khalti-Docs-blueviolet" alt="Khalti Docs"></a>
+<a href="https://github.com/khalti/khalti-flutter-sdk/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-BSD--3-informational" alt="BSD-3 License"></a>
+<a href="https://github.com/khalti/khalti-flutter-sdk/issues"><img src="https://img.shields.io/github/issues/khalti/khalti-flutter-sdk" alt="GitHub issues"></a>
+<a href="https://khalti.com"><img src="https://img.shields.io/website?url=https%3A%2F%2Fdocs.khalti.com" alt="Website"></a>
+<a href="https://www.facebook.com/khalti.official"><img src="https://img.shields.io/badge/follow--000?style=social&logo=facebook" alt="Follow Khalti in Facebook"></a>
+<a href="https://www.instagram.com/khaltiofficial"><img src="https://img.shields.io/badge/follow--000?style=social&logo=instagram" alt="Follow Khalti in Instagram"></a>
+<a href="https://twitter.com/intent/follow?screen_name=khaltiofficial"><img src="https://img.shields.io/twitter/follow/khaltiofficial?style=social" alt="Follow Khalti in Twitter"></a>
+<a href="https://www.youtube.com/channel/UCrXM4HqK9th3E2a04Z9Lh-Q"><img src="https://img.shields.io/youtube/channel/subscribers/UCrXM4HqK9th3E2a04Z9Lh-Q?label=Subscribe&style=social" alt="Subscribe Youtube Channel"></a>
+</p>
+
+---
 
 Khalti is a payment gateway, digital wallet and API provider system for various online services for Nepal.
 
@@ -13,8 +31,10 @@ With this package, you can accepts payments from:
 
 Using Khalti Payment Gateway, you do not need to integrate with individual banks.
 
-Note: _This package only provides set of methods for client integration of Khalti Payment Gateway.
-If custom UI is not required then prefer using [khalti_flutter](https://pub.dev/packages/khalti_flutter) instead (currently in development)._
+## Want easier integration?
+This package only provides set of methods for client integration of Khalti Payment Gateway.
+
+If custom UI is not required then prefer using [khalti_flutter](https://pub.dev/packages/khalti_flutter) instead.
 
 ## Setup
 
@@ -91,7 +111,7 @@ final banks = await service.getBanks(paymentType: BankPaymentType.eBanking);
 Visit [https://docs.khalti.com/](https://docs.khalti.com/).
 
 ## License
-Copyright 2021 The Khalti Authors. All rights reserved.
+Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:

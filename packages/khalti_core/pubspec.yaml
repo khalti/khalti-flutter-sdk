@@ -1,10 +1,13 @@
 name: khalti_core
-description: Khalti Payment Gateway Core
-version: 0.0.2
-homepage: https://khalti.com
+description: An official wrapper around Khalti Payment Gateway's REST API.
+version: 1.0.0
+homepage: https://khalti.com/payment-gateway/
 documentation: https://docs.khalti.com/
 issue_tracker: https://github.com/khalti/khalti-flutter-sdk/issues
 repository: https://github.com/khalti/khalti-flutter-sdk/tree/master/packages/khalti_core
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
+
+dev_dependencies:
+  flutter_lints: ^1.0.4

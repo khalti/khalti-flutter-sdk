@@ -1,19 +1,24 @@
-import 'dart:io';
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:khalti_core/khalti_core.dart';
 
+/// A utility class to extract device related information.
 class DeviceUtil {
   late AndroidDeviceInfo _androidDeviceInfo;
   late IosDeviceInfo _iosDeviceInfo;
   late WebBrowserInfo _webBrowserInfo;
 
+  /// Initializes the underlying [device_info](https://pub.dev/packages/device_info) plugin.
+  ///
+  /// This must be invoked before accessing any of the getters in the class.
   Future<void> init() async {
     try {
       final deviceInfo = DeviceInfoPlugin();
       if (kIsWeb) {
-        await deviceInfo.webBrowserInfo;
+        _webBrowserInfo = await deviceInfo.webBrowserInfo;
       } else {
         if (Platform.isIOS) {
           _iosDeviceInfo = await deviceInfo.iosInfo;

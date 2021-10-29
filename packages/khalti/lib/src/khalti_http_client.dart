@@ -1,9 +1,14 @@
+// Copyright (c) 2021 The Khalti Authors. All rights reserved.
+
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:khalti_core/khalti_core.dart';
 import 'package:http/http.dart' as http;
+import 'package:khalti/khalti.dart';
+import 'package:khalti_core/khalti_core.dart';
 
+/// The default [KhaltiClient] implementation.
+///
+/// Uses [http](https://pub.dev/packages/http) package under-the-hood.
 class KhaltiHttpClient extends KhaltiClient {
   @override
   Future<HttpResponse> get(String url, Map<String, Object> params) async {
@@ -63,12 +68,20 @@ class KhaltiHttpClient extends KhaltiClient {
         stackTrace: s,
         detail: e.uri,
       );
+    } on http.ClientException catch (e, s) {
+      return HttpResponse.exception(
+        message: e.message,
+        code: 0,
+        stackTrace: s,
+        detail: e.uri,
+      );
     } on SocketException catch (e, s) {
       return HttpResponse.exception(
         message: e.message,
         code: e.osError?.errorCode ?? 0,
         stackTrace: s,
         detail: e.osError?.message,
+        isSocketException: true,
       );
     } on FormatException catch (e, s) {
       return HttpResponse.exception(
