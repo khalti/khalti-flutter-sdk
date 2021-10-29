@@ -14,6 +14,7 @@ const String _mPinDeeplink = 'khalti://go/?t=mpin';
 
 UrlLauncherUtil _urlLauncher = UrlLauncherUtil();
 
+/// The [UrlLauncherUtil] instance.
 UrlLauncherUtil get urlLauncher => _urlLauncher;
 
 @visibleForTesting
@@ -21,7 +22,13 @@ set debugUrlLauncherOverride(UrlLauncherUtil launcher) {
   _urlLauncher = launcher;
 }
 
+/// A utility class to launch URLs.
 class UrlLauncherUtil {
+  /// Parses the specified [url] string and delegates handling of it to the
+  /// underlying platform.
+  ///
+  /// If [openInNewTab] is true, the [url] will be launched in new browser tab.
+  /// The flag is ignored for platform other than web. Default is false.
   Future<bool> launch(String url, {bool openInNewTab = false}) async {
     try {
       await launcher.launch(
@@ -35,13 +42,13 @@ class UrlLauncherUtil {
     }
   }
 
+  /// Launches MPIN reset url or settings in Khalti App.
   Future<bool> launchMPINSetting() {
-    if (kIsWeb) {
-      return launch(_resetPinLink, openInNewTab: true);
-    }
+    if (kIsWeb) return openResetPinPageInBrowser();
     return launch(_mPinDeeplink);
   }
 
+  /// Launches store depending upon the [platform] to install Khalti App.
   Future<bool> openStoreToInstallKhalti(TargetPlatform platform) {
     switch (platform) {
       case TargetPlatform.android:
@@ -56,5 +63,8 @@ class UrlLauncherUtil {
     return SynchronousFuture(false);
   }
 
-  Future<bool> openResetPinPageInBrowser() => launch(_resetPinLink);
+  /// Launches MPIN reset url.
+  Future<bool> openResetPinPageInBrowser() {
+    return launch(_resetPinLink, openInNewTab: true);
+  }
 }
