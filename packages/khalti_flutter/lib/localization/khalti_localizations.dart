@@ -5,10 +5,13 @@ import 'package:intl/intl.dart';
 
 import 'messages_all.dart';
 
+/// Internal helper extension for localizing strings.
 extension KhaltiLocalizationsExtension on BuildContext {
+  /// The localization instance.
   KhaltiLocalizations get loc => KhaltiLocalizations.of(this);
 }
 
+/// The class to provide localization support for the Khalti Payment Gateway library.
 class KhaltiLocalizations {
   const KhaltiLocalizations._();
 
@@ -23,6 +26,8 @@ class KhaltiLocalizations {
     return const KhaltiLocalizations._();
   }
 
+  /// Returns the localized resources object of [KhaltiLocalizations] for the widget
+  /// tree that corresponds to the given `context`.
   static KhaltiLocalizations of(BuildContext context) {
     final loc = Localizations.of<KhaltiLocalizations>(
       context,
@@ -35,6 +40,18 @@ class KhaltiLocalizations {
     return loc!;
   }
 
+  /// The delegate to provide [KhaltiLocalizations].
+  ///
+  /// This should be added to [MaterialApp.localizationsDelegate].
+  ///
+  /// ```dart
+  /// MaterialApp(
+  ///   localizationsDelegates: const [
+  ///     KhaltiLocalizations.delegate,
+  ///     // other delegates
+  ///   ],
+  /// );
+  /// ```
   static const LocalizationsDelegate<KhaltiLocalizations> delegate =
       _KhaltiLocalizationsDelegate();
 
