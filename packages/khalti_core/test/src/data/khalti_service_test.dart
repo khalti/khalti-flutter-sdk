@@ -1,5 +1,7 @@
 // Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
+import 'dart:async';
+
 import 'package:khalti_core/khalti_core.dart';
 import 'package:test/test.dart';
 
@@ -189,5 +191,54 @@ void main() {
         },
       );
     });
+  });
+
+  group('KhaltiService log tests | ', () {
+    test(
+      'calling service methods logs the network calls if enableDebugging is true',
+      () {
+        final logs = <String>[];
+
+        Zone.current.fork(
+          specification: ZoneSpecification(
+            print: (_, __, ___, String msg) {
+              logs.add(msg);
+            },
+          ),
+        ).run<void>(
+          () async {
+            KhaltiService.enableDebugging = true;
+
+            mockClient.response = HttpResponse.success(
+              data: {
+                'records': [
+                  {
+                    'name': 'NIC Asia Bank Limited',
+                    'short_name': 'NICA',
+                  },
+                  {
+                    'name': 'Himalayan Bank Limited',
+                    'short_name': 'HBL',
+                  },
+                ],
+              },
+              statusCode: 200,
+            );
+            await service.getBanks(
+              paymentType: PaymentType.eBanking,
+            );
+            expect(logs[1], '[GET] https://khalti.com/api/v2/bank/');
+            expect(
+              logs[2],
+              '[Query Parameters] {page: 1, page_size: 200, payment_type: ebanking}',
+            );
+            expect(
+              logs[6],
+              '[Response] SuccessHttpResponse{data: {records: [{name: NIC Asia Bank Limited, short_name: NICA}, {name: Himalayan Bank Limited, short_name: HBL}]}, statusCode: 200}',
+            );
+          },
+        );
+      },
+    );
   });
 }
