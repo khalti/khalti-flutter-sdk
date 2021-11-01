@@ -274,5 +274,15 @@
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
+  },
+  "attemptsRemaining": "बाँकी प्रयासहरू: {remainingAttempts}",
+  "@attemptsRemaining": {
+    "type": "text",
+    "placeholders_order": [
+      "remainingAttempts"
+    ],
+    "placeholders": {
+      "remainingAttempts": {}
+    }
   }
 }

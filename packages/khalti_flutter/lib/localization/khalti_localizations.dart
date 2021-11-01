@@ -253,6 +253,15 @@ class KhaltiLocalizations {
     }
     return formattedAmount;
   }
+
+  /// Attempts Remaining: [remainingAttempts]
+  String attemptsRemaining(int remainingAttempts) {
+    return Intl.message(
+      'Attempts Remaining: $remainingAttempts',
+      name: 'attemptsRemaining',
+      args: [remainingAttempts],
+    );
+  }
 }
 
 class _KhaltiLocalizationsDelegate

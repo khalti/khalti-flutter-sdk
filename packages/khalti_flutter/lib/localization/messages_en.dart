@@ -19,10 +19,12 @@ typedef String MessageIfAbsent(String? messageStr, List<Object>? args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static m0(mobileNo) =>
+  static m0(remainingAttempts) => "Attempts Remaining: ${remainingAttempts}";
+
+  static m1(mobileNo) =>
       "Enter the OTP sent via SMS to mobile number ${mobileNo}";
 
-  static m1(method) => "Pay with ${method}";
+  static m2(method) => "Pay with ${method}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -99,7 +101,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "Your connection could not be established.":
             MessageLookupByLibrary.simpleMessage(
                 "Your connection could not be established."),
-        "enterOtpSentTo": m0,
-        "payWith": m1
+        "attemptsRemaining": m0,
+        "enterOtpSentTo": m1,
+        "payWith": m2
       };
 }

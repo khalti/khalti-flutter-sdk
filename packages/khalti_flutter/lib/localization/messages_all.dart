@@ -3,7 +3,7 @@
 // delegating to the appropriate library.
 
 // Ignore issues from commonly used lints in this file.
-// ignore_for_file:implementation_imports, file_names, public_member_api_docs
+// ignore_for_file:implementation_imports, file_names
 // ignore_for_file:unnecessary_brace_in_string_interps, directives_ordering
 // ignore_for_file:argument_type_not_assignable, invalid_assignment
 // ignore_for_file:prefer_single_quotes, prefer_generic_function_type_aliases
@@ -16,19 +16,15 @@ import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 import 'package:intl/src/intl_helpers.dart';
 
-import 'messages_en.dart' as messages_en;
 import 'messages_ne.dart' as messages_ne;
 
 typedef Future<dynamic> LibraryLoader();
 Map<String, LibraryLoader> _deferredLibraries = {
-  'en': () => Future.value(null),
   'ne': () => Future.value(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
   switch (localeName) {
-    case 'en':
-      return messages_en.messages;
     case 'ne':
       return messages_ne.messages;
     default:

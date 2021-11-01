@@ -77,7 +77,9 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
                         : Padding(
                             padding: const EdgeInsets.only(bottom: 32),
                             child: Text(
-                              'Attempts Remaining: $remainingAttempts',
+                              KhaltiLocalizations.of(context).attemptsRemaining(
+                                remainingAttempts,
+                              ),
                               style: subtitle1,
                             ),
                           ),
