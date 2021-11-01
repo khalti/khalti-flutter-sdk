@@ -1,0 +1,51 @@
+name: Analyze, Run Tests & Generate Coverage
+
+on: push
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out current repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter Stable
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Get package dependencies for khalti_core
+        run: flutter pub get
+        working-directory: packages/khalti_core
+
+      - name: Analyze dart code for the project for khalti_core
+        run: flutter analyze
+        working-directory: packages/khalti_core
+
+      - name: Get package dependencies for khalti
+        run: flutter pub get
+        working-directory: packages/khalti
+
+      - name: Analyze dart code for the project for khalti
+        run: flutter analyze
+        working-directory: packages/khalti
+
+      - name: Get package dependencies for khalti_flutter
+        run: flutter pub get
+        working-directory: packages/khalti_flutter
+
+      - name: Analyze dart code for the project for khalti_flutter
+        run: flutter analyze
+        working-directory: packages/khalti_flutter
+
+      - name: Run tests and generate coverage for the khalti_core
+        run: flutter test --coverage
+        working-directory: packages/khalti_core
+
+      - name: Upload khalti_core coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{secrets.CODECOV_TOKEN}}
+          file: ./packages/khalti_core/coverage/lcov.info
+          name: khalti-core-coverage

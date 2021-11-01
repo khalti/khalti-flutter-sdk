@@ -1,0 +1,29 @@
+name: Deploy Web App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  web-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out current repository
+        uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable'
+
+      - name: Build Web App
+        run: flutter build web
+        working-directory: packages/khalti_flutter/example
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./packages/khalti_flutter/example/build/web
