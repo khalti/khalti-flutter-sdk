@@ -24,7 +24,7 @@ class KhaltiService {
   /// The [publicKey] configured using [KhaltiService.publicKey].
   static String get publicKey {
     assert(
-      _publicKey != null,
+      _publicKey != null && _publicKey!.isNotEmpty,
       'Provide a public key using "KhaltiService.publicKey = <khalti-pk>;"',
     );
     return _publicKey!;

@@ -196,7 +196,7 @@ class PaymentSuccessModel {
       productIdentity: map.getString('product_identity'),
       productName: map.getString('product_name'),
       token: map.getString('token'),
-      productUrl: map.getString('productUrl'),
+      productUrl: map.getString('product_url'),
       additionalData: {
         for (final entry in map.entries)
           if (entry.key.startsWith('merchant_')) ...{
