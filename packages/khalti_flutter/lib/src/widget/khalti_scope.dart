@@ -94,7 +94,8 @@ class _KhaltiScopeState extends State<KhaltiScope> with WidgetsBindingObserver {
   @override
   Future<bool> didPushRoute(String route) {
     final uri = Uri.parse('https://khalti.com$route');
-    if (uri.path == '/kpg/') {
+    final kpgPath = Platform.isIOS ? '/kpg' : '/kpg/';
+    if (uri.path == kpgPath) {
       final navigatorState = widget._navKey.currentState;
       navigatorState!.pop(
         PaymentSuccessModel.fromMap(uri.queryParameters),
