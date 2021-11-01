@@ -206,7 +206,7 @@ class _BankBottomSheetState extends State<_BankBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomMargin = 16 + MediaQuery.of(context).viewInsets.bottom;
+    final bottomMargin = 10 + MediaQuery.of(context).viewInsets.bottom;
     final titleStyle = Theme.of(context).textTheme.headline6?.copyWith(
           fontWeight: FontWeight.w600,
           height: 1.4,
@@ -219,47 +219,79 @@ class _BankBottomSheetState extends State<_BankBottomSheet> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(6),
         ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 24, 16, 32),
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox.square(
-                        dimension: 32,
-                        child: KhaltiImage.network(url: widget.logo),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(widget.name, style: titleStyle),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 32),
-                  MobileField(
-                    onChanged: (number) => _khaltiMobileNumber = number,
-                  ),
-                  const SizedBox(height: 24),
-                  PayButton(
-                    amount: widget.amount,
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        widget.onTap(_khaltiMobileNumber!);
-                      }
-                    },
-                  ),
-                ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Align(
+                alignment: Alignment.topRight,
+                child: _CloseButton(),
               ),
-            ),
+              SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox.square(
+                          dimension: 32,
+                          child: KhaltiImage.network(url: widget.logo),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(widget.name, style: titleStyle),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32),
+                    MobileField(
+                      onChanged: (number) => _khaltiMobileNumber = number,
+                    ),
+                    const SizedBox(height: 24),
+                    PayButton(
+                      amount: widget.amount,
+                      onPressed: () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          widget.onTap(_khaltiMobileNumber!);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+            ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CloseButton extends StatelessWidget {
+  const _CloseButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: KhaltiColor.of(context).surface.shade50,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Icon(
+            Icons.close,
+            color: Theme.of(context).scaffoldBackgroundColor,
+            size: 14,
+          ),
+        ),
+      ),
+      onPressed: () => Navigator.maybePop(context),
     );
   }
 }
