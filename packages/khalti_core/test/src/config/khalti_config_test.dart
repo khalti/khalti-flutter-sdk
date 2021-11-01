@@ -16,7 +16,7 @@ void main() {
       expect(
         config.raw,
         {
-          'checkout-version': '1.0.0',
+          'checkout-version': config.version,
           'checkout-platform': 'Android',
           'checkout-os-version': '12',
           'checkout-device-model': 'Pixel 6 Pro',
@@ -33,7 +33,7 @@ void main() {
       expect(
         config.raw,
         {
-          'checkout-version': '1.0.0',
+          'checkout-version': config.version,
           'checkout-platform': 'linux',
           'checkout-os-version': '',
           'checkout-device-model': '',

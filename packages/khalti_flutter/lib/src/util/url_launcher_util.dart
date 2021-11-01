@@ -36,6 +36,7 @@ class UrlLauncherUtil {
       await launcher.launch(
         url,
         webOnlyWindowName: openInNewTab ? null : '_self',
+        forceSafariVC: false,
       );
       return true;
     } on PlatformException catch (e) {

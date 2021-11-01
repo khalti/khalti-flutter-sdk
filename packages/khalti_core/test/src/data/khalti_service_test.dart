@@ -180,7 +180,7 @@ void main() {
           'product_identity': 'test-product',
           'product_name': 'Test Product',
           'source': 'custom',
-          'checkout-version': '1.0.0',
+          'checkout-version': KhaltiConfig.platformOnly().version,
           'checkout-platform': 'iOS',
           'checkout-os-version': '15.2',
           'checkout-device-model': 'iOS',

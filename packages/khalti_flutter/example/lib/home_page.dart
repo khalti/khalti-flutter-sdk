@@ -226,6 +226,12 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
+          actions: [
+            SimpleDialogOption(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
         );
       },
     );

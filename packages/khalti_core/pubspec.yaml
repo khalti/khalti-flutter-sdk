@@ -1,6 +1,6 @@
 name: khalti_core
 description: An official wrapper around Khalti Payment Gateway's REST API.
-version: 1.0.0
+version: 1.0.1
 homepage: https://khalti.com/payment-gateway/
 documentation: https://docs.khalti.com/
 issue_tracker: https://github.com/khalti/khalti-flutter-sdk/issues

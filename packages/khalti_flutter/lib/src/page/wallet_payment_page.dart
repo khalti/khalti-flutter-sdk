@@ -29,11 +29,30 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
     with AutomaticKeepAliveClientMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  late final ValueNotifier<int> _remainingAttempts;
+
   String? _mobile, _mPin;
+
+  @override
+  void initState() {
+    super.initState();
+    _remainingAttempts = ValueNotifier(-1);
+  }
+
+  @override
+  void dispose() {
+    _remainingAttempts.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
+    final subtitle1 = Theme.of(context).textTheme.subtitle1?.copyWith(
+          color: KhaltiColor.of(context).surface.shade300,
+          fontWeight: FontWeight.w300,
+        );
 
     final config = PaymentConfigScope.of(context);
 
@@ -47,6 +66,25 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 40),
                 child: KhaltiImage.asset(asset: a_khaltiLogo, height: 72),
+              ),
+              ValueListenableBuilder<int>(
+                valueListenable: _remainingAttempts,
+                builder: (context, remainingAttempts, _) {
+                  return AnimatedSize(
+                    duration: const Duration(milliseconds: 300),
+                    child: remainingAttempts.isNegative
+                        ? Container(height: 1)
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 32),
+                            child: Text(
+                              KhaltiLocalizations.of(context).attemptsRemaining(
+                                remainingAttempts,
+                              ),
+                              style: subtitle1,
+                            ),
+                          ),
+                  );
+                },
               ),
               MobileField(
                 onChanged: (mobile) => _mobile = mobile,
@@ -99,6 +137,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
             additionalData: config.additionalData,
           ),
         );
+        _remainingAttempts.value = -1;
         Navigator.pop(context);
         showSuccessDialog(
           context,
@@ -125,12 +164,22 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           },
         );
       } catch (e) {
+        _showRemainingAttempts(e);
         Navigator.pop(context);
         showErrorDialog(
           context,
           error: e,
           onPressed: () => Navigator.pop(context),
         );
+      }
+    }
+  }
+
+  void _showRemainingAttempts(Object e) {
+    if (e is FailureHttpResponse) {
+      final data = e.data;
+      if (data is Map && data.containsKey('tries_remaining')) {
+        _remainingAttempts.value = int.tryParse(data['tries_remaining']) ?? -1;
       }
     }
   }
