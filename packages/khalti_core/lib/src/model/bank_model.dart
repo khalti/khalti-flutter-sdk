@@ -42,6 +42,20 @@ class BankModel {
   String toString() {
     return 'BankModel{idx: $idx, logo: $logo, name: $name, shortName: $shortName}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BankModel &&
+          runtimeType == other.runtimeType &&
+          idx == other.idx &&
+          logo == other.logo &&
+          name == other.name &&
+          shortName == other.shortName;
+
+  @override
+  int get hashCode =>
+      idx.hashCode ^ logo.hashCode ^ name.hashCode ^ shortName.hashCode;
 }
 
 /// Paginated class for [BankModel].
