@@ -101,6 +101,9 @@ void main() {
           productIdentity: 'test-product',
           productName: 'test product',
           transactionPin: '0000',
+          additionalData: {
+            'vendor': 'Khalti',
+          },
         ),
       );
       expect(response.token, 'test-token');
