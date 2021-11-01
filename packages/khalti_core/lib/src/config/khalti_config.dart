@@ -5,7 +5,7 @@ import 'package:khalti_core/src/platform/platform.dart';
 /// The configuration class for Khalti Payment Gateway.
 class KhaltiConfig {
   /// The version of the Khalti Payment Gateway Library.
-  final String version = '1.0.0';
+  final String version = '1.0.1';
 
   /// The device platform.
   final String platform;
