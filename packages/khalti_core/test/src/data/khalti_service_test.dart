@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:khalti_core/khalti_core.dart';
 import 'package:test/test.dart';
 
-import '../core/khalti_client_mock.dart';
+import '../core/http_client/khalti_client_mock.dart';
 
 void main() {
   final mockClient = KhaltiClientMock();
