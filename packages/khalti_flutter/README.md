@@ -276,17 +276,23 @@ Contributions are always welcome. Also, if you have any confusion, please feel f
 
 ## Internationalization
 Steps to add support for new language
-1. Install [intl_generator](https://pub.dev/packages/intl_generator).
-`flutter pub global activate intl_generator`
+1. Create a new file for the language `khalti_localizations_<language-code>.dart` inside `localization` directory.
+   Let's say you want to add support for Nepali language, then the file should be `khalti_localizations_ne.dart`.
 
-2. Generate arb file for the new language. Let's say you want to add support for Nepali language, then generate a file `khalti_<language-code>.arb` i.e. `khalti_ne.arb` in this case.
-`flutter pub global run intl_generator:extract_to_arb --output-dir=lib/i18n lib/localization/khalti_localizations.dart --output-file=khalti_ne.arb`
+2. Copy contents of `khalti_localizations_en.dart` to the newly created file and rename the class accordingly.
+
+3. Replace all the strings with the localized strings inside the file.
+
+4. Add entry to `_localizations` map inside `khalti_localizations.dart`.
+   ```dart
+   const Map<String, KhaltiLocalizations> _localizations = {
+     'en': _KhaltiLocalizationsEn(),
+     'ne': _KhaltiLocalizationsNe(), // Newly added entry
+   };
+   ```
    
-3. Generate message file for the newly added language.
-`flutter pub global run intl_generator:generate_from_arb --output-dir=lib/localization --no-use-deferred-loading lib/localization/khalti_localizations.dart lib/i18n/khalti_ne.arb`
-   
-4. Submit a Pull Request with the changes. But ensure that the code changes are well formatted. Format the generated code if needed:
-`flutter format .`
+4. Submit a Pull Request with the changes. But ensure that the code changes are well formatted. 
+   Format the generated code if needed: `flutter format .`
    
 # Support
 **For Queries, feel free to call us at:**
