@@ -2,10 +2,17 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-import 'messages_all.dart';
+part 'khalti_localizations_en.dart';
+part 'khalti_localizations_ne.dart';
+
+const Map<String, KhaltiLocalizations> _localizations = {
+  'en': _KhaltiLocalizationsEn(),
+  'ne': _KhaltiLocalizationsNe(),
+};
 
 /// Internal helper extension for localizing strings.
 extension KhaltiLocalizationsExtension on BuildContext {
@@ -14,19 +21,9 @@ extension KhaltiLocalizationsExtension on BuildContext {
 }
 
 /// The class to provide localization support for the Khalti Payment Gateway library.
-class KhaltiLocalizations {
-  const KhaltiLocalizations._();
-
-  static Future<KhaltiLocalizations> _load(Locale locale) async {
-    final name = (locale.countryCode?.isEmpty ?? true)
-        ? locale.languageCode
-        : locale.toString();
-    final localeName = Intl.canonicalizedLocale(name);
-
-    await initializeMessages(localeName);
-    Intl.defaultLocale = localeName;
-    return const KhaltiLocalizations._();
-  }
+abstract class KhaltiLocalizations {
+  /// Default constructor for [KhaltiLocalizations].
+  const KhaltiLocalizations();
 
   /// Returns the localized resources object of [KhaltiLocalizations] for the widget
   /// tree that corresponds to the given [context].
@@ -58,188 +55,130 @@ class KhaltiLocalizations {
       _KhaltiLocalizationsDelegate();
 
   /// An Error Occurred
-  String get anErrorOccurred => Intl.message('An Error Occurred');
+  String get anErrorOccurred;
 
   /// No Internet
-  String get noInternet => Intl.message('No Internet');
+  String get noInternet;
 
   /// You are not connected to the internet. Please check your connection.
-  String get noInternetMessage => Intl.message(
-        'You are not connected to the internet. Please check your connection.',
-      );
+  String get noInternetMessage;
 
   /// Network Unreachable
-  String get networkUnreachable => Intl.message('Network Unreachable');
+  String get networkUnreachable;
 
   /// Your connection could not be established.
-  String get networkUnreachableMessage => Intl.message(
-        'Your connection could not be established.',
-      );
+  String get networkUnreachableMessage;
 
   /// No Connection
-  String get noConnection => Intl.message('No Connection');
+  String get noConnection;
 
   /// Slow or no internet connection. Please check your internet & try again.
-  String get noConnectionMessage => Intl.message(
-        'Slow or no internet connection. Please check your internet & try again.',
-      );
+  String get noConnectionMessage;
 
   /// Please enter a valid mobile number
-  String get enterValidMobileNumber => Intl.message(
-        'Please enter a valid mobile number',
-        desc: 'mobile number validation',
-      );
+  String get enterValidMobileNumber;
 
   /// Khalti MPIN must be at least 4 characters
-  String get mPinMustBeMin4Chars => Intl.message(
-        'Khalti MPIN must be at least 4 characters',
-        desc: 'pin validation',
-      );
+  String get mPinMustBeMin4Chars;
 
   /// Payment Code must be at least 6 characters
-  String get payCodeMustBeMin6Chars => Intl.message(
-        'Payment Code must be at least 6 characters',
-        desc: 'otp validation',
-      );
+  String get payCodeMustBeMin6Chars;
 
   /// This field is required
-  String get fieldRequired => Intl.message(
-        'This field is required',
-        desc: 'empty field validation',
-      );
+  String get fieldRequired;
 
   /// Please select your Bank
-  String get pleaseSelectYourBank => Intl.message(
-        'Please select your Bank',
-        desc: 'bank payment',
-      );
+  String get pleaseSelectYourBank;
 
   /// No banks found
-  String get noBanksFound => Intl.message(
-        'No banks found',
-        desc: 'title shown when bank search result is empty',
-      );
+  String get noBanksFound;
 
   /// Please search for another keyword
-  String get searchForAnotherKeyword => Intl.message(
-        'Please search for another keyword',
-        desc: 'message shown when bank search result is empty',
-      );
+  String get searchForAnotherKeyword;
 
   /// Confirm Payment
-  String get confirmPayment => Intl.message(
-        'Confirm Payment',
-        desc: 'OTP confirmation title',
-      );
+  String get confirmPayment;
 
   /// Enter the OTP sent via SMS to mobile number [mobileNo]
-  String enterOtpSentTo(String mobileNo) => Intl.message(
-        'Enter the OTP sent via SMS to mobile number $mobileNo',
-        desc: 'otp sent hint',
-        name: 'enterOtpSentTo',
-        args: [mobileNo],
-      );
+  String enterOtpSentTo(String mobileNo);
 
   /// Confirming Payment
-  String get confirmingPayment => Intl.message(
-        'Confirming Payment',
-        desc: 'OTP confirmation progress dialog message',
-      );
+  String get confirmingPayment;
 
   /// Verify OTP
-  String get verifyOTP => Intl.message(
-        'Verify OTP',
-        desc: 'OTP verification button text',
-      );
+  String get verifyOTP;
 
   /// Initiating Payment
-  String get initiatingPayment => Intl.message(
-        'Initiating Payment',
-        desc: 'payment initiation progress dialog message',
-      );
+  String get initiatingPayment;
 
   /// Success
-  String get success => Intl.message(
-        'Success',
-        desc: 'success dialog title',
-      );
+  String get success;
 
   /// Khalti has sent a confirmation code in your Khalti registered number and email address.
-  String get paymentInitiationSuccessMessage => Intl.message(
-        'Khalti has sent a confirmation code in your Khalti registered number and email address.',
-        desc: 'payment initiation success dialog message',
-      );
+  String get paymentInitiationSuccessMessage;
 
   /// Forgot Khalti MPIN?
-  String get forgotPin => Intl.message('Forgot Khalti MPIN?');
+  String get forgotPin;
 
   /// Reset Khalti MPIN
-  String get resetKhaltiMPIN => Intl.message('Reset Khalti MPIN');
+  String get resetKhaltiMPIN;
 
   /// Khalti is not installed in your device. Either install Khalti App or proceed using your browser.
-  String get khaltiNotInstalledMessage => Intl.message(
-        'Khalti is not installed in your device. Either install Khalti App or proceed using your browser.',
-        desc:
-            'shows when Khalti app is not installed but user tries to reset MPIN',
-      );
+  String get khaltiNotInstalledMessage;
 
   /// Install Khalti
-  String get installKhalti => Intl.message('Install Khalti');
+  String get installKhalti;
 
   /// Proceed using browser
-  String get proceedUsingBrowser => Intl.message('Proceed using browser');
+  String get proceedUsingBrowser;
 
   /// Cancel
-  String get cancel => Intl.message('Cancel');
+  String get cancel;
 
   /// Pay
-  String get pay => Intl.message('Pay');
+  String get pay;
 
   /// Ok
-  String get ok => Intl.message('Ok');
+  String get ok;
 
   /// Khalti Mobile Number
-  String get khaltiMobileNumber => Intl.message('Khalti Mobile Number');
+  String get khaltiMobileNumber;
 
   /// Khalti MPIN
-  String get khaltiMPIN => Intl.message('Khalti MPIN');
+  String get khaltiMPIN;
 
   /// Payment Code
-  String get paymentCode => Intl.message('Payment Code');
+  String get paymentCode;
 
   /// Search Bank
-  String get searchBank => Intl.message('Search Bank');
+  String get searchBank;
 
   /// Amount
-  String get amount => Intl.message('Amount');
+  String get amount;
 
   /// Test
-  String get test => Intl.message('Test');
+  String get test;
 
   /// Choose your payment method
-  String get chooseYourPaymentMethod => Intl.message(
-        'Choose your payment method',
-      );
+  String get chooseYourPaymentMethod;
 
   /// Pay with [method]
-  String payWith(String method) {
-    return Intl.message('Pay with $method', name: 'payWith', args: [method]);
-  }
+  String payWith(String method);
 
   /// Khalti
-  String get khalti => Intl.message('Khalti');
+  String get khalti;
 
   /// E-Banking
-  String get eBanking => Intl.message('E-Banking');
+  String get eBanking;
 
   /// Mobile Banking
-  String get mobileBanking => Intl.message('Mobile Banking');
+  String get mobileBanking;
 
   /// Connect IPS
-  String get connectIps => Intl.message('Connect IPS');
+  String get connectIps;
 
   /// SCT
-  String get sct => Intl.message('SCT');
+  String get sct;
 
   /// Rs. [amount]
   String rupee(double amount) {
@@ -255,13 +194,7 @@ class KhaltiLocalizations {
   }
 
   /// Attempts Remaining: [remainingAttempts]
-  String attemptsRemaining(int remainingAttempts) {
-    return Intl.message(
-      'Attempts Remaining: $remainingAttempts',
-      name: 'attemptsRemaining',
-      args: [remainingAttempts],
-    );
-  }
+  String attemptsRemaining(int remainingAttempts);
 }
 
 class _KhaltiLocalizationsDelegate
@@ -270,15 +203,14 @@ class _KhaltiLocalizationsDelegate
 
   @override
   Future<KhaltiLocalizations> load(Locale locale) {
-    return KhaltiLocalizations._load(locale);
+    return SynchronousFuture(
+      _localizations[locale.languageCode] ?? const _KhaltiLocalizationsEn(),
+    );
   }
 
   @override
   bool isSupported(Locale locale) {
-    return [
-      'en',
-      'ne',
-    ].contains(locale.languageCode);
+    return _localizations.containsKey(locale.languageCode);
   }
 
   @override
