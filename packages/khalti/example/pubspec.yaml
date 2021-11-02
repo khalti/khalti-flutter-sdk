@@ -9,8 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  khalti:
-    path: ../
+  khalti: ^1.0.1
   url_launcher: ^6.0.12
 
 dev_dependencies:
