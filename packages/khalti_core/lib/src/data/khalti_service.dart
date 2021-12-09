@@ -2,11 +2,6 @@
 
 import 'package:khalti_core/khalti_core.dart';
 import 'package:khalti_core/src/config/url.dart';
-import 'package:khalti_core/src/core/http_client/http_response.dart';
-import 'package:khalti_core/src/core/http_client/khalti_client.dart';
-import 'package:khalti_core/src/helper/payment_type.dart';
-import 'package:khalti_core/src/model/bank_model.dart';
-import 'package:khalti_core/src/model/payload_model.dart';
 
 /// The wrapper class to access Khalti Payment Gateway API.
 class KhaltiService {
