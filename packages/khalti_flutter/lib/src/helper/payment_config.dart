@@ -1,6 +1,7 @@
 // Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
 import 'package:flutter/foundation.dart';
+import 'package:khalti/khalti.dart';
 
 /// The payment configuration to configure gateway widgets and
 /// create khalti configuration to be sent to the server.
@@ -38,18 +39,16 @@ class PaymentConfig {
   /// ```
   ///
   /// By default, web platform will have the base url as the [returnUrl].
-  /// And other platforms will have `khalti://pay/kpg` as the returnUrl.
+  /// And other platforms will have `kpg://{your package name}/kpg` as the returnUrl.
   ///
   /// The default [returnUrl] can be overridden with [PaymentConfig.returnUrl].
   String get returnUrl {
     if (_returnUrl == null) {
       if (kIsWeb) {
         final _baseUrl = Uri.base.toString();
-        return _baseUrl.endsWith('/')
-            ? _baseUrl.substring(0, _baseUrl.length - 1)
-            : _baseUrl;
+        return _baseUrl.endsWith('/') ? _baseUrl.substring(0, _baseUrl.length - 1) : _baseUrl;
       }
-      return 'khalti://pay/kpg';
+      return 'kpg://${KhaltiService.config.packageName}/kpg';
     }
     return _returnUrl!;
   }

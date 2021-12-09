@@ -50,10 +50,10 @@
             <string>Editor</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>khalti</string>
+                <string>kpg</string>
             </array>
             <key>CFBundleURLName</key>
-            <string>pay</string>
+            <string>com.khalti.khalti_flutter_example</string>
         </dict>
     </array>
 </dict>
