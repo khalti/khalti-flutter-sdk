@@ -34,7 +34,8 @@ Using Khalti Payment Gateway, you do not need to integrate with individual banks
 # Table of Contents
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
-- [Supported Platforms](#supported-platforms)  
+- [Supported Platforms](#supported-platforms)
+- [Migrating to 2.0](#migrating-to-2.0)  
 - [Setup](#setup)
   * [Android](#android)
   * [iOS](#ios)
@@ -72,6 +73,10 @@ E-Banking      |    ✔️    |  ✔️  |  ✔️  |                ❌
 Mobile Banking |    ✔️    |  ✔️  |  ✔️  |                ❌
 Connect IPS    |    ✔️    |  ✔️  |  ✔️  |                ❌
 SCT            |    ✔️    |  ✔️  |  ✔️  |                ❌
+
+# Migrating to 2.0
+Version 1.0 had an issue where multiple app with the package integrated, could interface with each other's deeplink.
+Please follow the [new setup](#setup) after upgrading to 2.0 in order to fix the issue.
 
 # Setup
 Detailed setup for each platform.
