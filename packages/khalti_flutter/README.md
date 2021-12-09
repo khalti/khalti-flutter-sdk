@@ -85,7 +85,7 @@ In your app's `AndroidManifest.xml`, add these lines inside `<activity>...</acti
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="khalti" android:host="pay" />
+    <data android:scheme="kpg" android:host="{your package name}" />
 </intent-filter>
 ```
 
@@ -102,10 +102,10 @@ In your app's `Info.plist`, add these properties:
         <string>Editor</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>khalti</string>
+            <string>kpg</string>
         </array>
         <key>CFBundleURLName</key>
-        <string>pay</string>
+        <string>{your package name}</string>
     </dict>
 </array>
 ```
