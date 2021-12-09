@@ -24,7 +24,8 @@ class WalletPaymentPage extends StatefulWidget {
   State<WalletPaymentPage> createState() => _WalletPaymentPageState();
 }
 
-class _WalletPaymentPageState extends State<WalletPaymentPage> with AutomaticKeepAliveClientMixin {
+class _WalletPaymentPageState extends State<WalletPaymentPage>
+    with AutomaticKeepAliveClientMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   late final ValueNotifier<int> _remainingAttempts;

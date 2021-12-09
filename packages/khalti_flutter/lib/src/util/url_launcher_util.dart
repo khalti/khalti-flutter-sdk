@@ -6,8 +6,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart' as launcher;
 
-const String _khaltiPlayStore = 'https://play.google.com/store/apps/details?id=com.khalti';
-const String _khaltiAppStore = 'https://apps.apple.com/us/app/khalti-digital-wallet-nepal/id1263400741';
+const String _khaltiPlayStore =
+    'https://play.google.com/store/apps/details?id=com.khalti';
+const String _khaltiAppStore =
+    'https://apps.apple.com/us/app/khalti-digital-wallet-nepal/id1263400741';
 const String _resetPinLink = 'https://khalti.com/#/account/transaction_pin';
 const String _mPinDeeplink = 'khalti://go/?t=mpin';
 

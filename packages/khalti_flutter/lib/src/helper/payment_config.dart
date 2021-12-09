@@ -46,7 +46,9 @@ class PaymentConfig {
     if (_returnUrl == null) {
       if (kIsWeb) {
         final _baseUrl = Uri.base.toString();
-        return _baseUrl.endsWith('/') ? _baseUrl.substring(0, _baseUrl.length - 1) : _baseUrl;
+        return _baseUrl.endsWith('/')
+            ? _baseUrl.substring(0, _baseUrl.length - 1)
+            : _baseUrl;
       }
       return 'kpg://${KhaltiService.config.packageName}/kpg';
     }

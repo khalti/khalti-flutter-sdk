@@ -87,8 +87,9 @@ class _MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title =
-        preferences.length > 1 ? context.loc.chooseYourPaymentMethod : context.loc.payWith(_getTab(context, preferences.first).label);
+    final title = preferences.length > 1
+        ? context.loc.chooseYourPaymentMethod
+        : context.loc.payWith(_getTab(context, preferences.first).label);
 
     return Theme(
       data: _themeData(context),
@@ -107,7 +108,9 @@ class _MainPage extends StatelessWidget {
                         tabBar: TabBar(
                           isScrollable: preferences.length > 2,
                           indicatorColor: Theme.of(context).primaryColor,
-                          tabs: preferences.map((p) => _getTab(context, p)).toList(growable: false),
+                          tabs: preferences
+                              .map((p) => _getTab(context, p))
+                              .toList(growable: false),
                         ),
                       ),
                       pinned: true,
@@ -129,7 +132,9 @@ class _MainPage extends StatelessWidget {
     return SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarBrightness: Theme.of(context).brightness,
-      statusBarIconBrightness: Theme.of(context).brightness == Brightness.light ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: Theme.of(context).brightness == Brightness.light
+          ? Brightness.dark
+          : Brightness.light,
     );
   }
 
