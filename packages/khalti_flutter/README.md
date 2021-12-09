@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/khalti/khalti-flutter-sdk/master/assets/khalti_logo.png" height="150" alt="Khalti Payment Gateway" />
+<img src="https://raw.githubusercontent.com/khalti/khalti-flutter-sdk/master/assets/khalti_logo.png" height="100" alt="Khalti Payment Gateway" />
 </p>
 
 <p align="center">
@@ -34,7 +34,8 @@ Using Khalti Payment Gateway, you do not need to integrate with individual banks
 # Table of Contents
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
-- [Supported Platforms](#supported-platforms)  
+- [Supported Platforms](#supported-platforms)
+- [Migrating to 2.0](#migrating-to-2.0)  
 - [Setup](#setup)
   * [Android](#android)
   * [iOS](#ios)
@@ -73,6 +74,10 @@ Mobile Banking |    ✔️    |  ✔️  |  ✔️  |                ❌
 Connect IPS    |    ✔️    |  ✔️  |  ✔️  |                ❌
 SCT            |    ✔️    |  ✔️  |  ✔️  |                ❌
 
+# Migrating to 2.0
+Version 1.0 had an issue where multiple app with the package integrated, could interface with each other's deeplink.
+Please follow the [new setup](#setup) after upgrading to 2.0 in order to fix the issue.
+
 # Setup
 Detailed setup for each platform.
 
@@ -85,7 +90,7 @@ In your app's `AndroidManifest.xml`, add these lines inside `<activity>...</acti
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="khalti" android:host="pay" />
+    <data android:scheme="kpg" android:host="{your package name}" />
 </intent-filter>
 ```
 
@@ -102,10 +107,10 @@ In your app's `Info.plist`, add these properties:
         <string>Editor</string>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>khalti</string>
+            <string>kpg</string>
         </array>
         <key>CFBundleURLName</key>
-        <string>pay</string>
+        <string>{your package name}</string>
     </dict>
 </array>
 ```

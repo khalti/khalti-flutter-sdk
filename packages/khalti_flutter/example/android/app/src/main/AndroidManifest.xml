@@ -32,8 +32,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="pay"
-                    android:scheme="khalti" />
+                    android:host="com.khalti.khalti_flutter_example"
+                    android:scheme="kpg" />
             </intent-filter>
             <!--.............-->
         </activity>
