@@ -16,7 +16,11 @@ class PaymentConfig {
     this.mobile,
     this.mobileReadOnly = false,
     String? returnUrl,
-  }) : _returnUrl = returnUrl;
+  })  : _returnUrl = returnUrl,
+        assert(
+          mobile == null || RegExp(r'(^[9][678][0-9]{8}$)').hasMatch(mobile),
+          '\n\n"mobile" should be valid mobile number.\n',
+        );
 
   /// The payment [amount] in paisa.
   final int amount;
