@@ -74,10 +74,6 @@ Mobile Banking |    ✔️    |  ✔️  |  ✔️  |                ❌
 Connect IPS    |    ✔️    |  ✔️  |  ✔️  |                ❌
 SCT            |    ✔️    |  ✔️  |  ✔️  |                ❌
 
-# Migrating to 2.0
-Version 1.0 had an issue where multiple app with the package integrated, could interface with each other's deeplink.
-Please follow the [new setup](#setup) after upgrading to 2.0 in order to fix the issue.
-
 # Setup
 Detailed setup for each platform.
 
@@ -189,6 +185,8 @@ final config = PaymentConfig(
   additionalData: { // Not mandatory; can be used for reporting purpose
     'vendor': 'Khalti Bazaar',
   },
+  mobile: '9800000001', // Not mandatory; can be used to fill mobile number field
+  mobileReadOnly: true, // Not mandatory; makes the mobile field not editable
 )
 
 KhaltiButton(

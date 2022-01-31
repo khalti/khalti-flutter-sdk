@@ -1,14 +1,17 @@
 // Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/localization/khalti_localizations.dart';
+import 'package:khalti_flutter/src/helper/payment_config_scope.dart';
 import 'package:khalti_flutter/src/helper/validators.dart';
 
 import 'color.dart';
 
 /// The Khalti Mobile Number field.
-class MobileField extends StatelessWidget {
+class MobileField extends StatefulWidget {
   /// Creates [MobileField].
   const MobileField({
     Key? key,
@@ -19,8 +22,24 @@ class MobileField extends StatelessWidget {
   final ValueChanged<String> onChanged;
 
   @override
+  State<MobileField> createState() => _MobileFieldState();
+}
+
+class _MobileFieldState extends State<MobileField> {
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      final mobile = _config?.mobile;
+      if (mobile != null) widget.onChanged(mobile);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: _config?.mobile,
+      readOnly: _config?.mobileReadOnly ?? false,
       validator: Validators(context).mobile,
       decoration: InputDecoration(
         label: Text(context.loc.khaltiMobileNumber),
@@ -32,9 +51,11 @@ class MobileField extends StatelessWidget {
       inputFormatters: [
         FilteringTextInputFormatter.digitsOnly,
       ],
-      onChanged: onChanged,
+      onChanged: widget.onChanged,
     );
   }
+
+  PaymentConfig? get _config => PaymentConfigScope.mayBeOf(context);
 }
 
 /// The Khalti MPIN field.
