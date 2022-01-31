@@ -1,3 +1,7 @@
+# [2.0.1] - Dec 9, 2021
+- Added `mobile` & `mobileReadOnly` props to **PaymentConfig**.
+- Upgraded dependencies to latest version.
+
 # [2.0.0] - Dec 9, 2021
 - Upgraded dependencies to latest version.
 - (**BREAKING CHANGE**)The Android & iOS setup has been updated.

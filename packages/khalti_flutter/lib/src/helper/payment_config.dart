@@ -20,6 +20,10 @@ class PaymentConfig {
         assert(
           mobile == null || RegExp(r'(^[9][678][0-9]{8}$)').hasMatch(mobile),
           '\n\n"mobile" should be valid mobile number.\n',
+        ),
+        assert(
+          !mobileReadOnly || mobile != null,
+          '\n\nPlease provide mobile number if you want to make the field read only.\n',
         );
 
   /// The payment [amount] in paisa.
