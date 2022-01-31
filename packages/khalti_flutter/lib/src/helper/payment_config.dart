@@ -13,6 +13,8 @@ class PaymentConfig {
     required this.productName,
     this.productUrl,
     this.additionalData,
+    this.mobile,
+    this.mobileReadOnly = false,
     String? returnUrl,
   }) : _returnUrl = returnUrl;
 
@@ -30,6 +32,15 @@ class PaymentConfig {
 
   /// An [additionalData] sent alongside the payment configuration.
   final Map<String, Object>? additionalData;
+
+  /// A [mobile] number to preset in Khalti Mobile Number field.
+  final String? mobile;
+
+  /// Makes the mobile field non-editable, if true.
+  ///
+  /// Default is false.
+  final bool mobileReadOnly;
+
   final String? _returnUrl;
 
   /// A redirection url after successful payment.
@@ -56,23 +67,30 @@ class PaymentConfig {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PaymentConfig &&
-          runtimeType == other.runtimeType &&
-          amount == other.amount &&
-          productIdentity == other.productIdentity &&
-          productName == other.productName &&
-          productUrl == other.productUrl &&
-          additionalData == other.additionalData &&
-          returnUrl == other.returnUrl;
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is PaymentConfig &&
+            runtimeType == other.runtimeType &&
+            amount == other.amount &&
+            productIdentity == other.productIdentity &&
+            productName == other.productName &&
+            productUrl == other.productUrl &&
+            additionalData == other.additionalData &&
+            returnUrl == other.returnUrl &&
+            mobile == other.mobile &&
+            mobileReadOnly &&
+            other.mobileReadOnly;
+  }
 
   @override
-  int get hashCode =>
-      amount.hashCode ^
-      productIdentity.hashCode ^
-      productName.hashCode ^
-      productUrl.hashCode ^
-      additionalData.hashCode ^
-      returnUrl.hashCode;
+  int get hashCode {
+    return amount.hashCode ^
+        productIdentity.hashCode ^
+        productName.hashCode ^
+        productUrl.hashCode ^
+        additionalData.hashCode ^
+        returnUrl.hashCode ^
+        mobile.hashCode ^
+        mobileReadOnly.hashCode;
+  }
 }
