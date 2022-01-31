@@ -28,6 +28,15 @@ class PaymentConfigScope extends InheritedWidget {
     return configScope!.config;
   }
 
+  /// Returns the [PaymentConfig] instance scoped in the widget tree &
+  /// returns null if not found.
+  static PaymentConfig? mayBeOf(BuildContext context) {
+    final PaymentConfigScope? configScope =
+        context.dependOnInheritedWidgetOfExactType();
+
+    return configScope?.config;
+  }
+
   @override
   bool updateShouldNotify(PaymentConfigScope oldWidget) {
     return oldWidget.config != config;
