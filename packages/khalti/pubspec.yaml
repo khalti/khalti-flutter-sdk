@@ -12,7 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  device_info_plus: ^3.1.0
+  device_info_plus: ^3.2.1
   http: ^0.13.4
   khalti_core: ^1.0.1
   package_info_plus: ^1.3.0
