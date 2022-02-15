@@ -127,7 +127,7 @@ When using `MaterialApp` or siblings.
 ```dart
 KhaltiScope(
   publicKey: <public-key>,
-  child: (context, navigatorKey) {
+  builder: (context, navigatorKey) {
     return MaterialApp(
       navigatorKey: navigatorKey,
       supportedLocales: const [
@@ -153,7 +153,7 @@ final routerDelegate = YourRouterDelegate();
 KhaltiScope(
   publicKey: <public-key>,
   navigatorKey: routerDelegate.navigatorKey, 
-  child: (context, _) {
+  builder: (context, _) {
     return MaterialApp.router(
       routerDelegate: routerDelegate,
       supportedLocales: const [
