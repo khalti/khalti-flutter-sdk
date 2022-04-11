@@ -1,3 +1,6 @@
+# [1.0.2] - Jan 31, 2022
+- Upgraded dependencies.
+
 # [1.0.1] - Nov 1, 2021
 - Upgraded to `khalti_core: ^1.0.1`
 

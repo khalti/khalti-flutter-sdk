@@ -19,6 +19,8 @@ class Validators {
         if (!_isValid(value, r'(^[9][678][0-9]{8}$)')) {
           return context.loc.enterValidMobileNumber;
         }
+
+        return null;
       },
     );
   }
@@ -31,6 +33,8 @@ class Validators {
         if (value.length < 4) {
           return context.loc.mPinMustBeMin4Chars;
         }
+
+        return null;
       },
     );
   }
@@ -43,6 +47,8 @@ class Validators {
         if (value.length < 6) {
           return context.loc.payCodeMustBeMin6Chars;
         }
+
+        return null;
       },
     );
   }

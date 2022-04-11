@@ -42,6 +42,8 @@ class _HomePageState extends State<HomePage> {
         'image_url':
             'https://i.dell.com/is/image/DellContent/content/dam/global-site-design/product_images/dell_client_products/notebooks/g_series/g5_15_5590-non-touch/global_spi/ng/notebook-g5-15-5590-campaign-hero-504x350-ng.psd?hei=402&qlt=90,0&op_usm=1.75,0.3,2,0&resMode=sharp&pscan=auto&fmt=pjpg',
       },
+      mobile: '9800003001',
+      mobileReadOnly: false,
     );
     final localization = AppLocalizations.of(context)!;
 

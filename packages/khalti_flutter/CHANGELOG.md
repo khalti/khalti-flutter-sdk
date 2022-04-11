@@ -1,3 +1,11 @@
+# [2.0.2] - Feb 23, 2022
+- Improved Pub Score.
+- Made docs to align with builder usage. Thanks to [@cimplesid](https://github.com/cimplesid).
+
+# [2.0.1] - Jan 31, 2022
+- Added `mobile` & `mobileReadOnly` props to **PaymentConfig**.
+- Upgraded dependencies to latest version.
+
 # [2.0.0] - Dec 9, 2021
 - Upgraded dependencies to latest version.
 - (**BREAKING CHANGE**)The Android & iOS setup has been updated.
