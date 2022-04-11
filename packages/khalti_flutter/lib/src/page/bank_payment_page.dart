@@ -151,27 +151,30 @@ class _BankTile extends StatelessWidget {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (ctx) {
-            return KhaltiColor(
-              isDark: isDark,
-              child: _BankBottomSheet(
-                logo: bank.logo,
-                name: bank.name,
-                amount: config.amount,
-                onTap: (mobile) async {
-                  final url = Khalti.service.buildBankUrl(
-                    bankId: bank.idx,
-                    mobile: mobile,
-                    amount: config.amount,
-                    productIdentity: config.productIdentity,
-                    productName: config.productName,
-                    paymentType: paymentType,
-                    productUrl: config.productUrl,
-                    additionalData: config.additionalData,
-                    returnUrl: config.returnUrl,
-                  );
-                  await urlLauncher.launch(url);
-                  Navigator.pop(context);
-                },
+            return PaymentConfigScope(
+              config: config,
+              child: KhaltiColor(
+                isDark: isDark,
+                child: _BankBottomSheet(
+                  logo: bank.logo,
+                  name: bank.name,
+                  amount: config.amount,
+                  onTap: (mobile) async {
+                    final url = Khalti.service.buildBankUrl(
+                      bankId: bank.idx,
+                      mobile: mobile,
+                      amount: config.amount,
+                      productIdentity: config.productIdentity,
+                      productName: config.productName,
+                      paymentType: paymentType,
+                      productUrl: config.productUrl,
+                      additionalData: config.additionalData,
+                      returnUrl: config.returnUrl,
+                    );
+                    await urlLauncher.launch(url);
+                    Navigator.pop(context);
+                  },
+                ),
               ),
             );
           },
