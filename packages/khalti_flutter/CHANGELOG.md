@@ -1,3 +1,8 @@
+# [2.1.0] - May 17, 2022
+- (**BREAKING CHANGE**) Migrated to Flutter 3
+- Upgraded dependencies to latest version.
+
+
 # [2.0.2] - Feb 23, 2022
 - Improved Pub Score.
 - Made docs to align with builder usage. Thanks to [@cimplesid](https://github.com/cimplesid).

@@ -40,10 +40,10 @@ class KhaltiScope extends StatefulWidget {
   /// Returns the [KhaltiScope] instance for the widget tree
   /// that corresponds to the given [context].
   static KhaltiScope of(BuildContext context) {
-    final _InheritedKhaltiScope? _scope =
+    final _InheritedKhaltiScope? scope =
         context.dependOnInheritedWidgetOfExactType();
-    assert(_scope != null, 'KhaltiScope could not be found in context');
-    return _scope!.scope;
+    assert(scope != null, 'KhaltiScope could not be found in context');
+    return scope!.scope;
   }
 
   /// Launches the Khalti Payment Gateway interface.
@@ -88,7 +88,7 @@ class _KhaltiScopeState extends State<KhaltiScope> with WidgetsBindingObserver {
       publicKey: widget.publicKey,
       enabledDebugging: widget.enabledDebugging,
     );
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -106,7 +106,7 @@ class _KhaltiScopeState extends State<KhaltiScope> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 

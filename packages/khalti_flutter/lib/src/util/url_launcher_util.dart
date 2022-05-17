@@ -32,10 +32,9 @@ class UrlLauncherUtil {
   /// The flag is ignored for platform other than web. Default is false.
   Future<bool> launch(String url, {bool openInNewTab = false}) async {
     try {
-      await launcher.launch(
-        url,
+      await launcher.launchUrl(
+        Uri.parse(url),
         webOnlyWindowName: openInNewTab ? null : '_self',
-        forceSafariVC: false,
       );
       return true;
     } on PlatformException catch (e) {
