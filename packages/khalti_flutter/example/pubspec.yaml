@@ -13,7 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^1.0.3
-  khalti_flutter: ^2.0.3-beta
+  khalti_flutter: ^2.1.0
   provider: ^6.0.2
 
 dev_dependencies:

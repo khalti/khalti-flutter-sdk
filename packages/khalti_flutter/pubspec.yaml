@@ -1,6 +1,6 @@
 name: khalti_flutter
 description: An official Flutter plugin for Khalti Payment Gateway, with all the necessary interface that make it easy to integrate with your app.
-version: 2.0.3-beta
+version: 2.1.0
 homepage: https://khalti.com/payment-gateway/
 documentation: https://docs.khalti.com/
 issue_tracker: https://github.com/khalti/khalti-flutter-sdk/issues
