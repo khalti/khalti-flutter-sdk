@@ -29,7 +29,7 @@ class _MobileFieldState extends State<MobileField> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       final mobile = _config?.mobile;
       if (mobile != null) widget.onChanged(mobile);
     });
