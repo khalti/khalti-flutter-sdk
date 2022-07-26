@@ -10,12 +10,20 @@ import 'package:khalti_core/khalti_core.dart';
 ///
 /// Uses [http](https://pub.dev/packages/http) package under-the-hood.
 class KhaltiHttpClient extends KhaltiClient {
+  final http.Client? _httpClient;
+
+  /// The HTTP client used to make HTTP requests.
+  KhaltiHttpClient({
+    http.Client? httpClient,
+  }) : _httpClient = httpClient ?? http.Client();
+
   @override
   Future<HttpResponse> get(String url, Map<String, Object> params) async {
     return _handleExceptions(
       () async {
         final uri = Uri.parse(url).replace(queryParameters: params);
-        final response = await http.get(uri, headers: KhaltiService.config.raw);
+        final response =
+            await _httpClient!.get(uri, headers: KhaltiService.config.raw);
         final statusCode = response.statusCode;
         final responseData = jsonDecode(response.body);
 
@@ -35,7 +43,7 @@ class KhaltiHttpClient extends KhaltiClient {
     return _handleExceptions(
       () async {
         final uri = Uri.parse(url);
-        final response = await http.post(
+        final response = await _httpClient!.post(
           uri,
           body: data,
           headers: KhaltiService.config.raw,
