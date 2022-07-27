@@ -21,6 +21,12 @@ void main() {
     },
   );
 
+  tearDown(
+    () {
+      PackageInfoPlatform.instance = MethodChannelPackageInfo();
+    },
+  );
+
   void initialMockValues() => PackageInfo.setMockInitialValues(
         appName: 'appName',
         packageName: 'packageName',
