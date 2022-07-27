@@ -21,22 +21,52 @@ void main() {
     },
   );
 
-  void initialMockValues() => PackageInfo.setMockInitialValues(
-        appName: 'appName',
-        packageName: 'packageName',
-        version: 'version',
-        buildNumber: 'buildNumber',
-        buildSignature: 'buildSignature',
+  group(
+    'Exception Handling',
+    () {
+      setUp(() {
+        mockedMethodChannel = MockMethodChannelPackageInfo();
+        PackageInfoPlatform.instance = mockedMethodChannel;
+      });
+
+      tearDown(
+        () {
+          PackageInfoPlatform.instance = MethodChannelPackageInfo();
+        },
       );
+
+      test(
+        'should handle thrown PlatformException',
+        () async {
+          when(() => mockedMethodChannel.getAll()).thenThrow(
+            PlatformException(code: ''),
+          );
+          await packageUtil.init();
+          verify(() => mockedMethodChannel.getAll()).called(1);
+        },
+      );
+    },
+  );
 
   group(
     'PackageUtil |',
     () {
+      setUp(
+        () async {
+          PackageInfo.setMockInitialValues(
+            appName: 'appName',
+            packageName: 'packageName',
+            version: 'version',
+            buildNumber: 'buildNumber',
+            buildSignature: 'buildSignature',
+          );
+          await packageUtil.init();
+        },
+      );
+
       test(
         'versionName: should return the version name',
         () async {
-          initialMockValues();
-          await packageUtil.init();
           final versionName = packageUtil.versionName;
           expect(versionName, 'version');
         },
@@ -45,8 +75,6 @@ void main() {
       test(
         'applicationId: should return the application id',
         () async {
-          initialMockValues();
-          await packageUtil.init();
           final appId = packageUtil.applicationId;
           expect(appId, 'packageName');
         },
@@ -55,34 +83,10 @@ void main() {
       test(
         'versionCode: should return the version code',
         () async {
-          initialMockValues();
-          await packageUtil.init();
           final versionCode = packageUtil.versionCode;
           expect(versionCode, 'buildNumber');
         },
       );
     },
   );
-
-  group('group name', () {
-    setUp(() {
-      mockedMethodChannel = MockMethodChannelPackageInfo();
-      PackageInfoPlatform.instance = mockedMethodChannel;
-    });
-    tearDown(
-      () {
-        PackageInfoPlatform.instance = MethodChannelPackageInfo();
-      },
-    );
-    test(
-      'should handle thrown PlatformException',
-      () async {
-        when(() => mockedMethodChannel.getAll()).thenThrow(
-          PlatformException(code: ''),
-        );
-        await packageUtil.init();
-        verify(() => mockedMethodChannel.getAll()).called(1);
-      },
-    );
-  });
 }
