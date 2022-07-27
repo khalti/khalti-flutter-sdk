@@ -91,6 +91,7 @@ void main() {
           caller: (url, params) => khaltiHttpClient.get(url, params),
         ),
       );
+
       test(
         'get(): should return HttpResponse.failure() if the status code is not >= 200 and < 300',
         () => runSuccessOrFailureTest(
@@ -162,6 +163,7 @@ void main() {
           caller: (url, params) => khaltiHttpClient.get(url, params),
         ),
       );
+
       test(
         'post(): should return HttpResponse.success() if the status code is >= 200 and < 300',
         () => runSuccessOrFailureTest(
@@ -174,6 +176,7 @@ void main() {
           caller: (url, params) => khaltiHttpClient.post(url, params),
         ),
       );
+
       test(
         'post(): should return HttpResponse.failure() if the status code is not >= 200 and < 300',
         () => runSuccessOrFailureTest(
@@ -186,6 +189,7 @@ void main() {
           caller: (url, params) => khaltiHttpClient.post(url, params),
         ),
       );
+
       test(
         'post(): should return HttpResponse.exception() if HttpException is thrown',
         () => runExceptionTest(
