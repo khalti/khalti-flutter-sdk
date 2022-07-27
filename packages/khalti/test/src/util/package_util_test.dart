@@ -33,7 +33,7 @@ void main() {
     'PackageUtil |',
     () {
       test(
-        'should throw PlatformException',
+        'should handle thrown PlatformException',
         () async {
           mockedMethodChannel = MockMethodChannelPackageInfo();
           PackageInfoPlatform.instance = mockedMethodChannel;
