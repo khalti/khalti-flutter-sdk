@@ -21,12 +21,6 @@ void main() {
     },
   );
 
-  tearDown(
-    () {
-      PackageInfoPlatform.instance = MethodChannelPackageInfo();
-    },
-  );
-
   void initialMockValues() => PackageInfo.setMockInitialValues(
         appName: 'appName',
         packageName: 'packageName',
@@ -39,23 +33,8 @@ void main() {
     'PackageUtil |',
     () {
       test(
-        'should handle thrown PlatformException',
-        () async {
-          mockedMethodChannel = MockMethodChannelPackageInfo();
-          PackageInfoPlatform.instance = mockedMethodChannel;
-          when(() => mockedMethodChannel.getAll()).thenThrow(
-            PlatformException(code: ''),
-          );
-          await packageUtil.init();
-          verify(() => mockedMethodChannel.getAll()).called(1);
-        },
-      );
-
-      test(
         'versionName: should return the version name',
         () async {
-          initialMockValues();
-          await packageUtil.init();
           final versionName = packageUtil.versionName;
           expect(versionName, 'version');
         },
@@ -82,4 +61,26 @@ void main() {
       );
     },
   );
+
+  group('group name', () {
+    setUp(() {
+      mockedMethodChannel = MockMethodChannelPackageInfo();
+      PackageInfoPlatform.instance = mockedMethodChannel;
+    });
+    tearDown(
+      () {
+        PackageInfoPlatform.instance = MethodChannelPackageInfo();
+      },
+    );
+    test(
+      'should handle thrown PlatformException',
+      () async {
+        when(() => mockedMethodChannel.getAll()).thenThrow(
+          PlatformException(code: ''),
+        );
+        await packageUtil.init();
+        verify(() => mockedMethodChannel.getAll()).called(1);
+      },
+    );
+  });
 }
