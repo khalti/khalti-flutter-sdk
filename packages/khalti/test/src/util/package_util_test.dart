@@ -35,6 +35,8 @@ void main() {
       test(
         'versionName: should return the version name',
         () async {
+          initialMockValues();
+          await packageUtil.init();
           final versionName = packageUtil.versionName;
           expect(versionName, 'version');
         },
