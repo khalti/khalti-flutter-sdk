@@ -22,7 +22,7 @@ void main() {
   );
 
   group(
-    'Exception Handling',
+    "package_util's init method",
     () {
       setUp(() {
         mockedMethodChannel = MockMethodChannelPackageInfo();
