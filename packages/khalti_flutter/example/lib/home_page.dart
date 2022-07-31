@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     if (widget.params != null) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         onSuccess(PaymentSuccessModel.fromMap(widget.params!));
       });
     }
@@ -88,8 +88,8 @@ class _HomePageState extends State<HomePage> {
                                 .entries
                                 .map(
                                   (e) => DropdownMenuItem(
-                                    child: Text(e.key),
                                     value: e.value,
+                                    child: Text(e.key),
                                   ),
                                 )
                                 .toList(growable: false),

@@ -31,14 +31,14 @@ class ErrorInfo {
     var assetName = a_generalError;
     var primary = context.loc.anErrorOccurred;
     String? secondary;
-    Map<String, Object?> _data = {};
+    Map<String, Object?> data = {};
 
     if (error is FailureHttpResponse) {
       final errorData = error.data;
 
       if (errorData is Map<String, dynamic> &&
           errorData.containsKey('detail')) {
-        _data = errorData;
+        data = errorData;
         secondary = errorData['detail'];
       } else {
         secondary = error.message;
@@ -62,7 +62,7 @@ class ErrorInfo {
       primary: primary,
       secondary: secondary,
       asset: assetName,
-      data: _data,
+      data: data,
     );
   }
 }

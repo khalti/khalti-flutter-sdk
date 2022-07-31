@@ -228,7 +228,7 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                       returnUrl: 'https://khalti.com',
                     );
 
-                    url_launcher.launch(url);
+                    url_launcher.launchUrl(Uri.parse(url));
                   }
                 },
               );
