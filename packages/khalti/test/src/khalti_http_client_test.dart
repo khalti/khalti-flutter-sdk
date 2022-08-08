@@ -55,13 +55,7 @@ void _runExceptionTest({
 
 void main() {
   final mockHttp = _HttpMock();
-  late KhaltiHttpClient khaltiHttpClient;
-
-  setUp(
-    () {
-      khaltiHttpClient = KhaltiHttpClient(client: mockHttp);
-    },
-  );
+  final khaltiHttpClient = KhaltiHttpClient(client: mockHttp);
 
   setUpAll(() {
     registerFallbackValue(_UriFake());
