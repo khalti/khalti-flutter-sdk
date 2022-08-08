@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 
 void main() {
   const testPublicKey = '__test_public_key__';
+
   final config = KhaltiConfig(
     platform: 'Android',
     osVersion: '12',
