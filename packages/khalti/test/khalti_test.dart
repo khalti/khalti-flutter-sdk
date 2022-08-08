@@ -2,11 +2,9 @@ import 'package:khalti/khalti.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-class _MockKhaltiService extends Mock implements KhaltiService {}
-
 void main() {
-  const _testPublicKey = '__test_public_key__';
-  final _config = KhaltiConfig(
+  const testPublicKey = '__test_public_key__';
+  final config = KhaltiConfig(
     platform: 'Android',
     osVersion: '12',
     deviceModel: 'Pixel 6 Pro',
@@ -15,33 +13,36 @@ void main() {
     packageVersion: '3.0.0',
   );
 
+  final expectedResult = <String, String>{
+    'checkout-version': '1.0.1',
+    'checkout-platform': 'linux',
+    'checkout-os-version': '',
+    'checkout-device-model': '',
+    'checkout-device-manufacturer': '',
+    'merchant-package-name': '',
+    'merchant-package-version': '',
+  };
+
   group(
-    'KhaltiConfig |',
+    'Khalti: init() |',
     () {
       test(
-        'should return config when it is not null.',
+        'should return KhaltiConfig when parameter config is not null inside init method',
         () async {
-          await Khalti.init(publicKey: _testPublicKey, config: _config);
-          expect(KhaltiService.config, _config);
+          await Khalti.init(publicKey: testPublicKey, config: config);
+
+          expect(KhaltiService.config, config);
         },
       );
 
       test(
-        'should initialize config if it is null.',
+        'should initialize with default config if config is not provided during initialization',
         () async {
           await Khalti.init(
-            publicKey: _testPublicKey,
+            publicKey: testPublicKey,
           );
-          expect(
-            KhaltiService.config,
-            isA<KhaltiConfig>()
-                .having((e) => e.platform, 'platform', 'linux')
-                .having((e) => e.osVersion, 'os version', '')
-                .having((e) => e.deviceModel, 'device model', '')
-                .having((e) => e.deviceManufacturer, 'manufacturer', '')
-                .having((e) => e.packageName, 'package name', '')
-                .having((e) => e.packageVersion, 'package version', ''),
-          );
+
+          expect(KhaltiService.config.raw, expectedResult);
         },
       );
 
@@ -55,10 +56,12 @@ void main() {
       test(
         'debugKhaltiServiceOverride setter should set a mocked KhaltiService',
         () async {
-          Khalti.debugKhaltiServiceOverride = _MockKhaltiService();
-          expect(Khalti.service, isA<_MockKhaltiService>());
+          Khalti.debugKhaltiServiceOverride = _KhaltiServiceMock();
+          expect(Khalti.service, isA<_KhaltiServiceMock>());
         },
       );
     },
   );
 }
+
+class _KhaltiServiceMock extends Mock implements KhaltiService {}

@@ -5,31 +5,70 @@ import 'package:khalti/khalti.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
 
-typedef Caller = Future<HttpResponse> Function(String, Map<String, Object>);
+typedef _MethodUnderTestCaller = Future<HttpResponse> Function(
+  String,
+  Map<String, Object>,
+);
 
-class _MockHttp extends Mock implements http.Client {}
+const _testUrl = 'www.url.com';
+const _testParams = {'key': 'value'};
+const _testResponseBody = '{"message": "Fake Response"}';
 
-class _MockResponse extends Mock implements http.Response {}
+void _runSuccessOrFailureTest({
+  required int statusCode,
+  required Future<http.Response> Function() stubMethod,
+  required _MethodUnderTestCaller caller,
+}) async {
+  final response = _ResponseMock();
 
-class _FakeUri extends Fake implements Uri {}
+  when(() => response.statusCode).thenReturn(statusCode);
+  when(() => response.body).thenReturn(_testResponseBody);
+  when(stubMethod).thenAnswer((_) async => response);
+
+  final result = await caller(_testUrl, _testParams);
+
+  expect(
+    result,
+    isA<HttpResponse>()
+        .having((e) => e.data, 'data', jsonDecode(_testResponseBody))
+        .having((e) => e.statusCode, 'status code', statusCode),
+  );
+}
+
+void _runExceptionTest({
+  required Exception exception,
+  required Future<http.Response> Function() stubMethod,
+  required _MethodUnderTestCaller caller,
+}) async {
+  when(stubMethod).thenThrow(exception);
+
+  final result = await caller(_testUrl, _testParams);
+
+  expect(
+    result,
+    isA<HttpResponse>()
+        .having((e) => e.data, 'data', isNull)
+        .having((e) => e.statusCode, 'status code', 0)
+        .having((e) => e.message, 'exception', 'Exception'),
+  );
+}
 
 void main() {
-  late _MockHttp _mockHttp;
-  late KhaltiHttpClient _khaltiHttpClient;
+  final mockHttp = _HttpMock();
+  late KhaltiHttpClient khaltiHttpClient;
 
   setUp(
     () {
-      _mockHttp = _MockHttp();
-      _khaltiHttpClient = KhaltiHttpClient(httpClient: _mockHttp);
+      khaltiHttpClient = KhaltiHttpClient(client: mockHttp);
     },
   );
 
   setUpAll(() {
-    registerFallbackValue(_FakeUri());
+    registerFallbackValue(_UriFake());
   });
 
   group(
-    'constructor',
+    'KhaltiHttpClient constructor',
     () {
       test(
         'instantiates internal httpClient when not injected',
@@ -39,221 +78,202 @@ void main() {
       );
     },
   );
+
   group(
     'KhaltiHttpClient |',
     () {
-      const testUrl = 'url';
-      const testParams = {'key': 'value'};
-      const testResponseBody = '{"message": "Fake Response"}';
+      group(
+        'get():',
+        () {
+          test(
+            'should return HttpResponse.success() if the status code is >= 200 and < 300',
+            () {
+              _runSuccessOrFailureTest(
+                statusCode: 200,
+                stubMethod: () => mockHttp.get(
+                  any(),
+                  headers: any(named: 'headers'),
+                ),
+                caller: (url, params) => khaltiHttpClient.get(url, params),
+              );
+            },
+          );
 
-      void runSuccessOrFailureTest({
-        required int statusCode,
-        required Future<http.Response> Function() stubMethod,
-        required Caller caller,
-      }) async {
-        final response = _MockResponse();
-        when(() => response.statusCode).thenReturn(statusCode);
-        when(() => response.body).thenReturn(testResponseBody);
-        when(stubMethod).thenAnswer((_) async => response);
-        final result = await caller(testUrl, testParams);
-        expect(
-          result,
-          isA<HttpResponse>()
-              .having((e) => e.data, 'data', jsonDecode(testResponseBody))
-              .having((e) => e.statusCode, 'status code', statusCode),
-        );
-      }
+          test(
+            'should return HttpResponse.failure() if the status code is not >= 200 and < 300',
+            () => _runSuccessOrFailureTest(
+              statusCode: 404,
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
 
-      void runExceptionTest({
-        required Exception exception,
-        required Future<http.Response> Function() stubMethod,
-        required Caller caller,
-      }) async {
-        when(stubMethod).thenThrow(exception);
-        final result = await caller(testUrl, testParams);
-        expect(
-          result,
-          isA<HttpResponse>()
-              .having((e) => e.data, 'data', isNull)
-              .having((e) => e.statusCode, 'status code', 0)
-              .having((e) => e.message, 'exception', 'Exception'),
-        );
-      }
+          test(
+            'should return HttpResponse.exception() if HttpException is thrown',
+            () => _runExceptionTest(
+              exception: const HttpException('Exception'),
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.success() if the status code is >= 200 and < 300',
-        () => runSuccessOrFailureTest(
-          statusCode: 200,
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
+          test(
+            'should return HttpResponse.exception() if ClientException is thrown',
+            () => _runExceptionTest(
+              exception: http.ClientException('Exception'),
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
+
+          test(
+            'should return HttpResponse.exception() if SocketException is thrown',
+            () => _runExceptionTest(
+              exception: const SocketException('Exception'),
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
+
+          test(
+            'should return HttpResponse.exception() if FormatException is thrown',
+            () => _runExceptionTest(
+              exception: const FormatException('Exception'),
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
+
+          test(
+            'should return HttpResponse.exception() if any Exception is thrown',
+            () => _runExceptionTest(
+              exception: Exception(),
+              stubMethod: () => mockHttp.get(
+                any(),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.get(url, params),
+            ),
+          );
+        },
       );
 
-      test(
-        'get(): should return HttpResponse.failure() if the status code is not >= 200 and < 300',
-        () => runSuccessOrFailureTest(
-          statusCode: 404,
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+      group(
+        'post():',
+        () {
+          test(
+            'should return HttpResponse.success() if the status code is >= 200 and < 300',
+            () => _runSuccessOrFailureTest(
+              statusCode: 200,
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.exception() if HttpException is thrown',
-        () => runExceptionTest(
-          exception: const HttpException('Exception'),
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+          test(
+            'should return HttpResponse.failure() if the status code is not >= 200 and < 300',
+            () => _runSuccessOrFailureTest(
+              statusCode: 404,
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.exception() if ClientException is thrown',
-        () => runExceptionTest(
-          exception: http.ClientException('Exception'),
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+          test(
+            'should return HttpResponse.exception() if HttpException is thrown',
+            () => _runExceptionTest(
+              exception: const HttpException('Exception'),
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.exception() if SocketException is thrown',
-        () => runExceptionTest(
-          exception: const SocketException('Exception'),
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+          test(
+            'should return HttpResponse.exception() if ClientException is thrown',
+            () => _runExceptionTest(
+              exception: http.ClientException('Exception'),
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.exception() if FormatException is thrown',
-        () => runExceptionTest(
-          exception: const FormatException('Exception'),
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+          test(
+            'should return HttpResponse.exception() if SocketException is thrown',
+            () => _runExceptionTest(
+              exception: const SocketException('Exception'),
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'get(): should return HttpResponse.exception() if any Exception is thrown',
-        () => runExceptionTest(
-          exception: Exception(),
-          stubMethod: () => _mockHttp.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.get(url, params),
-        ),
-      );
+          test(
+            'should return HttpResponse.exception() if FormatException is thrown',
+            () => _runExceptionTest(
+              exception: const FormatException('Exception'),
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
 
-      test(
-        'post(): should return HttpResponse.success() if the status code is >= 200 and < 300',
-        () => runSuccessOrFailureTest(
-          statusCode: 200,
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.failure() if the status code is not >= 200 and < 300',
-        () => runSuccessOrFailureTest(
-          statusCode: 404,
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.exception() if HttpException is thrown',
-        () => runExceptionTest(
-          exception: const HttpException('Exception'),
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.exception() if ClientException is thrown',
-        () => runExceptionTest(
-          exception: http.ClientException('Exception'),
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.exception() if SocketException is thrown',
-        () => runExceptionTest(
-          exception: const SocketException('Exception'),
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.exception() if FormatException is thrown',
-        () => runExceptionTest(
-          exception: const FormatException('Exception'),
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
-      );
-
-      test(
-        'post(): should return HttpResponse.exception() if any Exception is thrown',
-        () => runExceptionTest(
-          exception: Exception(),
-          stubMethod: () => _mockHttp.post(
-            any(),
-            body: any(named: 'body'),
-            headers: any(named: 'headers'),
-          ),
-          caller: (url, params) => _khaltiHttpClient.post(url, params),
-        ),
+          test(
+            'should return HttpResponse.exception() if any Exception is thrown',
+            () => _runExceptionTest(
+              exception: Exception(),
+              stubMethod: () => mockHttp.post(
+                any(),
+                body: any(named: 'body'),
+                headers: any(named: 'headers'),
+              ),
+              caller: (url, params) => khaltiHttpClient.post(url, params),
+            ),
+          );
+        },
       );
     },
   );
 }
+
+class _HttpMock extends Mock implements http.Client {}
+
+class _ResponseMock extends Mock implements http.Response {}
+
+class _UriFake extends Fake implements Uri {}
