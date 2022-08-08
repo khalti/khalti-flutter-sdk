@@ -7,17 +7,17 @@ import 'package:package_info_plus_platform_interface/package_info_platform_inter
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:test/test.dart';
 
-class MockMethodChannelPackageInfo extends Mock
+class _MockMethodChannelPackageInfo extends Mock
     with MockPlatformInterfaceMixin
     implements MethodChannelPackageInfo {}
 
 void main() {
-  late PackageUtil packageUtil;
-  late MockMethodChannelPackageInfo mockedMethodChannel;
+  late PackageUtil _packageUtil;
+  late _MockMethodChannelPackageInfo _mockedMethodChannel;
 
   setUp(
     () {
-      packageUtil = PackageUtil();
+      _packageUtil = PackageUtil();
     },
   );
 
@@ -25,8 +25,8 @@ void main() {
     "package_util's init method",
     () {
       setUp(() {
-        mockedMethodChannel = MockMethodChannelPackageInfo();
-        PackageInfoPlatform.instance = mockedMethodChannel;
+        _mockedMethodChannel = _MockMethodChannelPackageInfo();
+        PackageInfoPlatform.instance = _mockedMethodChannel;
       });
 
       tearDown(
@@ -38,11 +38,11 @@ void main() {
       test(
         'should handle thrown PlatformException',
         () async {
-          when(() => mockedMethodChannel.getAll()).thenThrow(
+          when(() => _mockedMethodChannel.getAll()).thenThrow(
             PlatformException(code: ''),
           );
-          await packageUtil.init();
-          verify(() => mockedMethodChannel.getAll()).called(1);
+          await _packageUtil.init();
+          verify(() => _mockedMethodChannel.getAll()).called(1);
         },
       );
     },
@@ -60,14 +60,14 @@ void main() {
             buildNumber: 'buildNumber',
             buildSignature: 'buildSignature',
           );
-          await packageUtil.init();
+          await _packageUtil.init();
         },
       );
 
       test(
         'versionName: should return the version name',
         () async {
-          final versionName = packageUtil.versionName;
+          final versionName = _packageUtil.versionName;
           expect(versionName, 'version');
         },
       );
@@ -75,7 +75,7 @@ void main() {
       test(
         'applicationId: should return the application id',
         () async {
-          final appId = packageUtil.applicationId;
+          final appId = _packageUtil.applicationId;
           expect(appId, 'packageName');
         },
       );
@@ -83,7 +83,7 @@ void main() {
       test(
         'versionCode: should return the version code',
         () async {
-          final versionCode = packageUtil.versionCode;
+          final versionCode = _packageUtil.versionCode;
           expect(versionCode, 'buildNumber');
         },
       );
