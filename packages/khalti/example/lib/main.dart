@@ -97,7 +97,7 @@ class _WalletPaymentState extends State<WalletPayment> {
           ElevatedButton(
             onPressed: () async {
               if (!(_formKey.currentState?.validate() ?? false)) return;
-
+              final messenger = ScaffoldMessenger.maybeOf(context);
               final initiationModel = await Khalti.service.initiatePayment(
                 request: PaymentInitiationRequestModel(
                   amount: 1000,
@@ -117,19 +117,19 @@ class _WalletPaymentState extends State<WalletPayment> {
                 context: context,
                 barrierDismissible: false,
                 builder: (context) {
-                  String? _otp;
+                  String? otp;
                   return AlertDialog(
                     title: const Text('OTP Sent!'),
                     content: TextField(
                       decoration: const InputDecoration(
                         label: Text('OTP Code'),
                       ),
-                      onChanged: (v) => _otp = v,
+                      onChanged: (v) => otp = v,
                     ),
                     actions: [
                       SimpleDialogOption(
                         child: const Text('OK'),
-                        onPressed: () => Navigator.pop(context, _otp),
+                        onPressed: () => Navigator.pop(context, otp),
                       )
                     ],
                   );
@@ -148,7 +148,7 @@ class _WalletPaymentState extends State<WalletPayment> {
 
                   debugPrint(model.toString());
                 } catch (e) {
-                  ScaffoldMessenger.maybeOf(context)?.showSnackBar(
+                  messenger?.showSnackBar(
                     SnackBar(content: Text(e.toString())),
                   );
                 }
@@ -198,19 +198,19 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                     context: context,
                     barrierDismissible: false,
                     builder: (context) {
-                      String? _mobile;
+                      String? mobile;
                       return AlertDialog(
                         title: const Text('Enter Mobile Number'),
                         content: TextField(
                           decoration: const InputDecoration(
                             label: Text('Mobile Number'),
                           ),
-                          onChanged: (v) => _mobile = v,
+                          onChanged: (v) => mobile = v,
                         ),
                         actions: [
                           SimpleDialogOption(
                             child: const Text('OK'),
-                            onPressed: () => Navigator.pop(context, _mobile),
+                            onPressed: () => Navigator.pop(context, mobile),
                           )
                         ],
                       );
@@ -227,7 +227,7 @@ class _BankingState extends State<Banking> with AutomaticKeepAliveClientMixin {
                       paymentType: widget.paymentType,
                       returnUrl: 'https://khalti.com',
                     );
-                    url_launcher.launch(url);
+                    url_launcher.launchUrl(Uri.parse(url));
                   }
                 },
               );
