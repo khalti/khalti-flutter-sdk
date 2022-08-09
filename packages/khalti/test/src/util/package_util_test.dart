@@ -19,10 +19,10 @@ void main() {
   group(
     "package_util's init method",
     () {
-      late _MockMethodChannelPackageInfo _mockedMethodChannel;
+      late _MethodChannelPackageInfoMock _mockedMethodChannel;
 
       setUp(() {
-        _mockedMethodChannel = _MockMethodChannelPackageInfo();
+        _mockedMethodChannel = _MethodChannelPackageInfoMock();
         PackageInfoPlatform.instance = _mockedMethodChannel;
       });
 
@@ -88,6 +88,6 @@ void main() {
   );
 }
 
-class _MockMethodChannelPackageInfo extends Mock
+class _MethodChannelPackageInfoMock extends Mock
     with MockPlatformInterfaceMixin
     implements MethodChannelPackageInfo {}

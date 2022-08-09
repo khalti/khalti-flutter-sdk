@@ -54,8 +54,8 @@ void _runExceptionTest({
 }
 
 void main() {
-  final mockHttp = _HttpMock();
-  final khaltiHttpClient = KhaltiHttpClient(client: mockHttp);
+  final client = _ClientMock();
+  final khaltiHttpClient = KhaltiHttpClient(client: client);
 
   setUpAll(() {
     registerFallbackValue(_UriFake());
@@ -84,7 +84,7 @@ void main() {
             () {
               _runSuccessOrFailureTest(
                 statusCode: 200,
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -98,7 +98,7 @@ void main() {
             () {
               _runSuccessOrFailureTest(
                 statusCode: 404,
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -112,7 +112,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const HttpException('Exception'),
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -126,7 +126,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: http.ClientException('Exception'),
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -140,7 +140,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const SocketException('Exception'),
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -154,7 +154,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const FormatException('Exception'),
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -168,7 +168,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: Exception(),
-                stubMethod: () => mockHttp.get(
+                stubMethod: () => client.get(
                   any(),
                   headers: any(named: 'headers'),
                 ),
@@ -187,7 +187,7 @@ void main() {
             () {
               _runSuccessOrFailureTest(
                 statusCode: 200,
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -202,7 +202,7 @@ void main() {
             () {
               _runSuccessOrFailureTest(
                 statusCode: 404,
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -217,7 +217,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const HttpException('Exception'),
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -232,7 +232,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: http.ClientException('Exception'),
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -247,7 +247,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const SocketException('Exception'),
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -262,7 +262,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: const FormatException('Exception'),
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -277,7 +277,7 @@ void main() {
             () {
               _runExceptionTest(
                 exception: Exception(),
-                stubMethod: () => mockHttp.post(
+                stubMethod: () => client.post(
                   any(),
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
@@ -292,7 +292,7 @@ void main() {
   );
 }
 
-class _HttpMock extends Mock implements http.Client {}
+class _ClientMock extends Mock implements http.Client {}
 
 class _ResponseMock extends Mock implements http.Response {}
 
