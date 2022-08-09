@@ -18,7 +18,6 @@ dependencies:
   http: ^0.13.5
   khalti_core: ^1.0.1
   package_info_plus: ^1.4.3
-  plugin_platform_interface: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +25,4 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   mocktail: ^0.3.0
   package_info_plus_platform_interface: ^1.0.2
+  plugin_platform_interface: ^2.1.2
