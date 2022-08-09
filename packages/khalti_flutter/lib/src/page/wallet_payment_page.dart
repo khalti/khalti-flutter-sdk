@@ -137,6 +137,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           ),
         );
         _remainingAttempts.value = -1;
+        if (!mounted) return;
         Navigator.pop(context);
         showSuccessDialog(
           context,
@@ -184,9 +185,14 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
   }
 }
 
-class _ResetMPINSection extends StatelessWidget {
+class _ResetMPINSection extends StatefulWidget {
   const _ResetMPINSection({Key? key}) : super(key: key);
 
+  @override
+  State<_ResetMPINSection> createState() => _ResetMPINSectionState();
+}
+
+class _ResetMPINSectionState extends State<_ResetMPINSection> {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = Theme.of(context).textTheme.button;
@@ -202,6 +208,7 @@ class _ResetMPINSection extends StatelessWidget {
           final appInstalled = await urlLauncher.launchMPINSetting();
 
           if (!appInstalled) {
+            if (!mounted) return;
             showInfoDialog(
               context,
               title: context.loc.resetKhaltiMPIN,

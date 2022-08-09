@@ -127,7 +127,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
   bool get wantKeepAlive => true;
 }
 
-class _BankTile extends StatelessWidget {
+class _BankTile extends StatefulWidget {
   const _BankTile({
     Key? key,
     required this.bank,
@@ -138,12 +138,17 @@ class _BankTile extends StatelessWidget {
   final PaymentType paymentType;
 
   @override
+  State<_BankTile> createState() => _BankTileState();
+}
+
+class _BankTileState extends State<_BankTile> {
+  @override
   Widget build(BuildContext context) {
     final config = PaymentConfigScope.of(context);
 
     return KhaltiBankTile(
-      name: bank.name,
-      logoUrl: bank.logo,
+      name: widget.bank.name,
+      logoUrl: widget.bank.logo,
       onTap: () {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         showModalBottomSheet(
@@ -156,22 +161,23 @@ class _BankTile extends StatelessWidget {
               child: KhaltiColor(
                 isDark: isDark,
                 child: _BankBottomSheet(
-                  logo: bank.logo,
-                  name: bank.name,
+                  logo: widget.bank.logo,
+                  name: widget.bank.name,
                   amount: config.amount,
                   onTap: (mobile) async {
                     final url = Khalti.service.buildBankUrl(
-                      bankId: bank.idx,
+                      bankId: widget.bank.idx,
                       mobile: mobile,
                       amount: config.amount,
                       productIdentity: config.productIdentity,
                       productName: config.productName,
-                      paymentType: paymentType,
+                      paymentType: widget.paymentType,
                       productUrl: config.productUrl,
                       additionalData: config.additionalData,
                       returnUrl: config.returnUrl,
                     );
                     await urlLauncher.launch(url);
+                    if (!mounted) return;
                     Navigator.pop(context);
                   },
                 ),

@@ -83,9 +83,11 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             token: widget.token,
           ),
         );
+        if (!mounted) return;
         Navigator.popUntil(context, ModalRoute.withName('/kpg'));
         Navigator.pop(context, response);
       } catch (e) {
+        if (!mounted) return;
         Navigator.pop(context);
         showErrorDialog(
           context,
