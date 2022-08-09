@@ -88,13 +88,13 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
 
           test(
-            'should return HttpResponse.failure() if the status code is not >= 200 and < 300',
+            'should return HttpResponse.failure() if the status code is >= 400 and <600',
             () {
               _runSuccessOrFailureTest(
                 statusCode: 404,
@@ -102,7 +102,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -116,7 +116,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -130,7 +130,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -144,7 +144,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -158,7 +158,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -172,7 +172,7 @@ void main() {
                   any(),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.get(url, params),
+                caller: khaltiHttpClient.get,
               );
             },
           );
@@ -192,13 +192,13 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
 
           test(
-            'should return HttpResponse.failure() if the status code is not >= 200 and < 300',
+            'should return HttpResponse.failure() if the status code is >= 400 and <600',
             () {
               _runSuccessOrFailureTest(
                 statusCode: 404,
@@ -207,7 +207,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
@@ -222,7 +222,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
@@ -237,7 +237,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
@@ -252,7 +252,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
@@ -267,7 +267,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );
@@ -282,7 +282,7 @@ void main() {
                   body: any(named: 'body'),
                   headers: any(named: 'headers'),
                 ),
-                caller: (url, params) => khaltiHttpClient.post(url, params),
+                caller: khaltiHttpClient.post,
               );
             },
           );

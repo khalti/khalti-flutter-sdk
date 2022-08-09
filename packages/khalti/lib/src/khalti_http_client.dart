@@ -13,12 +13,12 @@ typedef InnerClient = http.Client;
 ///
 /// Uses [http](https://pub.dev/packages/http) package under-the-hood.
 class KhaltiHttpClient extends KhaltiClient {
-  final InnerClient? _client;
-
   /// The HTTP client used to make HTTP requests.
   KhaltiHttpClient({
     InnerClient? client,
   }) : _client = client ?? InnerClient();
+
+  final InnerClient _client;
 
   @override
   Future<HttpResponse> get(
@@ -28,7 +28,7 @@ class KhaltiHttpClient extends KhaltiClient {
     return _handleExceptions(
       () async {
         final uri = Uri.parse(url).replace(queryParameters: params);
-        final response = await _client!.get(
+        final response = await _client.get(
           uri,
           headers: KhaltiService.config.raw,
         );
@@ -57,7 +57,7 @@ class KhaltiHttpClient extends KhaltiClient {
     return _handleExceptions(
       () async {
         final uri = Uri.parse(url);
-        final response = await _client!.post(
+        final response = await _client.post(
           uri,
           body: data,
           headers: KhaltiService.config.raw,

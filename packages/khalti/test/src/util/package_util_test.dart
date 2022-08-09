@@ -8,22 +8,16 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:test/test.dart';
 
 void main() {
-  late PackageUtil packageUtil;
-
-  setUp(
-    () {
-      packageUtil = PackageUtil();
-    },
-  );
+  final packageUtil = PackageUtil();
 
   group(
     "package_util's init method",
     () {
-      late _MethodChannelPackageInfoMock _mockedMethodChannel;
+      late _MethodChannelPackageInfoMock mockedMethodChannel;
 
       setUp(() {
-        _mockedMethodChannel = _MethodChannelPackageInfoMock();
-        PackageInfoPlatform.instance = _mockedMethodChannel;
+        mockedMethodChannel = _MethodChannelPackageInfoMock();
+        PackageInfoPlatform.instance = mockedMethodChannel;
       });
 
       tearDown(
@@ -35,11 +29,11 @@ void main() {
       test(
         'should handle thrown PlatformException',
         () async {
-          when(() => _mockedMethodChannel.getAll()).thenThrow(
+          when(() => mockedMethodChannel.getAll()).thenThrow(
             PlatformException(code: ''),
           );
           await packageUtil.init();
-          verify(() => _mockedMethodChannel.getAll()).called(1);
+          verify(() => mockedMethodChannel.getAll()).called(1);
         },
       );
     },
