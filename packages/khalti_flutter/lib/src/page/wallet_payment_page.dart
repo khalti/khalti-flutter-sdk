@@ -124,6 +124,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
         context,
         message: context.loc.initiatingPayment,
       );
+
       try {
         final response = await Khalti.service.initiatePayment(
           request: PaymentInitiationRequestModel(
@@ -207,8 +208,7 @@ class _ResetMPINSectionState extends State<_ResetMPINSection> {
         onPressed: () async {
           final appInstalled = await urlLauncher.launchMPINSetting();
 
-          if (!appInstalled) {
-            if (!mounted) return;
+          if (!appInstalled && mounted) {
             showInfoDialog(
               context,
               title: context.loc.resetKhaltiMPIN,
