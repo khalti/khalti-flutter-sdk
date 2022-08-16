@@ -45,9 +45,10 @@ jobs:
         run: flutter test --coverage
         working-directory: packages/khalti_core
 
-      - name: Upload khalti_core coverage to Codecov
-        uses: codecov/codecov-action@v1
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
         with:
           token: ${{secrets.CODECOV_TOKEN}}
-          file: ./packages/khalti_core/coverage/lcov.info
-          name: khalti-core-coverage
+          files: ./packages/khalti_core/coverage/lcov.info,./packages/khalti/coverage/lcov.info
+          name: khalti-coverage
+          fail_ci_if_error: true
