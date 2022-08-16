@@ -165,6 +165,7 @@ class _BankTileState extends State<_BankTile> {
                   name: widget.bank.name,
                   amount: config.amount,
                   onTap: (mobile) async {
+                    final navigator = Navigator.of(context);
                     final url = Khalti.service.buildBankUrl(
                       bankId: widget.bank.idx,
                       mobile: mobile,
@@ -177,8 +178,7 @@ class _BankTileState extends State<_BankTile> {
                       returnUrl: config.returnUrl,
                     );
                     await urlLauncher.launch(url);
-                    if (!mounted) return;
-                    Navigator.pop(context);
+                    navigator.pop();
                   },
                 ),
               ),

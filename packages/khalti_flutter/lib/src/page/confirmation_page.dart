@@ -70,6 +70,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
   }
 
   Future<void> _confirmPayment() async {
+    final navigator = Navigator.of(context);
     if (_formKey.currentState?.validate() ?? false) {
       showProgressDialog(
         context,
@@ -83,11 +84,9 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
             token: widget.token,
           ),
         );
-        if (!mounted) return;
-        Navigator.popUntil(context, ModalRoute.withName('/kpg'));
-        Navigator.pop(context, response);
+        navigator.popUntil(ModalRoute.withName('/kpg'));
+        navigator.pop(response);
       } catch (e) {
-        if (!mounted) return;
         Navigator.pop(context);
         showErrorDialog(
           context,
