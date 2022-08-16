@@ -127,7 +127,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
   bool get wantKeepAlive => true;
 }
 
-class _BankTile extends StatefulWidget {
+class _BankTile extends StatelessWidget {
   const _BankTile({
     Key? key,
     required this.bank,
@@ -138,17 +138,12 @@ class _BankTile extends StatefulWidget {
   final PaymentType paymentType;
 
   @override
-  State<_BankTile> createState() => _BankTileState();
-}
-
-class _BankTileState extends State<_BankTile> {
-  @override
   Widget build(BuildContext context) {
     final config = PaymentConfigScope.of(context);
 
     return KhaltiBankTile(
-      name: widget.bank.name,
-      logoUrl: widget.bank.logo,
+      name: bank.name,
+      logoUrl: bank.logo,
       onTap: () {
         final isDark = Theme.of(context).brightness == Brightness.dark;
         showModalBottomSheet(
@@ -161,18 +156,18 @@ class _BankTileState extends State<_BankTile> {
               child: KhaltiColor(
                 isDark: isDark,
                 child: _BankBottomSheet(
-                  logo: widget.bank.logo,
-                  name: widget.bank.name,
+                  logo: bank.logo,
+                  name: bank.name,
                   amount: config.amount,
                   onTap: (mobile) async {
                     final navigator = Navigator.of(context);
                     final url = Khalti.service.buildBankUrl(
-                      bankId: widget.bank.idx,
+                      bankId: bank.idx,
                       mobile: mobile,
                       amount: config.amount,
                       productIdentity: config.productIdentity,
                       productName: config.productName,
-                      paymentType: widget.paymentType,
+                      paymentType: paymentType,
                       productUrl: config.productUrl,
                       additionalData: config.additionalData,
                       returnUrl: config.returnUrl,
