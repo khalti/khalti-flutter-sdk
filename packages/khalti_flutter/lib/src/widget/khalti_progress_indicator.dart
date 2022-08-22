@@ -16,13 +16,13 @@ class KhaltiProgressIndicator extends StatefulWidget {
   final double size;
 
   @override
-  KhaltiProgressIndicatorState createState() {
-    return KhaltiProgressIndicatorState();
+  State<KhaltiProgressIndicator> createState() {
+    return _KhaltiProgressIndicatorState();
   }
 }
 
 /// KhaltiProgressIndicator state class
-class KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
+class _KhaltiProgressIndicatorState extends State<KhaltiProgressIndicator>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _animation;
