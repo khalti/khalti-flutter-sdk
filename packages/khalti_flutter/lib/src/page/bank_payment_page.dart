@@ -160,6 +160,7 @@ class _BankTile extends StatelessWidget {
                   name: bank.name,
                   amount: config.amount,
                   onTap: (mobile) async {
+                    final navigator = Navigator.of(context);
                     final url = Khalti.service.buildBankUrl(
                       bankId: bank.idx,
                       mobile: mobile,
@@ -172,7 +173,7 @@ class _BankTile extends StatelessWidget {
                       returnUrl: config.returnUrl,
                     );
                     await urlLauncher.launch(url);
-                    Navigator.pop(context);
+                    navigator.pop();
                   },
                 ),
               ),

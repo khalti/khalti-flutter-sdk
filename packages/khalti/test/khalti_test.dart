@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:khalti/khalti.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:test/test.dart';
 
 void main() {
   const testPublicKey = '__test_public_key__';
@@ -48,7 +48,7 @@ void main() {
       );
 
       test(
-        'service getter should return KhaltiService.',
+        'service getter should return KhaltiService',
         () {
           expect(Khalti.service, isA<KhaltiService>());
         },

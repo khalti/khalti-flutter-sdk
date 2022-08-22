@@ -124,6 +124,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
         context,
         message: context.loc.initiatingPayment,
       );
+
       try {
         final response = await Khalti.service.initiatePayment(
           request: PaymentInitiationRequestModel(
@@ -137,6 +138,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
           ),
         );
         _remainingAttempts.value = -1;
+        if (!mounted) return;
         Navigator.pop(context);
         showSuccessDialog(
           context,
@@ -184,9 +186,14 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
   }
 }
 
-class _ResetMPINSection extends StatelessWidget {
+class _ResetMPINSection extends StatefulWidget {
   const _ResetMPINSection({Key? key}) : super(key: key);
 
+  @override
+  State<_ResetMPINSection> createState() => _ResetMPINSectionState();
+}
+
+class _ResetMPINSectionState extends State<_ResetMPINSection> {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = Theme.of(context).textTheme.button;
@@ -201,7 +208,7 @@ class _ResetMPINSection extends StatelessWidget {
         onPressed: () async {
           final appInstalled = await urlLauncher.launchMPINSetting();
 
-          if (!appInstalled) {
+          if (!appInstalled && mounted) {
             showInfoDialog(
               context,
               title: context.loc.resetKhaltiMPIN,

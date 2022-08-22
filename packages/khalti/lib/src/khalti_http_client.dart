@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:khalti/khalti.dart';
 import 'package:khalti_core/khalti_core.dart';
 
 /// Typedef for http.Client that is used internally.

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:khalti/khalti.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:test/test.dart';
 
 typedef _MethodUnderTestCaller = Future<HttpResponse> Function(
   String,
