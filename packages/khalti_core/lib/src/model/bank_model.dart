@@ -54,8 +54,7 @@ class BankModel {
           shortName == other.shortName;
 
   @override
-  int get hashCode =>
-      idx.hashCode ^ logo.hashCode ^ name.hashCode ^ shortName.hashCode;
+  int get hashCode => Object.hash(idx, logo, name, shortName);
 }
 
 /// Paginated class for [BankModel].

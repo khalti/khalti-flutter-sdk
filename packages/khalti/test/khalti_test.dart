@@ -1,9 +1,21 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:khalti/khalti.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   const testPublicKey = '__test_public_key__';
+
+  PackageInfo.setMockInitialValues(
+    appName: 'Khalti',
+    packageName: 'com.khalti.kpg',
+    version: '1.0.0',
+    buildNumber: '100',
+    buildSignature: '',
+    installerStore: 'Play Store',
+  );
 
   final config = KhaltiConfig(
     platform: 'Android',
@@ -16,12 +28,12 @@ void main() {
 
   final expectedResult = <String, String>{
     'checkout-version': '1.0.1',
-    'checkout-platform': 'linux',
+    'checkout-platform': Platform.operatingSystem,
     'checkout-os-version': '',
     'checkout-device-model': '',
     'checkout-device-manufacturer': '',
-    'merchant-package-name': '',
-    'merchant-package-version': '',
+    'merchant-package-name': 'com.khalti.kpg',
+    'merchant-package-version': '1.0.0',
   };
 
   group(

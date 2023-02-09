@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:khalti_core/src/config/khalti_config.dart';
 import 'package:test/test.dart';
 
@@ -34,7 +36,7 @@ void main() {
         config.raw,
         {
           'checkout-version': config.version,
-          'checkout-platform': 'linux',
+          'checkout-platform': Platform.operatingSystem,
           'checkout-os-version': '',
           'checkout-device-model': '',
           'checkout-device-manufacturer': '',
