@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(top: 16, left: 16),
                         child: Text(
                           localization.appPreference.toUpperCase(),
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ),
                       SwitchListTile(
@@ -264,7 +264,7 @@ class _CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6?.copyWith(
+    final headline6 = Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.pink,
           fontWeight: FontWeight.bold,
         );

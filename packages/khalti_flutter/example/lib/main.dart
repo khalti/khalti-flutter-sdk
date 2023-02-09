@@ -36,12 +36,8 @@ class MyApp extends StatelessWidget {
                   locale: appPreference.locale,
                   theme: ThemeData(
                     brightness: appPreference.brightness,
-                    primarySwatch: Colors.deepPurple,
-                    pageTransitionsTheme: const PageTransitionsTheme(
-                      builders: {
-                        TargetPlatform.android: ZoomPageTransitionsBuilder(),
-                      },
-                    ),
+                    colorSchemeSeed: Colors.deepPurple,
+                    useMaterial3: true,
                   ),
                   debugShowCheckedModeBanner: false,
                   navigatorKey: navKey,

@@ -60,9 +60,9 @@ class PaymentPage extends StatelessWidget {
         data: ThemeData.from(
           colorScheme: colorScheme,
           textTheme: const TextTheme(
-            button: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            caption: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-            subtitle1: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            labelLarge: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            bodySmall: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+            titleMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
         ),
         child: PaymentConfigScope(
@@ -168,8 +168,7 @@ class _MainPage extends StatelessWidget {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          minimumSize: const Size(64, 50),
-          onPrimary: Colors.white,
+          foregroundColor: Colors.white, minimumSize: const Size(64, 50),
         ),
       ),
     );

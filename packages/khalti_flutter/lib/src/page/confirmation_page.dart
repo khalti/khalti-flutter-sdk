@@ -52,7 +52,7 @@ class _ConfirmationPageState extends State<ConfirmationPage> {
               children: [
                 Text(
                   context.loc.enterOtpSentTo(widget.mobileNo),
-                  style: Theme.of(context).textTheme.caption,
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 24),
                 CodeField(onChanged: (code) => _code = code),

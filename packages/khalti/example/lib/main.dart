@@ -113,28 +113,7 @@ class _WalletPaymentState extends State<WalletPayment> {
                 ),
               );
 
-              final otpCode = await showDialog<String>(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  String? otp;
-                  return AlertDialog(
-                    title: const Text('OTP Sent!'),
-                    content: TextField(
-                      decoration: const InputDecoration(
-                        label: Text('OTP Code'),
-                      ),
-                      onChanged: (v) => otp = v,
-                    ),
-                    actions: [
-                      SimpleDialogOption(
-                        child: const Text('OK'),
-                        onPressed: () => Navigator.pop(context, otp),
-                      )
-                    ],
-                  );
-                },
-              );
+              final otpCode = await _showOTPSentDialog();
 
               if (otpCode != null) {
                 try {
@@ -158,6 +137,31 @@ class _WalletPaymentState extends State<WalletPayment> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<String?> _showOTPSentDialog() {
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        String? otp;
+        return AlertDialog(
+          title: const Text('OTP Sent!'),
+          content: TextField(
+            decoration: const InputDecoration(
+              label: Text('OTP Code'),
+            ),
+            onChanged: (v) => otp = v,
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context, otp),
+            )
+          ],
+        );
+      },
     );
   }
 }

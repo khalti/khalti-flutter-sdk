@@ -48,7 +48,7 @@ class _WalletPaymentPageState extends State<WalletPaymentPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final subtitle1 = Theme.of(context).textTheme.subtitle1?.copyWith(
+    final subtitle1 = Theme.of(context).textTheme.titleMedium?.copyWith(
           color: KhaltiColor.of(context).surface.shade300,
           fontWeight: FontWeight.w300,
         );
@@ -196,7 +196,7 @@ class _ResetMPINSection extends StatefulWidget {
 class _ResetMPINSectionState extends State<_ResetMPINSection> {
   @override
   Widget build(BuildContext context) {
-    final buttonStyle = Theme.of(context).textTheme.button;
+    final buttonStyle = Theme.of(context).textTheme.labelLarge;
 
     return Center(
       child: TextButton(
@@ -262,7 +262,7 @@ class _ResetMPINDialogBody extends StatelessWidget {
         ),
         TextButton(
           style: TextButton.styleFrom(
-            primary: KhaltiColor.of(parentContext).surface.shade100,
+            foregroundColor: KhaltiColor.of(parentContext).surface.shade100,
           ),
           onPressed: () => Navigator.pop(context),
           child: Text(context.loc.cancel.toUpperCase()),
