@@ -22,7 +22,7 @@ Future<void> showProgressDialog(
       return DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
-            .bodyText2!
+            .bodyMedium!
             .copyWith(color: KhaltiColor.of(context).surface.shade400),
         child: ResponsiveBox(
           child: Dialog(
@@ -71,7 +71,7 @@ Future<void> showErrorDialog(
                 message: errorInfo.secondary!,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText2!
+                    .bodyMedium!
                     .copyWith(color: KhaltiColor.of(context).surface.shade400),
               ),
         onPressed: onPressed,
@@ -97,7 +97,7 @@ Future<void> showSuccessDialog(
         titleText: title,
         subtitle: Text(
           subtitle,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 color: KhaltiColor.of(context).surface.shade400,
                 height: 1.5,
               ),
@@ -145,7 +145,7 @@ class _Dialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(parentContext).textTheme.bodyText2!.copyWith(
+    final textStyle = Theme.of(parentContext).textTheme.bodyMedium!.copyWith(
           color: KhaltiColor.of(parentContext).surface.shade400,
           height: 1.5,
         );
@@ -176,7 +176,7 @@ class _Dialog extends StatelessWidget {
                         child: Center(
                           child: Text(
                             titleText,
-                            style: Theme.of(parentContext).textTheme.headline6,
+                            style: Theme.of(parentContext).textTheme.titleLarge,
                           ),
                         ),
                       ),
@@ -196,8 +196,7 @@ class _Dialog extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8, bottom: 2),
                     child: TextButton(
                       style: TextButton.styleFrom(
-                        primary: Theme.of(parentContext).colorScheme.onPrimary,
-                        textStyle: const TextStyle(
+                        foregroundColor: Theme.of(parentContext).colorScheme.onPrimary, textStyle: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),

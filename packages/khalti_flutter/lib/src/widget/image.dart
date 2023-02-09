@@ -49,10 +49,17 @@ class _AssetSVGImage extends KhaltiImage {
 
   @override
   Widget build(BuildContext context) {
+    final color = _imageColor(context);
+
     return SvgPicture.asset(
       'assets/$asset',
       package: 'khalti_flutter',
-      color: _imageColor(context),
+      colorFilter: color == null
+          ? null
+          : ColorFilter.mode(
+              color,
+              BlendMode.srcIn,
+            ),
       height: height,
     );
   }

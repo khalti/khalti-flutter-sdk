@@ -50,6 +50,7 @@ void main() {
             version: 'version',
             buildNumber: 'buildNumber',
             buildSignature: 'buildSignature',
+            installerStore: '',
           );
           await packageUtil.init();
         },

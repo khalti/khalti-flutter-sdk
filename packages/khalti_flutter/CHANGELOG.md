@@ -1,3 +1,6 @@
+# [2.2.0] - Feb 9, 2023
+- Upgraded dependencies.
+
 # [2.1.0] - May 18, 2022
 - (**BREAKING CHANGE**) Migrated to Flutter 3
 - Upgraded dependencies to latest version.

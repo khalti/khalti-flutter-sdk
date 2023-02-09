@@ -128,7 +128,7 @@ class SearchField extends StatelessWidget {
       minHeight: _searchFieldHeight,
       minWidth: _searchFieldHeight,
     );
-    final bodyText2 = Theme.of(context).textTheme.bodyText2;
+    final bodyText2 = Theme.of(context).textTheme.bodyMedium;
     final khaltiColor = KhaltiColor.of(context);
 
     return Material(

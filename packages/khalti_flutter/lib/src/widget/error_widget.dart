@@ -28,7 +28,7 @@ class KhaltiErrorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final errorInfo = ErrorInfo.from(context, error);
 
-    final titleStyle = Theme.of(context).textTheme.subtitle1?.copyWith(
+    final titleStyle = Theme.of(context).textTheme.titleMedium?.copyWith(
           color: Theme.of(context).colorScheme.onPrimary,
         );
 

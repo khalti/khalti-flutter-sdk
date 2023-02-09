@@ -73,7 +73,7 @@ class _BankPaymentPageState extends State<BankPaymentPage>
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text(
                     context.loc.pleaseSelectYourBank,
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
                 Expanded(
@@ -211,7 +211,7 @@ class _BankBottomSheetState extends State<_BankBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final bottomMargin = 10 + MediaQuery.of(context).viewInsets.bottom;
-    final titleStyle = Theme.of(context).textTheme.headline6?.copyWith(
+    final titleStyle = Theme.of(context).textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w600,
           height: 1.4,
         );

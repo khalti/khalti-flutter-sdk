@@ -42,7 +42,7 @@ class _AmountWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6?.copyWith(
+    final headline6 = Theme.of(context).textTheme.titleLarge?.copyWith(
           fontWeight: FontWeight.w600,
         );
 
@@ -54,7 +54,7 @@ class _AmountWidget extends StatelessWidget {
           context.loc.amount,
           style: Theme.of(context)
               .textTheme
-              .caption!
+              .bodySmall!
               .copyWith(color: KhaltiColor.of(context).surface.shade50),
         ),
         const SizedBox(height: 4),

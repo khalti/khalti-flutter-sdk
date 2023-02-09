@@ -32,7 +32,7 @@ class KhaltiBankTile extends StatelessWidget {
       minLeadingWidth: 0,
       title: Text(
         name,
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
       onTap: onTap,
     );

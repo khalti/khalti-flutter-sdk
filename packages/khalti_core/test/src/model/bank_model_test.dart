@@ -18,7 +18,7 @@ void main() {
 
       expect(
         bankModel.hashCode,
-        _hashCodeFromStrings(['idx', 'logo', 'name', 'short']),
+        Object.hashAll(['idx', 'logo', 'name', 'short']),
       );
     });
 
@@ -35,8 +35,4 @@ void main() {
       );
     });
   });
-}
-
-int _hashCodeFromStrings(List<String> values) {
-  return values.fold(0, (o, n) => o.hashCode ^ n.hashCode);
 }

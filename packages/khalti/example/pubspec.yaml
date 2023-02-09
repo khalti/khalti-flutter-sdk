@@ -1,6 +1,6 @@
 name: khalti_example
 description: A new Flutter project.
-publish_to: 'none'
+publish_to: none
 version: 1.0.1
 
 environment:
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   khalti: ^1.0.2
-  url_launcher: ^6.1.5
+  url_launcher: ^6.1.9
 
 dev_dependencies:
   flutter_lints: ^2.0.1

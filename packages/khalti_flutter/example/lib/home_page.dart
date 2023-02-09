@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:khalti_flutter_example/l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter_example/app_preference.dart';
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.only(top: 16, left: 16),
                         child: Text(
                           localization.appPreference.toUpperCase(),
-                          style: Theme.of(context).textTheme.overline,
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                       ),
                       SwitchListTile(
@@ -264,7 +264,7 @@ class _CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headline6 = Theme.of(context).textTheme.headline6?.copyWith(
+    final headline6 = Theme.of(context).textTheme.titleLarge?.copyWith(
           color: Colors.pink,
           fontWeight: FontWeight.bold,
         );
