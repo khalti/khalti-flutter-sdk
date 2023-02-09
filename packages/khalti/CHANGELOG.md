@@ -1,3 +1,6 @@
+# [1.1.0] - Feb 9, 2023
+- Upgraded dependencies.
+
 # [1.0.2] - Jan 31, 2022
 - Upgraded dependencies.
 

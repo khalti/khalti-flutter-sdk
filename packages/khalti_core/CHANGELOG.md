@@ -1,3 +1,6 @@
+# [1.1.0] - Feb 9, 2023
+- Upgraded dependencies.
+
 # [1.0.1] - Nov 1, 2021
 - Fixed issue where `productUrl` would always report as null.
 - Added tests.
