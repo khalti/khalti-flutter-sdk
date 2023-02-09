@@ -4,7 +4,7 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter_example/app_preference.dart';
 import 'package:khalti_flutter_example/home_page.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:khalti_flutter_example/l10n/app_localizations.dart';
 
 const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
 
