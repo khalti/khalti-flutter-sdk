@@ -35,6 +35,7 @@ class UrlLauncherUtil {
       await launcher.launchUrl(
         Uri.parse(url),
         webOnlyWindowName: openInNewTab ? null : '_self',
+        mode: launcher.LaunchMode.externalApplication,
       );
       return true;
     } on PlatformException catch (e) {
