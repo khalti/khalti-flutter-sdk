@@ -1,3 +1,6 @@
+# [2.2.1] - Feb 14, 2023
+- Fix redirection issue after bank payments.
+
 # [2.2.0] - Feb 9, 2023
 - Upgraded dependencies.
 
