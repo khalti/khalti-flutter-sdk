@@ -12,12 +12,15 @@ environment:
   sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
-  device_info_plus: ^8.0.0
+#  device_info_plus: ^8.0.0
+  device_info_plus: ^9.0.2
   flutter:
     sdk: flutter
-  http: ^0.13.5
+#  http: ^0.13.5
+  http: ^1.1.0
   khalti_core: ^1.1.0
-  package_info_plus: ^3.0.2
+#  package_info_plus: ^3.0.2
+  package_info_plus: ^4.0.2
 
 dev_dependencies:
   flutter_test:
