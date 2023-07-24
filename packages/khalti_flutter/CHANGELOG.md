@@ -1,3 +1,6 @@
+# [3.0.0] - Jul 25, 2023
+- Bumps dependencies to latest version.
+
 # [2.2.1] - Feb 14, 2023
 - Fix redirection issue after bank payments.
 
