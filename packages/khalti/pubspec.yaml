@@ -2,27 +2,27 @@ name: khalti
 description: An official Flutter plugin for Khalti Payment Gateway, to accept
   payments using Khalti Wallet, E-banking, Mobile Banking, Connect IPS and SCT
   cards.
-version: 1.1.0
+version: 2.0.0
 homepage: https://khalti.com/payment-gateway/
 documentation: https://docs.khalti.com/
 issue_tracker: https://github.com/khalti/khalti-flutter-sdk/issues
 repository: https://github.com/khalti/khalti-flutter-sdk/tree/master/packages/khalti
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  device_info_plus: ^9.0.0
+  device_info_plus: ^9.0.2
   flutter:
     sdk: flutter
-  http: ^0.13.5
-  khalti_core: ^1.1.0
-  package_info_plus: ^4.0.0
+  http: ^1.1.0
+  khalti_core: ^1.1.1
+  package_info_plus: ^4.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.2
   mocktail: ^0.3.0
   package_info_plus_platform_interface: ^2.0.1
-  plugin_platform_interface: ^2.1.4
+  plugin_platform_interface: ^2.1.5

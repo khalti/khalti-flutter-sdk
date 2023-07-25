@@ -42,3 +42,4 @@ jobs:
           files: ./packages/khalti_core/coverage/lcov.info,./packages/khalti/coverage/lcov.info
           name: khalti-coverage
           fail_ci_if_error: true
+          verbose: true
