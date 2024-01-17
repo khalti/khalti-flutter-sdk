@@ -30,52 +30,6 @@ class KhaltiService {
   /// The default platform only configuration.
   static KhaltiConfig config = KhaltiConfig.platformOnly();
 
-  /// Fetches the list for available banks that supports [paymentType].
-  ///
-  /// See: https://docs.khalti.com/checkout/diy-ebanking/#1-get-bank-list
-  Future<BankListModel> getBanks({required PaymentType paymentType}) async {
-    final params = {
-      'page': '1',
-      'page_size': '200',
-      'payment_type': paymentType.value,
-    };
-
-    final url = _buildUrl(banks);
-    final logger = _Logger('GET', url);
-
-    logger.request(params);
-    final response = await _client.get(url, params);
-    logger.response(response);
-
-    return _handleError(
-      response,
-      converter: (data) => BankListModel.fromMap(data),
-    );
-  }
-
-  /// Initiates the payment.
-  ///
-  /// e.g. When the user clicks Pay button,
-  /// you will need to prompt for their Khalti registered mobile number,
-  /// and call this API once the payer submits.
-  ///
-  /// See: https://docs.khalti.com/checkout/diy-wallet/#1-initiate-transaction
-  Future<PaymentInitiationResponseModel> initiatePayment({
-    required PaymentInitiationRequestModel request,
-  }) async {
-    final url = _buildUrl(initiateTransaction);
-    final logger = _Logger('POST', url);
-
-    logger.request(request);
-    final response = await _client.post(url, request.toMap());
-    logger.response(response);
-
-    return _handleError(
-      response,
-      converter: (data) => PaymentInitiationResponseModel.fromMap(data),
-    );
-  }
-
   /// Confirms the payment.
   ///
   /// See: https://docs.khalti.com/checkout/diy-wallet/#2-confirm-transaction
@@ -95,60 +49,6 @@ class KhaltiService {
     );
   }
 
-  /// Constructs a bank payment URL.
-  ///
-  /// [bankId] is the unique bank identifier which can be obtained from the bank list API
-  ///
-  /// [mobile] : The Khalti registered mobile number of payer
-  ///
-  /// [amount] : The amount value of payment.
-  /// Amount must be in paisa and greater than equal to 1000 i.e Rs 10
-  ///
-  /// [productIdentity] : A unique string to identify the product
-  ///
-  /// [productName] : Descriptive name for the product
-  ///
-  /// [paymentType] is one of the  available [PaymentType]
-  ///
-  /// [returnUrl] is the redirection url after successful payment.
-  /// The redirected URL will be in the following format.
-  /// ```
-  /// <returnUrl>/?<data>
-  /// ```
-  ///
-  /// An [additionalData] to be sent alongside the payment configuration.
-  /// This is only for reporting purposes.
-  ///
-  /// See: https://docs.khalti.com/checkout/diy-ebanking/#2-initiate-transaction
-  String buildBankUrl({
-    required String bankId,
-    required String mobile,
-    required int amount,
-    required String productIdentity,
-    required String productName,
-    required PaymentType paymentType,
-    required String returnUrl,
-    String? productUrl,
-    Map<String, Object>? additionalData,
-  }) {
-    final params = {
-      'bank': bankId,
-      'public_key': publicKey,
-      'amount': amount.toString(),
-      'mobile': mobile,
-      'product_identity': productIdentity,
-      'product_name': productName,
-      'source': 'custom',
-      ...config.raw,
-      if (productUrl != null) 'product_url': productUrl,
-      if (additionalData != null) ...additionalData.map(_stringifyValue),
-      'return_url': returnUrl,
-      'payment_type': paymentType.value,
-    };
-    final uri = Uri.https('khalti.com', 'ebanking/initiate/', params);
-    return uri.toString();
-  }
-
   T _handleError<T>(
     HttpResponse response, {
     required T Function(Map<String, dynamic>) converter,
@@ -162,10 +62,6 @@ class KhaltiService {
 
   String _buildUrl(String path) {
     return '$_baseUrl/api/v$_apiVersion/$path';
-  }
-
-  MapEntry<String, String> _stringifyValue(String key, Object value) {
-    return MapEntry('merchant_$key', value.toString());
   }
 }
 
