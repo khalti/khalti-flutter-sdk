@@ -2,6 +2,7 @@
 
 import 'package:khalti_core/khalti_core.dart';
 import 'package:khalti_core/src/config/url.dart';
+import 'package:meta/meta.dart';
 
 /// The wrapper class to access Khalti Payment Gateway API.
 class KhaltiService {
@@ -27,7 +28,8 @@ class KhaltiService {
 
   static set publicKey(String key) => _publicKey = key;
 
-  /// The default platform only configuration.
+  /// Member to hold [KhaltiConfig] object and pass it as a header in map representation.
+  @internal
   static KhaltiConfig config = KhaltiConfig.platformOnly();
 
   /// Confirms the payment.
