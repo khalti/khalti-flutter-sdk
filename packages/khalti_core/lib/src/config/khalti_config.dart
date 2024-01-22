@@ -1,11 +1,35 @@
 // Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
-import 'package:khalti_core/src/platform/platform.dart';
+import 'package:khalti_core/khalti_core.dart';
+import 'package:khalti_core/src/util/device_util.dart';
+import 'package:khalti_core/src/util/package_util.dart';
 
 /// The configuration class for Khalti Payment Gateway.
 class KhaltiConfig {
+  /// Default constructor for the configuration.
+  const KhaltiConfig({
+    required this.platform,
+    required this.osVersion,
+    required this.deviceModel,
+    required this.deviceManufacturer,
+    required this.packageName,
+    required this.packageVersion,
+  });
+
+  /// Default constructor for the configuration.
+  factory KhaltiConfig.platformOnly() {
+    return KhaltiConfig(
+      platform: Platform.operatingSystem,
+      osVersion: '',
+      deviceModel: '',
+      deviceManufacturer: '',
+      packageName: '',
+      packageVersion: '',
+    );
+  }
+
   /// The version of the Khalti Payment Gateway Library.
-  final String version = '1.0.1';
+  final String version = '2.0.0';
 
   /// The device platform.
   final String platform;
@@ -25,26 +49,24 @@ class KhaltiConfig {
   /// Tha application package version.
   final String packageVersion;
 
-  /// Default constructor for the configuration.
-  KhaltiConfig({
-    required this.platform,
-    required this.osVersion,
-    required this.deviceModel,
-    required this.deviceManufacturer,
-    required this.packageName,
-    required this.packageVersion,
-  });
+  /// Util to extract device specific information
+  static final DeviceUtil _deviceUtil = DeviceUtil();
 
-  /// A factory constructor that only configures the [platform]
-  /// and ignores everything else.
-  factory KhaltiConfig.platformOnly() {
-    return KhaltiConfig(
+  /// Util to extract package specific information
+  static final PackageUtil _packageUtil = PackageUtil();
+
+  /// Initializes [KhaltiConfig]
+  static Future<void> getConfig() async {
+    await _deviceUtil.init();
+    await _packageUtil.init();
+
+    KhaltiService.config = KhaltiConfig(
       platform: Platform.operatingSystem,
-      osVersion: '',
-      deviceModel: '',
-      deviceManufacturer: '',
-      packageName: '',
-      packageVersion: '',
+      osVersion: _deviceUtil.osVersion,
+      deviceModel: _deviceUtil.deviceModel,
+      deviceManufacturer: _deviceUtil.deviceManufacturer,
+      packageName: _packageUtil.applicationId,
+      packageVersion: _packageUtil.versionName,
     );
   }
 
