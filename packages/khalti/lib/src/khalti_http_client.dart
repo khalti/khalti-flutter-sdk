@@ -29,6 +29,7 @@ class KhaltiHttpClient extends KhaltiClient {
         final uri = Uri.parse(url).replace(queryParameters: params);
         final response = await _client.get(
           uri,
+          // ignore: invalid_use_of_internal_member
           headers: KhaltiService.config.raw,
         );
         final statusCode = response.statusCode;
@@ -59,6 +60,7 @@ class KhaltiHttpClient extends KhaltiClient {
         final response = await _client.post(
           uri,
           body: data,
+          // ignore: invalid_use_of_internal_member
           headers: KhaltiService.config.raw,
         );
         final statusCode = response.statusCode;
