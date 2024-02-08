@@ -32,22 +32,19 @@ class KhaltiService {
   @internal
   static KhaltiConfig config = KhaltiConfig.platformOnly();
 
-  /// Confirms the payment.
+  /// Checks the status of the payment.
   ///
-  /// See: https://docs.khalti.com/checkout/diy-wallet/#2-confirm-transaction
-  Future<PaymentSuccessModel> confirmPayment({
-    required PaymentConfirmationRequestModel request,
-  }) async {
-    final url = _buildUrl(confirmTransaction);
+  /// See: https://docs.khalti.com/khalti-epayment/#payment-verification-lookup
+  Future<PaymentVerificationLookupResponseModel> paymentVerificationLookup(
+    String pidx,
+  ) async {
+    final url = _buildUrl(transactionVerificationLookup);
     final logger = _Logger('POST', url);
-
-    logger.request(request);
-    final response = await _client.post(url, request.toMap());
-    logger.response(response);
-
+    logger.request(pidx);
+    final response = await _client.post(url, {'pidx': pidx});
     return _handleError(
       response,
-      converter: (data) => PaymentSuccessModel.fromMap(data),
+      converter: PaymentVerificationLookupResponseModel.fromJson,
     );
   }
 
