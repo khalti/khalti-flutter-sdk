@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   group('KhaltiConfig tests | ', () {
     test('default constructor', () {
-      final config = KhaltiConfig(
+      const config = KhaltiConfig(
         platform: 'Android',
         osVersion: '12',
         deviceModel: 'Pixel 6 Pro',
