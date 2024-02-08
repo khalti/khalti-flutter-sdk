@@ -1,11 +1,11 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:khalti/src/util/package_util.dart';
+import 'package:khalti_core/src/util/package_util.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:package_info_plus_platform_interface/method_channel_package_info.dart';
 import 'package:package_info_plus_platform_interface/package_info_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:test/test.dart';
 
 void main() {
   final packageUtil = PackageUtil();
