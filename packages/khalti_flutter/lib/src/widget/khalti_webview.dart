@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:khalti_flutter/src/util/connectivity_util.dart';
+import 'package:khalti_flutter/src/util/empty_util.dart';
+import 'package:khalti_flutter/src/widget/khalti_pop_scope.dart';
 
 /// Enum to choose request type when loading webview.
 enum WebViewRequestType {
@@ -84,76 +86,87 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: isConnectivityAvailable,
-      initialData: false,
-      builder: (context, snapshot) {
-        final hasInternetConnection = snapshot.data!;
-        return hasNetworkError
-            ? const Scaffold(
-                body: Center(
-                  child: Text('Error loading webview'),
-                ),
-              )
-            : InAppWebView(
-                shouldOverrideUrlLoading: (controller, action) async {
-                  final currentStringUri = action.request.url.toString();
-                  if (currentStringUri.contains(widget.returnUrl.toString())) {
-                    // final interceptingInformations =
-                    //     widget.model.meta?.info?.urlInterceptors;
-
-                    // if (interceptingInformations.isNullOrEmpty)
-                    //   return NavigationActionPolicy.ALLOW;
-
-                    // for (final info in interceptingInformations!) {
-                    //   assert(
-                    //     info.url.isNotNullAndNotEmpty &&
-                    //         info.preActionUrl.isNotNullAndNotEmpty,
-                    //     'url that is to be intercepted and pre_action_url cannot be null or empty',
-                    //   );
-                    //   final urlToIntercept = info.url!;
-                    //   final preActionUrl = info.preActionUrl!;
-                    //   if (currentUri.toString().contains(urlToIntercept)) {
-                    //     widget.actionOnUriIntercept
-                    //         ?.call(currentUri.toString(), preActionUrl);
-                    //     break;
-                    //   }
-                    // }
-                    return NavigationActionPolicy.ALLOW;
-                  }
-                  return NavigationActionPolicy.ALLOW;
-                },
-                onLoadStop: (_, __) {
-                  pullToRefreshController?.endRefreshing();
-                },
-                onReceivedError: (_, __, ___) {
-                  setState(() => hasNetworkError = true);
-                },
-                onReceivedHttpError: (_, __, ___) {
-                  setState(() => hasNetworkError = true);
-                },
-                onWebViewCreated: (controller) {
-                  webViewController = controller;
-                },
-                initialSettings: InAppWebViewSettings(
-                  useOnLoadResource: true,
-                  useShouldOverrideUrlLoading: true,
-                  cacheMode: widget.loadCache
-                      ? CacheMode.LOAD_CACHE_ONLY
-                      : CacheMode.LOAD_NO_CACHE,
-                  useHybridComposition: true,
-                  clearSessionCache: !widget.loadCache,
-                ),
-                initialUrlRequest: URLRequest(
-                  method: widget.webViewRequestType.name.toUpperCase(),
-                  url: WebUri.uri(widget.paymentUrl),
-                  headers: widget.header,
-                  cachePolicy: hasInternetConnection
-                      ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
-                      : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
-                ),
-              );
+    return KhaltiPopScope(
+      canPop: () async {
+        final canGoBack = await webViewController!.canGoBack();
+        return webViewController.isNull ||
+            (webViewController.isNotNull && !canGoBack);
       },
+      onPopInvoked: (didPop) async {
+        if (didPop) await webViewController!.goBack();
+      },
+      child: FutureBuilder<bool>(
+        future: isConnectivityAvailable,
+        initialData: false,
+        builder: (context, snapshot) {
+          final hasInternetConnection = snapshot.data!;
+          return hasNetworkError
+              ? const Scaffold(
+                  body: Center(
+                    child: Text('Error loading webview'),
+                  ),
+                )
+              : InAppWebView(
+                  shouldOverrideUrlLoading: (controller, action) async {
+                    final currentStringUri = action.request.url.toString();
+                    if (currentStringUri
+                        .contains(widget.returnUrl.toString())) {
+                      // final interceptingInformations =
+                      //     widget.model.meta?.info?.urlInterceptors;
+
+                      // if (interceptingInformations.isNullOrEmpty)
+                      //   return NavigationActionPolicy.ALLOW;
+
+                      // for (final info in interceptingInformations!) {
+                      //   assert(
+                      //     info.url.isNotNullAndNotEmpty &&
+                      //         info.preActionUrl.isNotNullAndNotEmpty,
+                      //     'url that is to be intercepted and pre_action_url cannot be null or empty',
+                      //   );
+                      //   final urlToIntercept = info.url!;
+                      //   final preActionUrl = info.preActionUrl!;
+                      //   if (currentUri.toString().contains(urlToIntercept)) {
+                      //     widget.actionOnUriIntercept
+                      //         ?.call(currentUri.toString(), preActionUrl);
+                      //     break;
+                      //   }
+                      // }
+                      return NavigationActionPolicy.ALLOW;
+                    }
+                    return NavigationActionPolicy.ALLOW;
+                  },
+                  onLoadStop: (_, __) {
+                    pullToRefreshController?.endRefreshing();
+                  },
+                  onReceivedError: (_, __, ___) {
+                    setState(() => hasNetworkError = true);
+                  },
+                  onReceivedHttpError: (_, __, ___) {
+                    setState(() => hasNetworkError = true);
+                  },
+                  onWebViewCreated: (controller) {
+                    webViewController = controller;
+                  },
+                  initialSettings: InAppWebViewSettings(
+                    useOnLoadResource: true,
+                    useShouldOverrideUrlLoading: true,
+                    cacheMode: widget.loadCache
+                        ? CacheMode.LOAD_CACHE_ONLY
+                        : CacheMode.LOAD_NO_CACHE,
+                    useHybridComposition: true,
+                    clearSessionCache: !widget.loadCache,
+                  ),
+                  initialUrlRequest: URLRequest(
+                    method: widget.webViewRequestType.name.toUpperCase(),
+                    url: WebUri.uri(widget.paymentUrl),
+                    headers: widget.header,
+                    cachePolicy: hasInternetConnection
+                        ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
+                        : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
+                  ),
+                );
+        },
+      ),
     );
   }
 }
