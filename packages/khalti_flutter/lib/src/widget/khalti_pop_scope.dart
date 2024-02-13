@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 
-// ignore: avoid_positional_boolean_parameters
-
 /// `FutureOr<void> Function(bool didPop)`
 typedef PopInvokedCallback = FutureOr<void> Function(bool didPop);
 
