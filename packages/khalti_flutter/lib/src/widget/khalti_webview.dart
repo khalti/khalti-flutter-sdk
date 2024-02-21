@@ -1,47 +1,42 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/src/util/connectivity_util.dart';
 import 'package:khalti_flutter/src/util/empty_util.dart';
 import 'package:khalti_flutter/src/widget/khalti_pop_scope.dart';
-
-/// Enum to choose request type when loading webview.
-enum WebViewRequestType {
-  /// WebViewRequestType.get
-  get,
-
-  ///WebViewRequestType.post
-  post
-}
 
 /// A WebView wrapper for displaying Khalti Payment Interface.
 class KhaltiWebView extends StatefulWidget {
   /// Constructor for initializing [KhaltiWebView].
   const KhaltiWebView({
-    Key? key,
-    required this.paymentUrl,
+    super.key,
+    required this.pidx,
     required this.returnUrl,
-    this.loadCache = false,
-    this.webViewRequestType = WebViewRequestType.get,
-    this.header = const {},
-  }) : super(key: key);
+    required this.onPaymentResult,
+    required this.onMessage,
+    required this.environment,
+    this.onReturn,
+  });
 
-  /// Uri to load in webview to make payment.
-  final Uri paymentUrl;
+  /// Unique idx associated with the product.
+  final String pidx;
 
   /// Url to redirect to after the payment is successful.
   final Uri returnUrl;
 
-  /// Whether webview should load from cache or not.
-  final bool loadCache;
+  /// Callback that gets triggered when a payment is made.
+  final OnPaymentResult onPaymentResult;
 
-  /// Request type to send along when loading this webview.
-  ///
-  /// Can be `GET` or `POST`.
-  final WebViewRequestType webViewRequestType;
+  /// Callback for when any exceptions occur.
+  final OnMessage onMessage;
 
-  /// Headers to send along when loading the webview.
-  final Map<String, String> header;
+  /// Callback for when user is redirected to `return_url`.
+  final OnReturn? onReturn;
+
+  final Environment environment;
 
   @override
   State<KhaltiWebView> createState() => _KhaltiWebViewState();
@@ -92,79 +87,86 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
         return webViewController.isNull ||
             (webViewController.isNotNull && !canGoBack);
       },
-      onPopInvoked: (didPop) async {
-        if (didPop) await webViewController!.goBack();
-      },
       child: FutureBuilder<bool>(
         future: isConnectivityAvailable,
         initialData: false,
         builder: (context, snapshot) {
           final hasInternetConnection = snapshot.data!;
-          return hasNetworkError
-              ? const Scaffold(
-                  body: Center(
-                    child: Text('Error loading webview'),
-                  ),
-                )
-              : InAppWebView(
-                  shouldOverrideUrlLoading: (controller, action) async {
-                    final currentStringUri = action.request.url.toString();
-                    if (currentStringUri
-                        .contains(widget.returnUrl.toString())) {
-                      // final interceptingInformations =
-                      //     widget.model.meta?.info?.urlInterceptors;
-
-                      // if (interceptingInformations.isNullOrEmpty)
-                      //   return NavigationActionPolicy.ALLOW;
-
-                      // for (final info in interceptingInformations!) {
-                      //   assert(
-                      //     info.url.isNotNullAndNotEmpty &&
-                      //         info.preActionUrl.isNotNullAndNotEmpty,
-                      //     'url that is to be intercepted and pre_action_url cannot be null or empty',
-                      //   );
-                      //   final urlToIntercept = info.url!;
-                      //   final preActionUrl = info.preActionUrl!;
-                      //   if (currentUri.toString().contains(urlToIntercept)) {
-                      //     widget.actionOnUriIntercept
-                      //         ?.call(currentUri.toString(), preActionUrl);
-                      //     break;
-                      //   }
-                      // }
-                      return NavigationActionPolicy.ALLOW;
-                    }
-                    return NavigationActionPolicy.ALLOW;
-                  },
-                  onLoadStop: (_, __) {
-                    pullToRefreshController?.endRefreshing();
-                  },
-                  onReceivedError: (_, __, ___) {
-                    setState(() => hasNetworkError = true);
-                  },
-                  onReceivedHttpError: (_, __, ___) {
-                    setState(() => hasNetworkError = true);
-                  },
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                  },
-                  initialSettings: InAppWebViewSettings(
-                    useOnLoadResource: true,
-                    useShouldOverrideUrlLoading: true,
-                    cacheMode: widget.loadCache
-                        ? CacheMode.LOAD_CACHE_ONLY
-                        : CacheMode.LOAD_NO_CACHE,
-                    useHybridComposition: true,
-                    clearSessionCache: !widget.loadCache,
-                  ),
-                  initialUrlRequest: URLRequest(
-                    method: widget.webViewRequestType.name.toUpperCase(),
-                    url: WebUri.uri(widget.paymentUrl),
-                    headers: widget.header,
-                    cachePolicy: hasInternetConnection
-                        ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
-                        : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
-                  ),
+          final isProd = widget.environment == Environment.prod;
+          return InAppWebView(
+            onLoadStop: (controller, webUri) async {
+              pullToRefreshController?.endRefreshing();
+              final currentUrl = webUri!.uriValue;
+              final currentStringUrl = currentUrl.toString();
+              final returnStringUrl = widget.returnUrl.toString();
+              if (currentStringUrl.contains(returnStringUrl) &&
+                  currentUrl.queryParameters['status']!.toLowerCase() ==
+                      'completed' &&
+                  hasNetworkError) {
+                final queryParams = currentUrl.queryParameters;
+                final paymentPayload = PaymentPaylod(
+                  pidx: queryParams['pidx'] ?? '',
+                  amount: int.tryParse(queryParams['amount']!) ?? 0,
+                  transactionId: queryParams['transaction_id'] ?? '',
                 );
+
+                // Necessary if the user wants to perform an action when a payment is made.
+                await widget.onReturn?.call();
+
+                final pidx = widget.pidx;
+
+                PaymentVerificationResponseModel? lookupResult;
+
+                try {
+                  lookupResult = await Khalti.service.verify(
+                    pidx,
+                    isProd: isProd,
+                  );
+                } on ExceptionHttpResponse catch (e) {
+                  return widget.onMessage(
+                    statusCode: e.statusCode,
+                    description: e.detail,
+                  );
+                } on FailureHttpResponse catch (e) {
+                  return widget.onMessage(
+                    statusCode: e.statusCode,
+                    description: e.data,
+                  );
+                }
+
+                if (lookupResult.isNotNull) {
+                  return widget.onPaymentResult(
+                    PaymentResult(
+                      status: lookupResult.status,
+                      payload: paymentPayload,
+                    ),
+                  );
+                }
+              }
+            },
+            onReceivedError: (_, __, e) async {
+              setState(() => hasNetworkError = true);
+              return widget.onMessage(description: e.description);
+            },
+            onReceivedHttpError: (_, __, response) async {
+              setState(() => hasNetworkError = true);
+              return widget.onMessage(statusCode: response.statusCode);
+            },
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+            },
+            initialSettings: InAppWebViewSettings(
+              useOnLoadResource: true,
+              useShouldOverrideUrlLoading: true,
+              useHybridComposition: true,
+            ),
+            initialUrlRequest: URLRequest(
+              url: WebUri(isProd ? prodBaseUrl : testBaseUrl),
+              cachePolicy: hasInternetConnection
+                  ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
+                  : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
+            ),
+          );
         },
       ),
     );
