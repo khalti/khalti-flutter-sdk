@@ -1,80 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
-import 'package:khalti_flutter_example/app_preference.dart';
-import 'package:khalti_flutter_example/home_page.dart';
-import 'package:provider/provider.dart';
-import 'package:khalti_flutter_example/l10n/app_localizations.dart';
-
-const String testPublicKey = 'test_public_key_dc74e0fd57cb46cd93832aee0a507256';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(const KhaltiSDKDemo());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class KhaltiSDKDemo extends StatefulWidget {
+  const KhaltiSDKDemo({super.key});
+
+  @override
+  State<KhaltiSDKDemo> createState() => _KhaltiSDKDemoState();
+}
+
+class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
+  late final Future<Khalti> khalti;
+
+  @override
+  void initState() {
+    super.initState();
+    final payConfig = KhaltiPayConfig(
+      publicKey: '',
+      pidx: 'Aq6WSKPKwKxHFum6ufGDCS',
+      returnUrl: Uri.parse('https://khalti.com'),
+      environment: Environment.test,
+    );
+
+    khalti = Khalti.init(
+      payConfig: payConfig,
+      onPaymentResult: print,
+      onMessage: ({description, statusCode}) async {
+        print('Description: $description, Status Code: $statusCode');
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return KhaltiScope(
-      publicKey: testPublicKey,
-      enabledDebugging: true,
-      builder: (context, navKey) {
-        return ChangeNotifierProvider<AppPreferenceNotifier>(
-          create: (_) => AppPreferenceNotifier(),
-          builder: (context, _) {
-            return Consumer<AppPreferenceNotifier>(
-              builder: (context, appPreference, _) {
-                return MaterialApp(
-                  title: 'Khalti Payment Gateway',
-                  supportedLocales: const [
-                    Locale('en', 'US'),
-                    Locale('ne', 'NP'),
-                  ],
-                  locale: appPreference.locale,
-                  theme: ThemeData(
-                    brightness: appPreference.brightness,
-                    colorSchemeSeed: Colors.deepPurple,
-                    useMaterial3: true,
-                  ),
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: navKey,
-                  localizationsDelegates: const [
-                    KhaltiLocalizations.delegate,
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                  routes: {
-                    '/': (_) => const HomePage(key: Key('home')),
-                  },
-                  onGenerateInitialRoutes: (route) {
-                    // Only used for handling response from KPG in Flutter Web.
-                    if (route.startsWith('/kpg/')) {
-                      final uri = Uri.parse('https://khalti.com$route');
-                      return [
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(
-                            key: const Key('kpg-home'),
-                            params: uri.queryParameters,
-                          ),
-                        ),
-                      ];
-                    }
-                    return Navigator.defaultGenerateInitialRoutes(
-                      navKey.currentState!,
-                      route,
-                    );
-                  },
-                );
-              },
+    return MaterialApp(
+      home: Scaffold(
+        body: FutureBuilder<Khalti>(
+          future: khalti,
+          builder: (context, snapshot) {
+            final khalti = snapshot.data;
+            if (khalti == null) {
+              return const CircularProgressIndicator.adaptive();
+            }
+
+            return Center(
+              child: TextButton(
+                onPressed: () {
+                  khalti.start(context);
+                },
+                child: const Text('Pay with Khalti'),
+              ),
             );
           },
-        );
-      },
+        ),
+      ),
     );
   }
 }
