@@ -1,7 +1,6 @@
 // Copyright (c) 2021 The Khalti Authors. All rights reserved.
 
 import 'package:khalti_core/khalti_core.dart';
-import 'package:khalti_core/src/config/url.dart';
 import 'package:meta/meta.dart';
 
 /// The wrapper class to access Khalti Payment Gateway API.
@@ -9,7 +8,6 @@ class KhaltiService {
   /// Default constructor for [KhaltiService] to initialize [KhaltiClient].
   KhaltiService({required KhaltiClient client}) : _client = client;
 
-  final String _baseUrl = 'https://khalti.com';
   final int _apiVersion = 2;
   final KhaltiClient _client;
 
@@ -35,16 +33,17 @@ class KhaltiService {
   /// Checks the status of the payment.
   ///
   /// See: https://docs.khalti.com/khalti-epayment/#payment-verification-lookup
-  Future<PaymentVerificationLookupResponseModel> paymentVerificationLookup(
-    String pidx,
-  ) async {
-    final url = _buildUrl(transactionVerificationLookup);
+  Future<PaymentVerificationResponseModel> verify(
+    String pidx, {
+    bool isProd = true,
+  }) async {
+    final url = _buildUrl(transactionVerificationLookup, isProd: isProd);
     final logger = _Logger('POST', url);
     logger.request(pidx);
     final response = await _client.post(url, {'pidx': pidx});
     return _handleError(
       response,
-      converter: PaymentVerificationLookupResponseModel.fromJson,
+      converter: PaymentVerificationResponseModel.fromJson,
     );
   }
 
@@ -59,8 +58,8 @@ class KhaltiService {
     return converter(response.data as Map<String, dynamic>);
   }
 
-  String _buildUrl(String path) {
-    return '$_baseUrl/api/v$_apiVersion/$path';
+  String _buildUrl(String path, {bool isProd = true}) {
+    return '${isProd ? prodBaseUrl : testBaseUrl}/api/v$_apiVersion/$path';
   }
 }
 
