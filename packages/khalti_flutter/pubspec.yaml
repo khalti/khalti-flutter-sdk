@@ -17,11 +17,10 @@ dependencies:
   flutter_inappwebview: ^6.0.0
   http: ^1.2.0
   internet_connection_checker: ^1.0.0+1
-  khalti_core:
-    path: ../khalti_core
-  url_launcher: ^6.2.4
+  khalti_core: ^2.0.0
+  url_launcher: ^6.2.5
 
 dev_dependencies:
-  flutter_lints: ^2.0.3
+  flutter_lints: ^3.0.1
   mocktail: ^1.0.3
   test: ^1.25.2
