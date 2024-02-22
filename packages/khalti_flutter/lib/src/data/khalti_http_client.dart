@@ -29,8 +29,11 @@ class KhaltiHttpClient extends KhaltiClient {
         final uri = Uri.parse(url).replace(queryParameters: params);
         final response = await _client.get(
           uri,
-          // ignore: invalid_use_of_internal_member
-          headers: KhaltiService.config.raw,
+          headers: {
+            ..._tokenHeader,
+            // ignore: invalid_use_of_internal_member
+            ...KhaltiService.config.raw
+          },
         );
         final statusCode = response.statusCode;
         final responseData = jsonDecode(response.body);
@@ -60,8 +63,11 @@ class KhaltiHttpClient extends KhaltiClient {
         final response = await _client.post(
           uri,
           body: data,
-          // ignore: invalid_use_of_internal_member
-          headers: KhaltiService.config.raw,
+          headers: {
+            ..._tokenHeader,
+            // ignore: invalid_use_of_internal_member
+            ...KhaltiService.config.raw
+          },
         );
         final statusCode = response.statusCode;
         final responseData = jsonDecode(response.body);
@@ -81,6 +87,11 @@ class KhaltiHttpClient extends KhaltiClient {
   }
 
   bool _isStatusValid(int statusCode) => statusCode >= 200 && statusCode < 300;
+
+  /// Helper getter for passing auth token as a header.
+  Map<String, String> get _tokenHeader {
+    return {'Authorization': 'Key ${KhaltiService.publicKey}'};
+  }
 
   Future<HttpResponse> _handleExceptions(
     Future<HttpResponse> Function() caller,
