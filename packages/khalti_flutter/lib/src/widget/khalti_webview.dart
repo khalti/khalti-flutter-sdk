@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
@@ -36,6 +35,11 @@ class KhaltiWebView extends StatefulWidget {
   /// Callback for when user is redirected to `return_url`.
   final OnReturn? onReturn;
 
+  /// Environment to run the SDK against.
+  ///
+  /// Can be: `prod` or `test`.
+  ///
+  /// Defaults to `prod`.
   final Environment environment;
 
   @override
@@ -44,7 +48,6 @@ class KhaltiWebView extends StatefulWidget {
 
 class _KhaltiWebViewState extends State<KhaltiWebView> {
   late final Future<bool> isConnectivityAvailable;
-  PullToRefreshController? pullToRefreshController;
   InAppWebViewController? webViewController;
   bool hasNetworkError = false;
 
@@ -52,29 +55,10 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
   void initState() {
     super.initState();
     isConnectivityAvailable = connectivityUtil.hasInternetConnection;
-    pullToRefreshController = kIsWeb
-        ? null
-        : PullToRefreshController(
-            settings: PullToRefreshSettings(
-              color: const Color(0xFF5C2D91), // Khalti's primary color
-            ),
-            onRefresh: () async {
-              if (defaultTargetPlatform == TargetPlatform.android) {
-                webViewController?.reload();
-              } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-                webViewController?.loadUrl(
-                  urlRequest: URLRequest(
-                    url: await webViewController?.getUrl(),
-                  ),
-                );
-              }
-            },
-          );
   }
 
   @override
   void dispose() {
-    pullToRefreshController?.dispose();
     webViewController?.dispose();
     super.dispose();
   }
@@ -83,9 +67,9 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
   Widget build(BuildContext context) {
     return KhaltiPopScope(
       canPop: () async {
-        final canGoBack = await webViewController!.canGoBack();
+        final canGoBack = await webViewController?.canGoBack() ?? true;
         return webViewController.isNull ||
-            (webViewController.isNotNull && !canGoBack);
+            (webViewController.isNotNull && canGoBack);
       },
       child: FutureBuilder<bool>(
         future: isConnectivityAvailable,
@@ -95,52 +79,52 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
           final isProd = widget.environment == Environment.prod;
           return InAppWebView(
             onLoadStop: (controller, webUri) async {
-              pullToRefreshController?.endRefreshing();
-              final currentUrl = webUri!.uriValue;
-              final currentStringUrl = currentUrl.toString();
-              final returnStringUrl = widget.returnUrl.toString();
-              if (currentStringUrl.contains(returnStringUrl) &&
-                  currentUrl.queryParameters['status']!.toLowerCase() ==
-                      'completed' &&
-                  hasNetworkError) {
-                final queryParams = currentUrl.queryParameters;
-                final paymentPayload = PaymentPaylod(
-                  pidx: queryParams['pidx'] ?? '',
-                  amount: int.tryParse(queryParams['amount']!) ?? 0,
-                  transactionId: queryParams['transaction_id'] ?? '',
-                );
-
-                // Necessary if the user wants to perform an action when a payment is made.
-                await widget.onReturn?.call();
-
-                final pidx = widget.pidx;
-
-                PaymentVerificationResponseModel? lookupResult;
-
-                try {
-                  lookupResult = await Khalti.service.verify(
-                    pidx,
-                    isProd: isProd,
+              if (webUri.isNotNull) {
+                final currentStringUrl = webUri.toString();
+                final returnStringUrl = widget.returnUrl.toString();
+                if (currentStringUrl.contains(returnStringUrl) &&
+                    webUri!.queryParameters['status']!.toLowerCase() ==
+                        'completed' &&
+                    hasNetworkError) {
+                  final queryParams = webUri.queryParameters;
+                  final paymentPayload = PaymentPayload(
+                    pidx: queryParams['pidx'] ?? '',
+                    amount: int.tryParse(queryParams['amount']!) ?? 0,
+                    transactionId: queryParams['transaction_id'] ?? '',
                   );
-                } on ExceptionHttpResponse catch (e) {
-                  return widget.onMessage(
-                    statusCode: e.statusCode,
-                    description: e.detail,
-                  );
-                } on FailureHttpResponse catch (e) {
-                  return widget.onMessage(
-                    statusCode: e.statusCode,
-                    description: e.data,
-                  );
-                }
 
-                if (lookupResult.isNotNull) {
-                  return widget.onPaymentResult(
-                    PaymentResult(
-                      status: lookupResult.status,
-                      payload: paymentPayload,
-                    ),
-                  );
+                  // Necessary if the user wants to perform an action when a payment is made.
+                  await widget.onReturn?.call();
+
+                  final pidx = widget.pidx;
+
+                  PaymentVerificationResponseModel? lookupResult;
+
+                  try {
+                    lookupResult = await Khalti.service.verify(
+                      pidx,
+                      isProd: isProd,
+                    );
+                  } on ExceptionHttpResponse catch (e) {
+                    return widget.onMessage(
+                      statusCode: e.statusCode,
+                      description: e.detail,
+                    );
+                  } on FailureHttpResponse catch (e) {
+                    return widget.onMessage(
+                      statusCode: e.statusCode,
+                      description: e.data,
+                    );
+                  }
+
+                  if (lookupResult.isNotNull) {
+                    return widget.onPaymentResult(
+                      PaymentResult(
+                        status: lookupResult.status,
+                        payload: paymentPayload,
+                      ),
+                    );
+                  }
                 }
               }
             },
@@ -157,11 +141,14 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
             },
             initialSettings: InAppWebViewSettings(
               useOnLoadResource: true,
-              useShouldOverrideUrlLoading: true,
               useHybridComposition: true,
             ),
             initialUrlRequest: URLRequest(
-              url: WebUri(isProd ? prodBaseUrl : testBaseUrl),
+              url: WebUri.uri(
+                Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
+                  queryParameters: {'pidx': widget.pidx},
+                ),
+              ),
               cachePolicy: hasInternetConnection
                   ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
                   : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
