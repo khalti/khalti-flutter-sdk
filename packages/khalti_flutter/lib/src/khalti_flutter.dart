@@ -107,7 +107,7 @@ class Khalti extends Equatable {
     return onPaymentResult(
       PaymentResult(
         status: lookUpResult.status,
-        payload: PaymentPaylod(
+        payload: PaymentPayload(
           pidx: lookUpResult.pidx,
           amount: lookUpResult.totalAmount,
           transactionId: lookUpResult.transactionId,
@@ -145,7 +145,7 @@ class KhaltiPayConfig extends Equatable {
     required this.publicKey,
     required this.pidx,
     required this.returnUrl,
-    required this.openInKhalti,
+    this.openInKhalti = false,
     this.environment = Environment.prod,
   });
 
