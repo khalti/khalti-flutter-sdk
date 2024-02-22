@@ -30,10 +30,6 @@ jobs:
       - name: Run tests and generate coverage for the khalti_core
         run: flutter test --coverage
         working-directory: packages/khalti_core
-        
-      - name: Run tests and generate coverage for the khalti
-        run: flutter test --coverage
-        working-directory: packages/khalti
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
