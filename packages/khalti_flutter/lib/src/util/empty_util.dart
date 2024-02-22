@@ -1,5 +1,4 @@
 /// Util containing various helper methods to deal with null checks.
-
 extension EmptyUtil on Object? {
   /// Returns true is [Object] is null.
   bool get isNull => this == null;
