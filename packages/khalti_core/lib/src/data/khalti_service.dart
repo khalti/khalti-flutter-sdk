@@ -59,7 +59,7 @@ class KhaltiService {
   }
 
   String _buildUrl(String path, {bool isProd = true}) {
-    return '${isProd ? prodBaseUrl : testBaseUrl}/api/v$_apiVersion/$path';
+    return '${isProd ? prodBaseUrl : testBaseUrl}api/v$_apiVersion/$path';
   }
 }
 
