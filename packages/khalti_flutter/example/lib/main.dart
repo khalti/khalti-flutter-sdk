@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 
 void main() {
@@ -19,17 +22,22 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   void initState() {
     super.initState();
     final payConfig = KhaltiPayConfig(
-      publicKey: '',
-      pidx: 'Aq6WSKPKwKxHFum6ufGDCS',
+      publicKey: 'live_secret_key_68791341fdd94846a146f0457ff7b455',
+      pidx: 'uhn5Bne5iGWGbYib6iVhJ4',
       returnUrl: Uri.parse('https://khalti.com'),
       environment: Environment.test,
     );
 
     khalti = Khalti.init(
+      enableDebugging: true,
       payConfig: payConfig,
-      onPaymentResult: print,
+      onPaymentResult: (paymentResult) {
+        log(paymentResult.toString());
+      },
       onMessage: ({description, statusCode}) async {
-        print('Description: $description, Status Code: $statusCode');
+        log(
+          'Super Description: $description, Super Status Code: $statusCode',
+        );
       },
     );
   }
@@ -45,13 +53,21 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
             if (khalti == null) {
               return const CircularProgressIndicator.adaptive();
             }
-
             return Center(
-              child: TextButton(
-                onPressed: () {
-                  khalti.start(context);
-                },
-                child: const Text('Pay with Khalti'),
+              child: GestureDetector(
+                onTap: () => khalti.start(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/khalti.svg',
+                      height: 50,
+                      width: 50,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text('Pay with Khalti')
+                  ],
+                ),
               ),
             );
           },

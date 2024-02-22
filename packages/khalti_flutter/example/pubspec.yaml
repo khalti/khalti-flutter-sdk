@@ -1,22 +1,26 @@
 name: khalti_flutter_example
 description: A new Flutter project.
 publish_to: none
-version: 1.0.1
+version: 2.0.0
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
-  flutter: ">=3.0.0"
+  sdk: ">=3.3.0 <4.0.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
   khalti_flutter:
     path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.3
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
