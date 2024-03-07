@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/src/data/core/exception_handler.dart';
 import 'package:khalti_flutter/src/strings.dart';

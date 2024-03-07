@@ -1,5 +1,8 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
+export 'package:internet_connection_checker/internet_connection_checker.dart'
+    show InternetConnectionStatus;
+
 /// Helper getter to retrieve [ConnectivityUtil] instance.
 ConnectivityUtil get connectivityUtil => ConnectivityUtil();
 
