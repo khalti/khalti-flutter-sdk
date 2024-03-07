@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:khalti_flutter/khalti_flutter.dart';
-import 'package:khalti_flutter/src/util/connectivity_util.dart';
-import 'package:khalti_flutter/src/util/empty_util.dart';
-import 'package:khalti_flutter/src/widget/khalti_pop_scope.dart';
+import 'package:khalti_flutter/src/data/core/exception_handler.dart';
+import 'package:khalti_flutter/src/strings.dart';
+import 'package:khalti_flutter/src/util/utils.dart';
 
 /// A WebView wrapper for displaying Khalti Payment Interface.
 class KhaltiWebView extends StatefulWidget {
@@ -47,115 +49,173 @@ class KhaltiWebView extends StatefulWidget {
 }
 
 class _KhaltiWebViewState extends State<KhaltiWebView> {
-  late final Future<bool> isConnectivityAvailable;
-  InAppWebViewController? webViewController;
-  bool hasNetworkError = false;
-
-  @override
-  void initState() {
-    super.initState();
-    isConnectivityAvailable = connectivityUtil.hasInternetConnection;
-  }
-
-  @override
-  void dispose() {
-    webViewController?.dispose();
-    super.dispose();
-  }
+  final webViewControllerCompleter = Completer<InAppWebViewController>();
+  ValueNotifier<bool> showLinearProgressIndicator = ValueNotifier(true);
 
   @override
   Widget build(BuildContext context) {
-    return KhaltiPopScope(
-      canPop: () async {
-        final canGoBack = await webViewController?.canGoBack() ?? true;
-        return webViewController.isNull ||
-            (webViewController.isNotNull && canGoBack);
-      },
-      child: FutureBuilder<bool>(
-        future: isConnectivityAvailable,
-        initialData: false,
-        builder: (context, snapshot) {
-          final hasInternetConnection = snapshot.data!;
-          final isProd = widget.environment == Environment.prod;
-          return InAppWebView(
-            onLoadStop: (controller, webUri) async {
-              if (webUri.isNotNull) {
-                final currentStringUrl = webUri.toString();
-                final returnStringUrl = widget.returnUrl.toString();
-                if (currentStringUrl.contains(returnStringUrl) &&
-                    webUri!.queryParameters['status']!.toLowerCase() ==
-                        'completed' &&
-                    hasNetworkError) {
-                  final queryParams = webUri.queryParameters;
-                  final paymentPayload = PaymentPayload(
-                    pidx: queryParams['pidx'] ?? '',
-                    amount: int.tryParse(queryParams['amount']!) ?? 0,
-                    transactionId: queryParams['transaction_id'] ?? '',
-                  );
-
-                  // Necessary if the user wants to perform an action when a payment is made.
-                  await widget.onReturn?.call();
-
-                  final pidx = widget.pidx;
-
-                  PaymentVerificationResponseModel? lookupResult;
-
-                  try {
-                    lookupResult = await Khalti.service.verify(
-                      pidx,
-                      isProd: isProd,
-                    );
-                  } on ExceptionHttpResponse catch (e) {
-                    return widget.onMessage(
-                      statusCode: e.statusCode,
-                      description: e.detail,
-                    );
-                  } on FailureHttpResponse catch (e) {
-                    return widget.onMessage(
-                      statusCode: e.statusCode,
-                      description: e.data,
-                    );
-                  }
-
-                  if (lookupResult.isNotNull) {
-                    return widget.onPaymentResult(
-                      PaymentResult(
-                        status: lookupResult.status,
-                        payload: paymentPayload,
-                      ),
-                    );
-                  }
-                }
-              }
-            },
-            onReceivedError: (_, __, e) async {
-              setState(() => hasNetworkError = true);
-              return widget.onMessage(description: e.description);
-            },
-            onReceivedHttpError: (_, __, response) async {
-              setState(() => hasNetworkError = true);
-              return widget.onMessage(statusCode: response.statusCode);
-            },
-            onWebViewCreated: (controller) {
-              webViewController = controller;
-            },
-            initialSettings: InAppWebViewSettings(
-              useOnLoadResource: true,
-              useHybridComposition: true,
+    return SafeArea(
+      child: ValueListenableBuilder(
+        valueListenable: showLinearProgressIndicator,
+        builder: (_, value, __) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text(s_payWithKhalti),
+              actions: [
+                IconButton(
+                  onPressed: _reload,
+                  icon: const Icon(Icons.refresh),
+                )
+              ],
+              bottom: value
+                  ? const _LinearLoadingIndicator(color: Colors.deepPurple)
+                  : null,
+              elevation: 4,
             ),
-            initialUrlRequest: URLRequest(
-              url: WebUri.uri(
-                Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
-                  queryParameters: {'pidx': widget.pidx},
-                ),
-              ),
-              cachePolicy: hasInternetConnection
-                  ? URLRequestCachePolicy.RELOAD_IGNORING_LOCAL_CACHE_DATA
-                  : URLRequestCachePolicy.RETURN_CACHE_DATA_ELSE_LOAD,
+            body: StreamBuilder(
+              stream: connectivityUtil.internetConnectionListenableStatus,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return const SizedBox.shrink();
+
+                final connectionStatus = snapshot.data!;
+
+                switch (connectionStatus) {
+                  case InternetConnectionStatus.connected:
+                    return _KhaltiWebViewClient(
+                      showLinearProgressIndicator: showLinearProgressIndicator,
+                      webViewControllerCompleter: webViewControllerCompleter,
+                    );
+                  case InternetConnectionStatus.disconnected:
+                    return const _NoInternetDisplay();
+                }
+              },
             ),
           );
         },
       ),
     );
   }
+
+  Future<void> _reload() async {
+    if (webViewControllerCompleter.isCompleted) {
+      final webViewController = await webViewControllerCompleter.future;
+      if (defaultTargetPlatform == TargetPlatform.android) {
+        webViewController.reload();
+      } else if (defaultTargetPlatform == TargetPlatform.iOS) {
+        webViewController.loadUrl(
+          urlRequest: URLRequest(
+            url: await webViewController.getUrl(),
+          ),
+        );
+      }
+    }
+  }
+}
+
+class _KhaltiWebViewClient extends StatelessWidget {
+  const _KhaltiWebViewClient({
+    required this.showLinearProgressIndicator,
+    required this.webViewControllerCompleter,
+  });
+
+  final ValueNotifier<bool> showLinearProgressIndicator;
+  final Completer<InAppWebViewController?> webViewControllerCompleter;
+
+  @override
+  Widget build(BuildContext context) {
+    final widget = context.findAncestorWidgetOfExactType<KhaltiWebView>()!;
+    final isProd = widget.environment == Environment.prod;
+    return InAppWebView(
+      onLoadStop: (controller, webUri) async {
+        if (webUri.isNotNull) {
+          final currentStringUrl = webUri.toString();
+          final returnStringUrl = widget.returnUrl.toString();
+          if (currentStringUrl.contains(returnStringUrl)) {
+            // Necessary if the user wants to perform an action when a payment is made.
+            await widget.onReturn?.call();
+
+            final pidx = widget.pidx;
+
+            return handleException(
+              pidx: pidx,
+              caller: (pidx) {
+                return Khalti.service.verify(pidx, isProd: isProd);
+              },
+              onPaymentResult: widget.onPaymentResult,
+              onMessage: widget.onMessage,
+            );
+          }
+        }
+      },
+      onReceivedError: (_, __, error) async {
+        showLinearProgressIndicator.value = false;
+        return widget.onMessage(
+          description: error.description,
+        );
+      },
+      onReceivedHttpError: (_, __, response) async {
+        showLinearProgressIndicator.value = false;
+        return widget.onMessage(
+          statusCode: response.statusCode,
+        );
+      },
+      onWebViewCreated: webViewControllerCompleter.complete,
+      initialSettings: InAppWebViewSettings(
+        useOnLoadResource: true,
+        useHybridComposition: true,
+      ),
+      initialUrlRequest: URLRequest(
+        url: WebUri.uri(
+          Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
+            queryParameters: {'pidx': widget.pidx},
+          ),
+        ),
+      ),
+      onProgressChanged: (_, progress) {
+        if (progress == 100) showLinearProgressIndicator.value = false;
+      },
+    );
+  }
+}
+
+/// A widget that is displayed when there is no internet connection.
+class _NoInternetDisplay extends StatelessWidget {
+  /// Constructor for [_NoInternetDisplay].
+  ///
+  /// A widget that is displayed when there is no internet connection.
+  const _NoInternetDisplay();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.signal_wifi_statusbar_connected_no_internet_4,
+            ),
+            SizedBox(height: 10),
+            Text(
+              s_noInternet,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(s_noInternetDisplayMessage),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LinearLoadingIndicator extends LinearProgressIndicator
+    implements PreferredSizeWidget {
+  const _LinearLoadingIndicator({super.color});
+
+  @override
+  Size get preferredSize => const Size(double.maxFinite, 4);
 }
