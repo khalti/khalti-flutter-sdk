@@ -1,16 +1,20 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-/// The [ConnectivityUtil] instance.
+/// Helper getter to retrieve [ConnectivityUtil] instance.
 ConnectivityUtil get connectivityUtil => ConnectivityUtil();
 
 /// A helper class to check internet connection availability.
 class ConnectivityUtil {
   /// Constructor for [ConnectivityUtil].
-  ConnectivityUtil({InternetConnectionChecker? connectivity})
-      : _connectivity = connectivity ?? InternetConnectionChecker();
+  ConnectivityUtil()
+      : _connectivity = InternetConnectionChecker.createInstance(
+          checkInterval: const Duration(seconds: 1),
+        );
 
   final InternetConnectionChecker _connectivity;
 
-  /// Returns true if device is connected to any network.
-  Future<bool> get hasInternetConnection => _connectivity.hasConnection;
+  /// A stream that yields the status of internet connection that can be listened to.
+  Stream<InternetConnectionStatus> get internetConnectionListenableStatus {
+    return _connectivity.onStatusChange;
+  }
 }
