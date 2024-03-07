@@ -3,3 +3,7 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     - public_member_api_docs
+
+analyzer:
+  errors:
+    constant_identifier_names: ignore
