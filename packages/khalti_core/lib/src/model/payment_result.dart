@@ -7,21 +7,17 @@ class PaymentResult extends Equatable {
   /// The result after making either a successful or unsuccessful payment.
   const PaymentResult({
     required this.status,
-    this.message,
     this.payload,
   });
 
   /// A string representation of payment status.
   final String status;
 
-  /// A short description to know why the payment was unsuccessful.
-  final String? message;
-
   /// Payload regarding the product purchased.
   final PaymentPayload? payload;
 
   @override
-  List<Object?> get props => [status, message, payload];
+  List<Object?> get props => [status, payload];
 
   @override
   bool get stringify => true;
