@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:khalti_core/khalti_core.dart';
+import 'package:khalti_flutter/src/data/core/exception_handler.dart';
 import 'package:khalti_flutter/src/data/khalti_http_client.dart';
 import 'package:khalti_flutter/src/widget/khalti_webview.dart';
 
@@ -103,16 +104,11 @@ class Khalti extends Equatable {
 
   /// Helper method to call `verify`.
   Future<void> verify() async {
-    final lookUpResult = await service.verify(payConfig.pidx);
-    return onPaymentResult(
-      PaymentResult(
-        status: lookUpResult.status,
-        payload: PaymentPayload(
-          pidx: lookUpResult.pidx,
-          amount: lookUpResult.totalAmount,
-          transactionId: lookUpResult.transactionId,
-        ),
-      ),
+    return handleException(
+      pidx: payConfig.pidx,
+      caller: service.verify,
+      onMessage: onMessage,
+      onPaymentResult: onPaymentResult,
     );
   }
 
