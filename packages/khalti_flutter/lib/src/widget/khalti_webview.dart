@@ -7,6 +7,7 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 import 'package:khalti_flutter/src/data/core/exception_handler.dart';
 import 'package:khalti_flutter/src/strings.dart';
 import 'package:khalti_flutter/src/util/utils.dart';
+import 'package:khalti_flutter/src/widget/khalti_pop_scope.dart';
 
 /// A WebView wrapper for displaying Khalti Payment Interface.
 class KhaltiWebView extends StatefulWidget {
@@ -124,55 +125,74 @@ class _KhaltiWebViewClient extends StatelessWidget {
   Widget build(BuildContext context) {
     final widget = context.findAncestorWidgetOfExactType<KhaltiWebView>()!;
     final isProd = widget.environment == Environment.prod;
-    return InAppWebView(
-      onLoadStop: (controller, webUri) async {
-        if (webUri.isNotNull) {
-          final currentStringUrl = webUri.toString();
-          final returnStringUrl = widget.returnUrl.toString();
-          if (currentStringUrl.contains(returnStringUrl)) {
-            // Necessary if the user wants to perform an action when a payment is made.
-            await widget.onReturn?.call();
+    return KhaltiPopScope(
+      onPopInvoked: (_) => widget.onMessage(
+        event: KhaltiEvent.backpressed,
+        description: s_userPressedBack,
+        needsPaymentConfirmation: true,
+      ),
+      child: InAppWebView(
+        onLoadStop: (controller, webUri) async {
+          if (webUri.isNotNull) {
+            final currentStringUrl = webUri.toString();
+            final returnStringUrl = widget.returnUrl.toString();
+            if (currentStringUrl.contains(returnStringUrl)) {
+              // Necessary if the user wants to perform an action when a payment is made.
+              await widget.onReturn?.call();
 
-            final pidx = widget.pidx;
+              final pidx = widget.pidx;
 
-            return handleException(
-              pidx: pidx,
-              caller: (pidx) {
-                return Khalti.service.verify(pidx, isProd: isProd);
-              },
-              onPaymentResult: widget.onPaymentResult,
-              onMessage: widget.onMessage,
+              return handleException(
+                pidx: pidx,
+                caller: (pidx) {
+                  return Khalti.service.verify(pidx, isProd: isProd);
+                },
+                onPaymentResult: widget.onPaymentResult,
+                onMessage: widget.onMessage,
+              );
+            }
+          }
+        },
+        onReceivedError: (_, webResourceRequest, error) async {
+          if (webResourceRequest.url
+              .toString()
+              .contains(widget.returnUrl.toString())) {
+            showLinearProgressIndicator.value = false;
+            return widget.onMessage(
+              description: error.description,
+              event: KhaltiEvent.returnUrlLoadFailure,
+              needsPaymentConfirmation: true,
             );
           }
-        }
-      },
-      onReceivedError: (_, __, error) async {
-        showLinearProgressIndicator.value = false;
-        return widget.onMessage(
-          description: error.description,
-        );
-      },
-      onReceivedHttpError: (_, __, response) async {
-        showLinearProgressIndicator.value = false;
-        return widget.onMessage(
-          statusCode: response.statusCode,
-        );
-      },
-      onWebViewCreated: webViewControllerCompleter.complete,
-      initialSettings: InAppWebViewSettings(
-        useOnLoadResource: true,
-        useHybridComposition: true,
-      ),
-      initialUrlRequest: URLRequest(
-        url: WebUri.uri(
-          Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
-            queryParameters: {'pidx': widget.pidx},
+        },
+        onReceivedHttpError: (_, webResourceRequest, response) async {
+          if (webResourceRequest.url
+              .toString()
+              .contains(widget.returnUrl.toString())) {
+            showLinearProgressIndicator.value = false;
+            return widget.onMessage(
+              statusCode: response.statusCode,
+              event: KhaltiEvent.returnUrlLoadFailure,
+              needsPaymentConfirmation: true,
+            );
+          }
+        },
+        onWebViewCreated: webViewControllerCompleter.complete,
+        initialSettings: InAppWebViewSettings(
+          useOnLoadResource: true,
+          useHybridComposition: true,
+        ),
+        initialUrlRequest: URLRequest(
+          url: WebUri.uri(
+            Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
+              queryParameters: {'pidx': widget.pidx},
+            ),
           ),
         ),
+        onProgressChanged: (_, progress) {
+          if (progress == 100) showLinearProgressIndicator.value = false;
+        },
       ),
-      onProgressChanged: (_, progress) {
-        if (progress == 100) showLinearProgressIndicator.value = false;
-      },
     );
   }
 }

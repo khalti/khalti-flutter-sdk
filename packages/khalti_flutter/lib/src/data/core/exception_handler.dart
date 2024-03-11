@@ -23,11 +23,15 @@ Future<void> handleException({
     return onMessage(
       statusCode: e.statusCode,
       description: e.detail,
+      event: KhaltiEvent.networkFailure,
+      needsPaymentConfirmation: true,
     );
   } on FailureHttpResponse catch (e) {
     return onMessage(
       statusCode: e.statusCode,
       description: e.data,
+      event: KhaltiEvent.paymentLookupfailure,
+      needsPaymentConfirmation: false,
     );
   }
 }

@@ -22,6 +22,24 @@ enum Environment {
   test,
 }
 
+/// Various events associated with different actions.
+enum KhaltiEvent {
+  /// Event for when user presses back button.
+  backpressed,
+
+  /// Event for when return url fails to load.
+  returnUrlLoadFailure,
+
+  /// Event for when there's an exception when making a network call.
+  networkFailure,
+
+  /// Event for when there's a HTTP failure when making a network call.
+  paymentLookupfailure,
+
+  /// An unknown event.
+  unknown
+}
+
 /// Callback for when a successful or failed payment result is obtained.
 typedef OnPaymentResult = FutureOr<void> Function(PaymentResult);
 
@@ -29,6 +47,8 @@ typedef OnPaymentResult = FutureOr<void> Function(PaymentResult);
 typedef OnMessage = FutureOr<void> Function({
   int? statusCode,
   Object? description,
+  KhaltiEvent? event,
+  bool? needsPaymentConfirmation,
 });
 
 /// Callback for when user is redirected to `return_url`.
