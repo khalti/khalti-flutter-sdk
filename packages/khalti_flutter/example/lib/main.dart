@@ -17,7 +17,7 @@ class KhaltiSDKDemo extends StatefulWidget {
 class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   late final Future<Khalti> khalti;
 
-  String pidx = 'X9akoo9aeE8ZNNZbjCQLxX';
+  String pidx = 'dL9YZvUTsdwLhdr8dMMgWh';
 
   PaymentResult? paymentResult;
 
@@ -42,9 +42,14 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
           this.paymentResult = paymentResult;
         });
       },
-      onMessage: ({description, statusCode}) async {
+      onMessage: ({
+        description,
+        statusCode,
+        event,
+        needsPaymentConfirmation,
+      }) async {
         log(
-          'Super Description: $description, Super Status Code: $statusCode',
+          'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
         );
       },
     );
