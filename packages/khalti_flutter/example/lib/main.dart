@@ -17,7 +17,7 @@ class KhaltiSDKDemo extends StatefulWidget {
 class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   late final Future<Khalti> khalti;
 
-  String pidx = 'dL9YZvUTsdwLhdr8dMMgWh';
+  String pidx = 'BpKSTiKUMigAaEcx6gUUA7';
 
   PaymentResult? paymentResult;
 
@@ -25,7 +25,7 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   void initState() {
     super.initState();
     final payConfig = KhaltiPayConfig(
-      publicKey: 'live_secret_key_68791341fdd94846a146f0457ff7b455',
+      publicKey: 'live_public_key_979320ffda734d8e9f7758ac39ec775f',
       pidx: pidx,
       returnUrl: Uri.parse(
         'https://webhook.site/ed508278-3ce3-4f6d-98f1-0b6084c5c5cd',
