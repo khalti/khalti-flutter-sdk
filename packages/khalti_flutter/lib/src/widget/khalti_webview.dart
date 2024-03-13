@@ -80,12 +80,12 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
                 final connectionStatus = snapshot.data!;
 
                 switch (connectionStatus) {
-                  case InternetConnectionStatus.connected:
+                  case InternetStatus.connected:
                     return _KhaltiWebViewClient(
                       showLinearProgressIndicator: showLinearProgressIndicator,
                       webViewControllerCompleter: webViewControllerCompleter,
                     );
-                  case InternetConnectionStatus.disconnected:
+                  case InternetStatus.disconnected:
                     return const _NoInternetDisplay();
                 }
               },
@@ -133,6 +133,7 @@ class _KhaltiWebViewClient extends StatelessWidget {
       ),
       child: InAppWebView(
         onLoadStop: (controller, webUri) async {
+          showLinearProgressIndicator.value = false;
           if (webUri.isNotNull) {
             final currentStringUrl = webUri.toString();
             final returnStringUrl = widget.returnUrl.toString();

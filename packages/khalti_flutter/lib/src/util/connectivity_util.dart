@@ -1,7 +1,6 @@
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-
-export 'package:internet_connection_checker/internet_connection_checker.dart'
-    show InternetConnectionStatus;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+export 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart'
+    show InternetStatus;
 
 /// Helper getter to retrieve [ConnectivityUtil] instance.
 ConnectivityUtil get connectivityUtil => ConnectivityUtil();
@@ -10,14 +9,14 @@ ConnectivityUtil get connectivityUtil => ConnectivityUtil();
 class ConnectivityUtil {
   /// Constructor for [ConnectivityUtil].
   ConnectivityUtil()
-      : _connectivity = InternetConnectionChecker.createInstance(
+      : _connectivity = InternetConnection.createInstance(
           checkInterval: const Duration(seconds: 1),
         );
 
-  final InternetConnectionChecker _connectivity;
+  final InternetConnection _connectivity;
 
   /// A stream that yields the status of internet connection that can be listened to.
-  Stream<InternetConnectionStatus> get internetConnectionListenableStatus {
+  Stream<InternetStatus> get internetConnectionListenableStatus {
     return _connectivity.onStatusChange;
   }
 }

@@ -17,7 +17,7 @@ class KhaltiSDKDemo extends StatefulWidget {
 class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   late final Future<Khalti> khalti;
 
-  String pidx = 'BpKSTiKUMigAaEcx6gUUA7';
+  String pidx = 'HARFZyJPuyZupbgrcCbj9N';
 
   PaymentResult? paymentResult;
 
