@@ -59,19 +59,23 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
         valueListenable: showLinearProgressIndicator,
         builder: (_, value, __) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text(s_payWithKhalti),
-              actions: [
-                IconButton(
-                  onPressed: _reload,
-                  icon: const Icon(Icons.refresh),
-                )
-              ],
-              bottom: value
-                  ? const _LinearLoadingIndicator(color: Colors.deepPurple)
-                  : null,
-              elevation: 4,
-            ),
+            appBar: kIsWeb
+                ? null
+                : AppBar(
+                    title: const Text(s_payWithKhalti),
+                    actions: [
+                      IconButton(
+                        onPressed: _reload,
+                        icon: const Icon(Icons.refresh),
+                      )
+                    ],
+                    bottom: value
+                        ? const _LinearLoadingIndicator(
+                            color: Colors.deepPurple,
+                          )
+                        : null,
+                    elevation: 4,
+                  ),
             body: StreamBuilder(
               stream: connectivityUtil.internetConnectionListenableStatus,
               builder: (context, snapshot) {
