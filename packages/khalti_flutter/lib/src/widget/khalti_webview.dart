@@ -103,15 +103,11 @@ class _KhaltiWebViewState extends State<KhaltiWebView> {
   Future<void> _reload() async {
     if (webViewControllerCompleter.isCompleted) {
       final webViewController = await webViewControllerCompleter.future;
-      if (defaultTargetPlatform == TargetPlatform.android) {
-        webViewController.reload();
-      } else if (defaultTargetPlatform == TargetPlatform.iOS) {
-        webViewController.loadUrl(
-          urlRequest: URLRequest(
-            url: await webViewController.getUrl(),
-          ),
-        );
-      }
+      webViewController.loadUrl(
+        urlRequest: URLRequest(
+          url: WebUri('javascript:window.location.reload(true)'),
+        ),
+      );
     }
   }
 }
@@ -186,6 +182,8 @@ class _KhaltiWebViewClient extends StatelessWidget {
         initialSettings: InAppWebViewSettings(
           useOnLoadResource: true,
           useHybridComposition: true,
+          clearCache: true,
+          cacheEnabled: false,
         ),
         initialUrlRequest: URLRequest(
           url: WebUri.uri(
