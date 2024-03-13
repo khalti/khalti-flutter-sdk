@@ -17,7 +17,8 @@ dependencies:
   flutter_inappwebview: ^6.0.0
   http: ^1.2.0
   internet_connection_checker_plus: ^2.2.0
-  khalti_core: ^2.0.0
+  khalti_core:
+    path: ../khalti_core
   url_launcher: ^6.2.5
 
 dev_dependencies:
