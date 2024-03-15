@@ -32,13 +32,12 @@ With Khalti SDK/API, you can accepts payments from:
 
 ## Payment Solutions
 
-The repository hosts three packages:
+The repository hosts two packages:
 
 Payment Solutions             | Package Name    | Version                                                                                                                | Description                                                      | Use Case
 ---------------------------   | -------------   | ---------------------------------------------------------------------------------------------------------------------  | --------------------------------------------------------------   | --------------------------------------------------------------------------------------
 Payment API only              | khalti_core     | [![khalti_core](https://img.shields.io/pub/v/khalti_core.svg)](https://pub.dartlang.org/packages/khalti_core)          | Low level abstraction over Khalti REST API                       | for Dart only project & using custom dependencies. e.g. using `dio` instead of `http`
-SDK without UI                | khalti          | [![khalti](https://img.shields.io/pub/v/khalti.svg)](https://pub.dartlang.org/packages/khalti)                         | Wrapper around `khalti_core`, which includes easy-to-use methods | for Flutter project, where a custom user interface is required
-Quick Integration SDK with UI | khalti_flutter  | [![khalti_flutter](https://img.shields.io/pub/v/khalti_flutter.svg)](https://pub.dartlang.org/packages/khalti_flutter) | Similar to `khalti`, but includes user interface                 | Recommended one, a plug-and-play solution with limited customization
+Quick Integration SDK with UI | khalti_flutter  | [![khalti_flutter](https://img.shields.io/pub/v/khalti_flutter.svg)](https://pub.dartlang.org/packages/khalti_flutter) | Includes everything that khalti_core offers, along with UI       | Recommended one, a plug-and-play solution with limited customization
 
 
 ## Features
