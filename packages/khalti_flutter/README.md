@@ -31,30 +31,24 @@ With this package, you can accepts payments from:
 
 Using Khalti Payment Gateway, you do not need to integrate with individual banks.
 
-# Table of Contents
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
 - [Supported Platforms](#supported-platforms)
-- [Migrating to 2.0](#migrating-to-2.0)  
 - [Setup](#setup)
-  * [Android](#android)
-  * [iOS](#ios)
-  * [Web](#web)
-  * [Desktop](#desktop)
-- [Initialization](#initialization)
-  * [Navigator Approach](#navigator-approach)
-  * [Router Approach](#router-approach)
+  - [Android](#android)
+  - [iOS](#ios)
+  - [Web](#web)
 - [Launching Payment Interface](#launching-payment-interface)
-  * [Using KhaltiButton](#using-khaltibutton)
-  * [Manual Method](#manual-method)
-- [Customizing Return URL](#customizing-return-url)
-- [Customizing UI](#customizing-ui)  
-- [Example](#example)  
-- [Server Verification](#server-verification)
+  - [Generating the pidx](#generating-the-pidx)
+  - [Khalti Initialization](#khalti-initialization)
+  - [Loading payment interface](#loading-payment-interface)
+- [Payment verification API](#payment-verification-api)
+- [Closing the Khalti payment gateway page](#closing-the-khalti-payment-gateway-page)
+- [Example](#example)
 - [Contributing](#contributing)
-  * [Internationalization](#internationalization)
-- [Support](#support)  
+- [Support](#support)
 - [License](#license)
+
 
 # Introduction
 Read the introduction [here](https://docs.khalti.com/).
@@ -66,236 +60,173 @@ You can always [create one easily from here](https://khalti.com/join/merchant/#/
 Read the steps to integrate Khalti Payment Gateway in details [here](https://docs.khalti.com/getting-started/).
 
 # Supported Platforms
-Payment Method | Android | iOS | Web | Desktop (macOS, Linux, Windows)
--------------- | :-----: | :-: | :-: | :-----------------------------:
-Khalti Wallet  |    ✔️    |  ✔️  |  ✔️  |                ✔️
-E-Banking      |    ✔️    |  ✔️  |  ✔️  |                ❌
-Mobile Banking |    ✔️    |  ✔️  |  ✔️  |                ❌
-Connect IPS    |    ✔️    |  ✔️  |  ✔️  |                ❌
-SCT            |    ✔️    |  ✔️  |  ✔️  |                ❌
+Android | iOS | Web | Desktop (macOS, Linux, Windows)
+:-----: | :-: | :-: | :-----------------------------:
+  ✔️    |  ✔️ |  ✔️ |                ❌
 
 # Setup
 Detailed setup for each platform.
 
 ## Android
-In your app's `AndroidManifest.xml`, add these lines inside `<activity>...</activity>` tag:
-
-```xml
-<meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
-<intent-filter android:autoVerify="true">
-    <action android:name="android.intent.action.VIEW" />
-    <category android:name="android.intent.category.DEFAULT" />
-    <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="kpg" android:host="{your package name}" />
-</intent-filter>
-```
+No configuration is required for android.
 
 ## iOS
-In your app's `Info.plist`, add these properties:
-
-```xml
-<key>FlutterDeepLinkingEnabled</key>
-<true/>
-<key>CFBundleURLTypes</key>
-<array>
-    <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-            <string>kpg</string>
-        </array>
-        <key>CFBundleURLName</key>
-        <string>{your package name}</string>
-    </dict>
-</array>
-```
+No configuration is required for iOS.
 
 ## Web
-No configuration is required for web.
-
-## Desktop
-No configuration is required for desktop.
-
-# Initialization
-Wrap the topmost widget of your app with **`KhaltiScope`** widget.
-And add supported locales and `KhaltiLocalizations.delegate` as shown below.
-
-## Navigator Approach
-When using `MaterialApp` or siblings.
-
-```dart
-KhaltiScope(
-  publicKey: <public-key>,
-  builder: (context, navigatorKey) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('ne', 'NP'),
-      ],
-      localizationsDelegates: const [
-        KhaltiLocalizations.delegate,
-        ...
-      ],
-      ...
-    );  
-  } 
-);
-```
-
-## Router Approach
-When using `MaterialApp.router` or siblings.
-
-```dart
-final routerDelegate = YourRouterDelegate();
-
-KhaltiScope(
-  publicKey: <public-key>,
-  navigatorKey: routerDelegate.navigatorKey, 
-  builder: (context, _) {
-    return MaterialApp.router(
-      routerDelegate: routerDelegate,
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('ne', 'NP'),
-      ],
-      localizationsDelegates: const [
-        KhaltiLocalizations.delegate,
-        ...
-      ],
-      ...
-    );  
-  } 
-);
-```
+Since, the SDK uses [flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview) internally to load the payment gateway, check its doc for the necessary web setup.
 
 # Launching Payment Interface
-Khalti Payment interface can be launched in two ways:
 
-## Using KhaltiButton
-The plugin includes easy to use button to launch the payment interface. It can be used as shown below:
+## Generating the pidx
+A unique product identifier `pidx` must be generated via a server side POST request before being able to proceed. Read [here](https://docs.khalti.com/khalti-epayment/#initiating-a-payment-request) for information on how one can generate pidx along with other extra parameters.
 
-```dart
-final config = PaymentConfig(
-  amount: 10000, // Amount should be in paisa
-  productIdentity: 'dell-g5-g5510-2021',
-  productName: 'Dell G5 G5510 2021',
-  productUrl: 'https://www.khalti.com/#/bazaar',
-  additionalData: { // Not mandatory; can be used for reporting purpose
-    'vendor': 'Khalti Bazaar',
-  },
-  mobile: '9800000001', // Not mandatory; can be used to fill mobile number field
-  mobileReadOnly: true, // Not mandatory; makes the mobile field not editable
-)
+## Khalti Initialization
+Before being able to launch Khalti payment gateway, it is necessary to initialize `Khalti` object. The initialization can be done by a static `init()` method.
 
-KhaltiButton(
-  config: config,
-  preferences: [ // Not providing this will enable all the payment methods.
-    PaymentPreference.khalti,
-    PaymentPreference.eBanking,
-  ],
-  onSuccess: (successModel) {
-    // Perform Server Verification 
-  },
-  onFailure: (failureModel) {
-    // What to do on failure?
-  },
-  onCancel: () {
-    // User manually cancelled the transaction
-  },
-),
-```
-
-If you want to use only specific payment method then the following dedicated buttons can be used instead:
-- **`KhaltiButton.wallet(...)`**
-- **`KhaltiButton.eBanking(...)`**
-- **`KhaltiButton.mBanking(...)`**
-- **`KhaltiButton.connectIPS(...)`**
-- **`KhaltiButton.sct(...)`**
-
-## Manual Method
-Another method to launch the payment interface is using `KhaltiScope.pay()` method:
+It is suggested that the initialization be done inside the `initState` method of a `StatefulWidget`.
 
 ```dart
-Inkwell(
-  onTap: () {
-    KhaltiScope.of(context).pay(
-      config: config,
-      preferences: [
-        PaymentPreference.connectIPS,
-        PaymentPreference.eBanking,
-        PaymentPreference.sct,
-      ],
-      onSuccess: onSuccess,
-      onFailure: onFailure,
-      onCancel: onCancel,
+class KhaltiSDKDemo extends StatefulWidget {
+  const KhaltiSDKDemo({super.key});
+
+  @override
+  State<KhaltiSDKDemo> createState() => _KhaltiSDKDemoState();
+}
+
+class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
+  late final Future<Khalti> khalti;
+
+  @override
+  void initState() {
+    super.initState();
+    final payConfig = KhaltiPayConfig(
+      publicKey: '__live_public_key__', // Merchant's public key
+      pidx: pidx, // This should be generated via a server side POST request.
+      returnUrl: Uri.parse('https://your_return_url'),
+      environment: Environment.prod,
     );
-  },
-  child: Text('Launch Payment Interface'),
-);
+
+    khalti = Khalti.init(
+      enableDebugging: true,
+      payConfig: payConfig,
+      onPaymentResult: (paymentResult, khalti) {
+        log(paymentResult.toString());
+      },
+      onMessage: (
+        khalti, {
+        description,
+        statusCode,
+        event,
+        needsPaymentConfirmation,
+      }) async {
+        log(
+          'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Rest of the code
+  }
+}
 ```
 
-# Customizing Return URL
-Their might be a need to use custom `returnUrl`, specially in Web platform.
+The static `init()` method takes in a few arguments:
 
-Passing a custom return url will result in data url, in following format after successful payment.
-```
-<returnUrl>/?<data>
-```
+- **enableDebugging**: A boolean argument that is when set to true can be used to view network logs in the debug console. It is set to `false` by default.
+- **payConfig**: An instance of `KhaltiPayConfig()`. It is used to set few config data. The instance of `KhaltiPayConfig` takes in few arguments:
 
-e.g. Let's say you set a `returnUrl = 'https://example.com/test';`. 
-Then the data url will be `https://example.com/test/?key=value`.
+  ```dart
+  final payConfig = KhaltiPayConfig(
+    publicKey: '__live_public_key__', // Merchant's public key
+    pidx: pidx, // This should be generated via a server side POST request.
+    returnUrl: Uri.parse('https://your_return_url'),
+    environment: Environment.prod,
+  );
+  ```
+  - **publicKey**: Merchant's live or test public key provided by Khalti.
+  - **pidx**: Unique product identifier received after initiating the payment via a server-side POST request.
+  - **returnUrl**: Merchant's URL where the user must be redirected after the payment is (un)sucessfully made.
+  - **environment**: An enum that determines whether test API or production API should be invoked. Can be either `Environment.prod` or `Environment.test`. Set to `Environment.prod` by default.
+- **onPaymentResult**: A callback function that is triggered if the payment is successfully made and redirected to merchant's return URL. The callback takes in two arguments.
+  - **paymentResult**: An instance of `PaymentResult` class. It provides some informations about the payment after it is successfully made. Following data is provided by this instance.
+    - **status**: A string representing the status of the payment.
+    - **payload**: An instance of `PaymentPayload`. It contains general informations such as `pidx`, `amount` and `transactionId` regarding the payment made. 
+  - **khalti**: An instance of `Khalti`. Can be used to invoke any methods provided by this instance.
 
-A custom return url can be set in `PaymentConfig`:
+  ```dart
+  onPaymentResult(paymentResult, khalti) {
+    print(paymentResult.status);
+    print(paymentResult.payload.pidx);
+    print(paymentResult.payload.amount);
+    print(paymentResult.payload.transactionId);
+  }
+  ```
+- **onMessage**: A callback function that is triggered if any error is encountered. This callback provides error informations such as error description and status code. It also provides information about why the error occured via `KhaltiEvent` enum. This enum consists of:
+  
+  ```dart
+  enum KhaltiEvent {
+    /// Event for when user presses back button.
+    backpressed,
+
+    /// Event for when return url fails to load.
+    returnUrlLoadFailure,
+
+    /// Event for when there's an exception when making a network call.
+    networkFailure,
+
+    /// Event for when there's a HTTP failure when making a network call.
+    paymentLookupfailure,
+
+    /// An unknown event.
+    unknown
+  }
+  ```
+  Additionally, it also provides a bool `needsPaymentConfirmation` which needs to be checked. If it is true, developers should invoke payment confirmation API that is provided by the SDK to confirm the status of their payment. The callback also provides the instance of `Khalti`.
+
+  ```dart
+  onMessage: (
+    khalti, {
+    description,
+    statusCode,
+    event,
+    needsPaymentConfirmation,
+  }) {
+    log('Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation');
+  }
+  ```
+
+## Loading payment interface
+The SDK internally uses [flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview) to load the khalti payment gateway. SDK users should invoke `open()` method provided by the SDK to push a new page in their route.
 
 ```dart
-final config = PaymentConfig(
-  returnUrl: 'https://example.com/test',
-  ...
-);
+khalti.open(context); // Assuming that khalti is a variable that holds the instance of `Khalti`.
 ```
 
-# Customizing UI
-This package doesn't support high level of customization as this is more of a plug & play package.
+# Payment verification API
+A payment verification API that confirms the status of the payment made, is already called by the SDK internally. However, if the users receive `needsPaymentConfirmation` as true in `onMessage` callback, they are supposed to called the payment verification API manually to be sure about the payment status. It can be done with a method provided by the `Khalti` instance.
 
-If a custom interface is required then [khalti](https://pub.dev/packages/khalti) package can be used.
+```dart
+await khalti.verify(); // Assuming that khalti is a variable that holds the instance of `Khalti`.
+```
+
+The instance of `Khalti` is provided in the `onPaymentResult` and `onMessage` callback which can be used to invoke any public functions provide by `Khalti` class.
+
+# Closing the Khalti payment gateway page
+After payment is successfully made, developers can opt to pop the page that was pushed in their route. The SDK provides a `close()` method.
+
+```dart
+khalti.close(context);
+```
 
 # Example
-Find more [detailed example here](https://github.com/khalti/khalti-flutter-sdk/tree/master/packages/khalti_flutter/example).
-
-# Server Verification
-After success from the client side payment, the next step is to perform server verification.
-
-A server verification is required since the client side makes the payment directly to Khalti without going through your server first, 
-you need to be sure that the customer actually paid the money they were supposed to before completing their order. 
-This type of verification can only be done securely from the server.
-
-Know [how to perform server verification here](https://docs.khalti.com/api/verification/).
-
+For a more detailed example, check the [examples](./example/) directory inside `khalti_flutter` package.
 
 # Contributing
 Contributions are always welcome. Also, if you have any confusion, please feel free to create an issue.
-
-## Internationalization
-Steps to add support for new language
-1. Create a new file for the language `khalti_localizations_<language-code>.dart` inside `localization` directory.
-   Let's say you want to add support for Nepali language, then the file should be `khalti_localizations_ne.dart`.
-
-2. Copy contents of `khalti_localizations_en.dart` to the newly created file and rename the class accordingly.
-
-3. Replace all the strings with the localized strings inside the file.
-
-4. Add entry to `_localizations` map inside `khalti_localizations.dart`.
-   ```dart
-   const Map<String, KhaltiLocalizations> _localizations = {
-     'en': _KhaltiLocalizationsEn(),
-     'ne': _KhaltiLocalizationsNe(), // Newly added entry
-   };
-   ```
-   
-4. Submit a Pull Request with the changes. But ensure that the code changes are well formatted. 
-   Format the generated code if needed: `flutter format .`
    
 # Support
 **For Queries, feel free to call us at:**
@@ -318,7 +249,7 @@ _**Contact Our Technical Team**_
    
 # License
 ```
-Copyright (c) 2021 The Khalti Authors. All rights reserved.
+Copyright (c) 2024 The Khalti Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
