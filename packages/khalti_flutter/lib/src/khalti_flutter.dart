@@ -41,10 +41,14 @@ enum KhaltiEvent {
 }
 
 /// Callback for when a successful or failed payment result is obtained.
-typedef OnPaymentResult = FutureOr<void> Function(PaymentResult);
+typedef OnPaymentResult = FutureOr<void> Function(
+  PaymentResult paymentResult,
+  Khalti khalti,
+);
 
 /// Callback for when any exceptions occur.
-typedef OnMessage = FutureOr<void> Function({
+typedef OnMessage = FutureOr<void> Function(
+  Khalti khalti, {
   int? statusCode,
   Object? description,
   KhaltiEvent? event,
@@ -100,41 +104,41 @@ class Khalti extends Equatable {
     );
   }
 
+  static bool _hasPopped = false;
+
   /// A http [service] to make requests to Khalti APIs.
   static KhaltiService get service => _service;
 
   /// Method to load webview to be able to make payment.
-  void start(BuildContext context) {
+  void open(BuildContext context) {
+    _hasPopped = false;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return KhaltiWebView(
-            pidx: payConfig.pidx,
-            returnUrl: payConfig.returnUrl,
-            onPaymentResult: onPaymentResult,
-            onMessage: onMessage,
-            onReturn: onReturn,
-            environment: payConfig.environment,
-          );
+          return KhaltiWebView(khalti: this);
         },
       ),
     );
   }
 
-  /// Helper method to call `verify`.
+  /// Helper method to call payment verification api.
   Future<void> verify() async {
     return handleException(
-      pidx: payConfig.pidx,
-      caller: service.verify,
+      caller: () => service.verify(
+        payConfig.pidx,
+        isProd: payConfig.environment == Environment.prod,
+      ),
       onMessage: onMessage,
       onPaymentResult: onPaymentResult,
+      khalti: this,
     );
   }
 
   /// Helper method to close the webview.
   void close(BuildContext context) {
-    Navigator.pop(context);
+    if (!_hasPopped) Navigator.pop(context);
+    _hasPopped = true;
   }
 
   /// Overrides [Khalti.service] with the provided [service].

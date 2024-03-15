@@ -14,35 +14,11 @@ class KhaltiWebView extends StatefulWidget {
   /// Constructor for initializing [KhaltiWebView].
   const KhaltiWebView({
     super.key,
-    required this.pidx,
-    required this.returnUrl,
-    required this.onPaymentResult,
-    required this.onMessage,
-    required this.environment,
-    this.onReturn,
+    required this.khalti,
   });
 
-  /// Unique idx associated with the product.
-  final String pidx;
-
-  /// Url to redirect to after the payment is successful.
-  final Uri returnUrl;
-
-  /// Callback that gets triggered when a payment is made.
-  final OnPaymentResult onPaymentResult;
-
-  /// Callback for when any exceptions occur.
-  final OnMessage onMessage;
-
-  /// Callback for when user is redirected to `return_url`.
-  final OnReturn? onReturn;
-
-  /// Environment to run the SDK against.
-  ///
-  /// Can be: `prod` or `test`.
-  ///
-  /// Defaults to `prod`.
-  final Environment environment;
+  /// The instance of [Khalti].
+  final Khalti khalti;
 
   @override
   State<KhaltiWebView> createState() => _KhaltiWebViewState();
@@ -123,33 +99,36 @@ class _KhaltiWebViewClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widget = context.findAncestorWidgetOfExactType<KhaltiWebView>()!;
-    final isProd = widget.environment == Environment.prod;
+    final khalti =
+        context.findAncestorWidgetOfExactType<KhaltiWebView>()!.khalti;
+    final payConfig = khalti.payConfig;
+    final isProd = payConfig.environment == Environment.prod;
     return KhaltiPopScope(
-      onPopInvoked: (_) => widget.onMessage(
+      onPopInvoked: (_) => khalti.onMessage(
         event: KhaltiEvent.backpressed,
         description: s_userPressedBack,
         needsPaymentConfirmation: true,
+        khalti,
       ),
       child: InAppWebView(
         onLoadStop: (controller, webUri) async {
           showLinearProgressIndicator.value = false;
           if (webUri.isNotNull) {
             final currentStringUrl = webUri.toString();
-            final returnStringUrl = widget.returnUrl.toString();
+            final returnStringUrl = payConfig.returnUrl.toString();
             if (currentStringUrl.contains(returnStringUrl)) {
               // Necessary if the user wants to perform an action when a payment is made.
-              await widget.onReturn?.call();
+              await khalti.onReturn?.call();
 
-              final pidx = widget.pidx;
+              final pidx = payConfig.pidx;
 
               return handleException(
-                pidx: pidx,
-                caller: (pidx) {
+                caller: () {
                   return Khalti.service.verify(pidx, isProd: isProd);
                 },
-                onPaymentResult: widget.onPaymentResult,
-                onMessage: widget.onMessage,
+                onPaymentResult: khalti.onPaymentResult,
+                onMessage: khalti.onMessage,
+                khalti: khalti,
               );
             }
           }
@@ -157,24 +136,26 @@ class _KhaltiWebViewClient extends StatelessWidget {
         onReceivedError: (_, webResourceRequest, error) async {
           if (webResourceRequest.url
               .toString()
-              .contains(widget.returnUrl.toString())) {
+              .contains(payConfig.returnUrl.toString())) {
             showLinearProgressIndicator.value = false;
-            return widget.onMessage(
+            return khalti.onMessage(
               description: error.description,
               event: KhaltiEvent.returnUrlLoadFailure,
               needsPaymentConfirmation: true,
+              khalti,
             );
           }
         },
         onReceivedHttpError: (_, webResourceRequest, response) async {
           if (webResourceRequest.url
               .toString()
-              .contains(widget.returnUrl.toString())) {
+              .contains(payConfig.returnUrl.toString())) {
             showLinearProgressIndicator.value = false;
-            return widget.onMessage(
+            return khalti.onMessage(
               statusCode: response.statusCode,
               event: KhaltiEvent.returnUrlLoadFailure,
               needsPaymentConfirmation: true,
+              khalti,
             );
           }
         },
@@ -188,7 +169,7 @@ class _KhaltiWebViewClient extends StatelessWidget {
         initialUrlRequest: URLRequest(
           url: WebUri.uri(
             Uri.parse(isProd ? prodPaymentUrl : testPaymentUrl).replace(
-              queryParameters: {'pidx': widget.pidx},
+              queryParameters: {'pidx': payConfig.pidx},
             ),
           ),
         ),
