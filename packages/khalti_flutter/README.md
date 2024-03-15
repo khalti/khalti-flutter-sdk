@@ -165,6 +165,7 @@ The static `init()` method takes in a few arguments:
     print(paymentResult.payload.transactionId);
   }
   ```
+
 - **onMessage**: A callback function that is triggered if any error is encountered. This callback provides error informations such as error description and status code. It also provides information about why the error occured via `KhaltiEvent` enum. This enum consists of:
   
   ```dart
