@@ -149,7 +149,7 @@ The static `init()` method takes in a few arguments:
   ```
   - **publicKey**: Merchant's live or test public key provided by Khalti.
   - **pidx**: Unique product identifier received after initiating the payment via a server-side POST request.
-  - **returnUrl**: Merchant's URL where the user must be redirected after the payment is (un)sucessfully made.
+  - **returnUrl**: Merchant's URL where the user must be redirected after the payment is (un)successfully made.
   - **environment**: An enum that determines whether test API or production API should be invoked. Can be either `Environment.prod` or `Environment.test`. Set to `Environment.prod` by default.
 - **onPaymentResult**: A callback function that is triggered if the payment is successfully made and redirected to merchant's return URL. The callback takes in two arguments.
   - **paymentResult**: An instance of `PaymentResult` class. It provides some informations about the payment after it is successfully made. Following data is provided by this instance.
