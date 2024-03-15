@@ -2,13 +2,13 @@ import 'package:khalti_flutter/khalti_flutter.dart';
 
 /// Helper function that handles exception when verify api is called.
 Future<void> handleException({
-  required String pidx,
-  required Future<PaymentVerificationResponseModel> Function(String) caller,
+  required Future<PaymentVerificationResponseModel> Function() caller,
   required OnPaymentResult onPaymentResult,
   required OnMessage onMessage,
+  required Khalti khalti,
 }) async {
   try {
-    final result = await caller(pidx);
+    final result = await caller();
     return onPaymentResult(
       PaymentResult(
         status: result.status,
@@ -18,6 +18,7 @@ Future<void> handleException({
           transactionId: result.transactionId,
         ),
       ),
+      khalti,
     );
   } on ExceptionHttpResponse catch (e) {
     return onMessage(
@@ -25,6 +26,7 @@ Future<void> handleException({
       description: e.detail,
       event: KhaltiEvent.networkFailure,
       needsPaymentConfirmation: true,
+      khalti,
     );
   } on FailureHttpResponse catch (e) {
     return onMessage(
@@ -32,6 +34,7 @@ Future<void> handleException({
       description: e.data,
       event: KhaltiEvent.paymentLookupfailure,
       needsPaymentConfirmation: false,
+      khalti,
     );
   }
 }
