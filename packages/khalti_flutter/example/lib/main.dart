@@ -21,7 +21,7 @@ class KhaltiSDKDemo extends StatefulWidget {
 class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
   late final Future<Khalti?> khalti;
 
-  String pidx = 'J3sCSMCCwtTng73cAdDRV4';
+  String pidx = 'yr4vYk3dTXhe6Lc3TSzxyg';
 
   PaymentResult? paymentResult;
 
@@ -37,31 +37,27 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
       environment: Environment.test,
     );
 
-    Future.microtask(
-      () {
-        khalti = Khalti.init(
-          enableDebugging: true,
-          payConfig: payConfig,
-          onPaymentResult: (paymentResult, khalti) {
-            log(paymentResult.toString());
-            setState(() {
-              this.paymentResult = paymentResult;
-            });
-            khalti.close(context);
-          },
-          onMessage: (
-            khalti, {
-            description,
-            statusCode,
-            event,
-            needsPaymentConfirmation,
-          }) async {
-            log(
-              'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
-            );
-            khalti.close(context);
-          },
+    khalti = Khalti.init(
+      enableDebugging: true,
+      payConfig: payConfig,
+      onPaymentResult: (paymentResult, khalti) {
+        log(paymentResult.toString());
+        setState(() {
+          this.paymentResult = paymentResult;
+        });
+        khalti.close(context);
+      },
+      onMessage: (
+        khalti, {
+        description,
+        statusCode,
+        event,
+        needsPaymentConfirmation,
+      }) async {
+        log(
+          'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
         );
+        khalti.close(context);
       },
     );
   }
