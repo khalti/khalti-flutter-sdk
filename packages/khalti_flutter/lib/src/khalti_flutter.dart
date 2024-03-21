@@ -24,8 +24,8 @@ enum Environment {
 
 /// Various events associated with different actions.
 enum KhaltiEvent {
-  /// Event for when user presses back button.
-  backpressed,
+  /// Event for when khalti payment page is disposed.
+  kpgDisposed,
 
   /// Event for when return url fails to load.
   returnUrlLoadFailure,
@@ -137,8 +137,10 @@ class Khalti extends Equatable {
 
   /// Helper method to close the webview.
   void close(BuildContext context) {
-    if (!_hasPopped) Navigator.pop(context);
-    _hasPopped = true;
+    if (!_hasPopped) {
+      _hasPopped = true;
+      Navigator.pop(context);
+    }
   }
 
   /// Overrides [Khalti.service] with the provided [service].

@@ -10,5 +10,5 @@ const s_noInternetDisplayMessage = 'Please connect to an internet to proceed.';
 /// Go back
 const s_tryAgain = 'Try Again';
 
-/// User pressed back
-const s_userPressedBack = 'User pressed back';
+/// Khalti payment page disposed
+const s_kpgDisposed = 'Khalti payment page disposed';

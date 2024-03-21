@@ -105,8 +105,8 @@ class _KhaltiWebViewClient extends StatelessWidget {
     final isProd = payConfig.environment == Environment.prod;
     return KhaltiPopScope(
       onPopInvoked: (_) => khalti.onMessage(
-        event: KhaltiEvent.backpressed,
-        description: s_userPressedBack,
+        event: KhaltiEvent.kpgDisposed,
+        description: s_kpgDisposed,
         needsPaymentConfirmation: true,
         khalti,
       ),

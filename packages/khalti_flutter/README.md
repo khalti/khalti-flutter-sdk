@@ -170,8 +170,8 @@ The static `init()` method takes in a few arguments:
   
   ```dart
   enum KhaltiEvent {
-    /// Event for when user presses back button.
-    backpressed,
+    /// Event for when khalti payment page is disposed.
+    kpgDisposed,
 
     /// Event for when return url fails to load.
     returnUrlLoadFailure,
