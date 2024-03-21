@@ -124,6 +124,7 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
           'Description: $description, Status Code: $statusCode, Event: $event, NeedsPaymentConfirmation: $needsPaymentConfirmation',
         );
       },
+      onReturn: () => log('Successfully redirected to return_url.'),
     );
   }
 
@@ -165,6 +166,8 @@ The static `init()` method takes in a few arguments:
     print(paymentResult.payload.transactionId);
   }
   ```
+  
+- **onReturn**: A callback function that gets triggered when the retunr_url is successfully loaded.
 
 - **onMessage**: A callback function that is triggered if any error is encountered. This callback provides error informations such as error description and status code. It also provides information about why the error occured via `KhaltiEvent` enum. This enum consists of:
   
