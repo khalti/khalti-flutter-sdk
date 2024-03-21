@@ -58,6 +58,7 @@ class _KhaltiSDKDemoState extends State<KhaltiSDKDemo> {
         );
         khalti.close(context);
       },
+      onReturn: () => log('Successfully redirected to return_url.'),
     );
   }
 
