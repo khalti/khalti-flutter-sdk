@@ -18,6 +18,14 @@
 </p>
 
 ---
+<strong>
+Attention! You're currently using KPG-v1, which is outdated and no longer supported. It's scheduled to be removed in the future.
+  <br />
+Upgrade to KPG-v2 for a smoother checkout experience. 
+  <br />
+  You can find the KPG-v2 SDK for Flutter here: https://github.com/khalti/checkout-sdk-flutter
+</strong>
+---
 
 Use Khalti Payment Gateway solution in your app or website to simplify payment for your customers. 
 You do not need to integrate with individual banks when using Khalti Payment Gateway.
