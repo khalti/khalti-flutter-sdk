@@ -27,6 +27,10 @@ Upgrade to KPG-v2 for a smoother checkout experience.
 </strong>
 
 
+### Archived documentation...
+
+
+
 Use Khalti Payment Gateway solution in your app or website to simplify payment for your customers. 
 You do not need to integrate with individual banks when using Khalti Payment Gateway.
 
