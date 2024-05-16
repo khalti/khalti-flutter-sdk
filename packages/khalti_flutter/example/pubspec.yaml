@@ -13,8 +13,9 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.0.0+1
-  intl: '>=0.17.0 <0.19.0'
-  khalti_flutter: ^2.2.1
+  intl: ^0.19.0
+  khalti_flutter: 
+    path: ../
   provider: ^6.0.5
 
 dev_dependencies:

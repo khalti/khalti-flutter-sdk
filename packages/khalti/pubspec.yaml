@@ -12,17 +12,17 @@ environment:
   sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  device_info_plus: ^9.0.2
+  device_info_plus: ^10.1.0
   flutter:
     sdk: flutter
-  http: ^1.1.0
+  http: ^1.2.1
   khalti_core: ^1.1.1
-  package_info_plus: ^4.0.2
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.2
-  mocktail: ^0.3.0
-  package_info_plus_platform_interface: ^2.0.1
-  plugin_platform_interface: ^2.1.5
+  flutter_lints: ^4.0.0
+  mocktail: ^1.0.3
+  package_info_plus_platform_interface: ^3.0.0
+  plugin_platform_interface: ^2.1.8
